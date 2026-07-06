@@ -154,9 +154,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     </div>
     <div class="field">
       <label>Lớp</label>
-      <select id="inp-class">
-        <option value="">-- Chọn lớp --</option>
-      </select>
+      <input type="text" id="inp-class" placeholder="Ví dụ: 10A1" autocomplete="off"/>
     </div>
     <button class="btn btn-primary" onclick="startQuiz()">Bắt đầu làm bài →</button>
   </div>
@@ -266,12 +264,7 @@ let submitted = false;
 
 // ── Init ─────────────────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", ()=>{
-  const sel = document.getElementById("inp-class");
-  CLASSES.forEach(c=>{
-    const o = document.createElement("option");
-    o.value = c; o.textContent = c;
-    sel.appendChild(o);
-  });
+  // class is free-text input
 });
 
 // ── Login ─────────────────────────────────────────────────────
