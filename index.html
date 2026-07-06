@@ -212,7 +212,45 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   </div>
 </div>
 
-<script src="questions.js"></script>
+<script>
+const WEEK_TITLE = "Grammar – Present Simple, Past Simple & Future";
+const CLASSES = ["10A1", "10A2", "10A3", "11B1", "11B2", "12C1"];
+const QUESTIONS = [
+  { id:1, type:"fill", question:"Exercise 1 – Present Simple<br>My father __________ (go) to work by car every day.", answer:"goes", hint:"He/She/It → thêm -es", explanation:"Chủ ngữ 'My father' = he → chia goes." },
+  { id:2, type:"fill", question:"Exercise 1 – Present Simple<br>Sarah __________ (not/watch) TV after dinner.", answer:"doesn't watch", hint:"Phủ định: doesn't + V nguyên thể", explanation:"Sarah = she → doesn't watch." },
+  { id:3, type:"fill", question:"Exercise 1 – Present Simple<br>__________ your sister __________ (play) the piano? (điền cả 2 ô, cách nhau bởi dấu phẩy)", answer:"does, play", hint:"Câu hỏi: Does + S + V?", explanation:"Does your sister play the piano?" },
+  { id:4, type:"fill", question:"Exercise 1 – Present Simple<br>We usually __________ (have) English lessons on Mondays.", answer:"have", hint:"We → V nguyên thể", explanation:"Chủ ngữ 'We' → have (không thêm -s)." },
+  { id:5, type:"fill", question:"Exercise 1 – Present Simple<br>Tom __________ (study) very hard for his exams.", answer:"studies", hint:"He/She/It + y → ies", explanation:"study → studies (bỏ y, thêm ies)." },
+  { id:6, type:"fill", question:"Exercise 1 – Present Simple<br>My friends __________ (live) near my house.", answer:"live", hint:"They → V nguyên thể", explanation:"My friends = they → live." },
+  { id:7, type:"fill", question:"Exercise 1 – Present Simple<br>The sun __________ (rise) in the east.", answer:"rises", hint:"It → thêm -s hoặc -es", explanation:"The sun = it → rises." },
+  { id:8, type:"fill", question:"Exercise 1 – Present Simple<br>I always __________ (do) my homework before dinner.", answer:"do", hint:"I → V nguyên thể", explanation:"Chủ ngữ 'I' → do." },
+  { id:9, type:"fill", question:"Exercise 1 – Present Simple<br>My mother __________ (cook) delicious meals every weekend.", answer:"cooks", hint:"She → thêm -s", explanation:"My mother = she → cooks." },
+  { id:10, type:"fill", question:"Exercise 1 – Present Simple<br>They __________ (not/like) spicy food.", answer:"don't like", hint:"Phủ định: don't + V nguyên thể", explanation:"They → don't like." },
+
+  { id:11, type:"fill", question:"Exercise 2 – Past Simple<br>We __________ (visit) our grandparents last weekend.", answer:"visited", hint:"Động từ có quy tắc: thêm -ed", explanation:"visit → visited." },
+  { id:12, type:"fill", question:"Exercise 2 – Past Simple<br>She __________ (not/go) to school yesterday because she was ill.", answer:"didn't go", hint:"Phủ định quá khứ: didn't + V nguyên thể", explanation:"didn't go — dùng V nguyên thể sau didn't." },
+  { id:13, type:"fill", question:"Exercise 2 – Past Simple<br>__________ you __________ (watch) the football match last night? (điền 2 ô)", answer:"did, watch", hint:"Câu hỏi quá khứ: Did + S + V?", explanation:"Did you watch the football match?" },
+  { id:14, type:"fill", question:"Exercise 2 – Past Simple<br>My parents __________ (buy) me a new backpack last month.", answer:"bought", hint:"Động từ bất quy tắc", explanation:"buy → bought (bất quy tắc)." },
+  { id:15, type:"fill", question:"Exercise 2 – Past Simple<br>They __________ (have) a great time at the beach.", answer:"had", hint:"Động từ bất quy tắc", explanation:"have → had." },
+  { id:16, type:"fill", question:"Exercise 2 – Past Simple<br>I __________ (see) my teacher at the supermarket yesterday.", answer:"saw", hint:"Động từ bất quy tắc", explanation:"see → saw." },
+  { id:17, type:"fill", question:"Exercise 2 – Past Simple<br>The students __________ (finish) their homework before dinner.", answer:"finished", hint:"Thêm -ed", explanation:"finish → finished." },
+  { id:18, type:"fill", question:"Exercise 2 – Past Simple<br>He __________ (not/eat) breakfast this morning.", answer:"didn't eat", hint:"didn't + V nguyên thể", explanation:"didn't eat — không chia eat." },
+  { id:19, type:"fill", question:"Exercise 2 – Past Simple<br>We __________ (take) lots of photos during the trip.", answer:"took", hint:"Động từ bất quy tắc", explanation:"take → took." },
+  { id:20, type:"fill", question:"Exercise 2 – Past Simple<br>My brother __________ (win) the badminton competition last Sunday.", answer:"won", hint:"Động từ bất quy tắc", explanation:"win → won." },
+
+  { id:21, type:"mc", question:"Exercise 3 – Will / Be going to<br>Look at those black clouds! It __________ rain.", options:["A. will","B. is going to"], answer:"B", explanation:"Nhìn thấy bằng chứng trực tiếp (mây đen) → be going to." },
+  { id:22, type:"mc", question:"Exercise 3 – Will / Be going to<br>I think our team __________ win the match.", options:["A. will","B. is going to"], answer:"A", explanation:"Dự đoán cá nhân không có bằng chứng → will." },
+  { id:23, type:"mc", question:"Exercise 3 – Will / Be going to<br>We have bought the tickets. We __________ visit Da Nang next weekend.", options:["A. will","B. are going to"], answer:"B", explanation:"Đã có kế hoạch cụ thể (mua vé rồi) → be going to." },
+  { id:24, type:"mc", question:"Exercise 3 – Will / Be going to<br>Don't worry! I __________ help you carry your bag.", options:["A. will","B. am going to"], answer:"A", explanation:"Quyết định ngay tại thời điểm nói → will." },
+  { id:25, type:"mc", question:"Exercise 3 – Will / Be going to<br>They have already planned everything. They __________ have a picnic this Sunday.", options:["A. will","B. are going to"], answer:"B", explanation:"Đã lên kế hoạch trước → be going to." },
+  { id:26, type:"mc", question:"Exercise 3 – Will / Be going to<br>I'm sure she __________ pass the exam.", options:["A. will","B. is going to"], answer:"A", explanation:"Dự đoán dựa trên ý kiến cá nhân → will." },
+  { id:27, type:"mc", question:"Exercise 3 – Will / Be going to<br>Be careful! You __________ drop those books.", options:["A. will","B. are going to"], answer:"B", explanation:"Thấy bằng chứng trực tiếp (sắp rơi) → be going to." },
+  { id:28, type:"mc", question:"Exercise 3 – Will / Be going to<br>I forgot my notebook. I __________ bring it tomorrow.", options:["A. will","B. am going to"], answer:"A", explanation:"Quyết định tức thời → will." },
+  { id:29, type:"mc", question:"Exercise 3 – Will / Be going to<br>My family __________ travel to Hue next month. We have already booked the hotel.", options:["A. will","B. are going to"], answer:"B", explanation:"Đã đặt khách sạn = kế hoạch có sẵn → be going to." },
+  { id:30, type:"mc", question:"Exercise 3 – Will / Be going to<br>I believe people __________ live on Mars in the future.", options:["A. will","B. are going to"], answer:"A", explanation:"Dự đoán về tương lai xa → will." }
+];
+</script>
+
 <script>
 // ── Config ──────────────────────────────────────────────────
 // Dán URL Apps Script của bạn vào đây sau khi deploy
