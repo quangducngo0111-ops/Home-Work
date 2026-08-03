@@ -353,6 +353,90 @@
     font-family:'JetBrains Mono',monospace;
   }
 
+  /* User info form */
+  .info-card{
+    background:#fff;
+    border:1px solid rgba(38,36,31,0.1);
+    border-left:3px solid var(--forest);
+    border-radius:4px;
+    padding:22px 24px;
+  }
+  .info-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(180px,1fr));
+    gap:16px;
+  }
+  .info-field label{
+    display:block;
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    color:var(--moss);
+    margin-bottom:6px;
+  }
+  .info-field input{
+    width:100%;
+    font-family:'Inter',sans-serif;
+    font-size:0.95rem;
+    padding:9px 10px;
+    border:1px solid rgba(38,36,31,0.2);
+    border-radius:3px;
+    outline:none;
+    background:var(--parchment);
+    color:var(--ink);
+  }
+  .info-field input:focus{border-color:var(--forest);}
+
+  /* Submission section */
+  .submit-card{
+    background:var(--forest);
+    color:var(--parchment);
+    border-radius:4px;
+    padding:26px 24px;
+  }
+  .submit-summary{
+    display:flex;
+    gap:28px;
+    flex-wrap:wrap;
+    margin:14px 0 20px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;
+  }
+  .submit-summary div span.label{
+    display:block;
+    color:var(--gold);
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    margin-bottom:4px;
+  }
+  .submit-summary div span.value{font-size:1.3rem; color:var(--parchment);}
+  button.submit-btn{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12.5px;
+    letter-spacing:0.05em;
+    text-transform:uppercase;
+    background:var(--gold);
+    color:var(--forest-deep);
+    border:none;
+    padding:13px 24px;
+    border-radius:3px;
+    cursor:pointer;
+    font-weight:600;
+    transition:background 0.2s;
+  }
+  button.submit-btn:hover{background:#dab878;}
+  button.submit-btn:disabled{opacity:0.5; cursor:not-allowed;}
+  .submit-status{
+    margin-top:14px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:12.5px;
+    min-height:18px;
+  }
+  .submit-status.ok{color:#9edcae;}
+  .submit-status.err{color:#f2a98f;}
+
   @media (max-width:600px){
     .log-entry{grid-template-columns:24px 1fr;}
     .card-grid{grid-template-columns:repeat(auto-fill, minmax(150px,1fr));}
@@ -375,6 +459,31 @@
 </header>
 
 <main>
+
+  <!-- SECTION 0: STUDENT INFO -->
+  <section id="student-info">
+    <div class="section-head">
+      <span class="section-num">00</span>
+      <h2 class="section-title">Before You Begin</h2>
+    </div>
+    <p class="section-desc">Enter your details once. They'll be attached to your results when you submit them at the end of this page.</p>
+    <div class="info-card">
+      <div class="info-grid">
+        <div class="info-field">
+          <label for="userName">Full name</label>
+          <input type="text" id="userName" placeholder="e.g. Nguyễn Văn A">
+        </div>
+        <div class="info-field">
+          <label for="userClass">Class</label>
+          <input type="text" id="userClass" placeholder="e.g. IELTS 6.5 - K12">
+        </div>
+        <div class="info-field">
+          <label for="userContact">Email / phone</label>
+          <input type="text" id="userContact" placeholder="e.g. a@gmail.com">
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- SECTION 1: VOCAB LOG -->
   <section id="vocab-log">
@@ -422,6 +531,23 @@
     <div class="controls">
       <button class="check-btn" onclick="checkQuiz()">Check my answers</button>
       <span class="score-readout" id="quizScore"></span>
+    </div>
+  </section>
+
+  <!-- SECTION 5: SUBMIT RESULTS -->
+  <section id="submit-results">
+    <div class="section-head">
+      <span class="section-num">05</span>
+      <h2 class="section-title">Send Your Results</h2>
+    </div>
+    <p class="section-desc">Complete both exercises above, then submit your scores. Your teacher will see them in the class spreadsheet.</p>
+    <div class="submit-card">
+      <div class="submit-summary">
+        <div><span class="label">Fill-in-the-blank</span><span class="value" id="summaryBlank">— / 18</span></div>
+        <div><span class="label">Matching quiz</span><span class="value" id="summaryQuiz">— / 10</span></div>
+      </div>
+      <button class="submit-btn" id="submitBtn" onclick="submitResults()">Submit results</button>
+      <div class="submit-status" id="submitStatus"></div>
     </div>
   </section>
 
@@ -539,6 +665,9 @@ blanks.forEach((b, i) => {
   blanksContainer.appendChild(div);
 });
 
+let blankResult = null; // {correct, total}
+let quizResult = null;  // {correct, total}
+
 function checkBlanks(){
   let correct = 0;
   blanks.forEach((b, i) => {
@@ -554,6 +683,8 @@ function checkBlanks(){
     }
   });
   document.getElementById('blankScore').textContent = `Score: ${correct} / ${blanks.length}`;
+  blankResult = {correct, total: blanks.length};
+  document.getElementById('summaryBlank').textContent = `${correct} / ${blanks.length}`;
 }
 
 // ---------- SECTION 4: MATCHING QUIZ ----------
@@ -607,6 +738,82 @@ function checkQuiz(){
     }
   });
   document.getElementById('quizScore').textContent = `Score: ${correct} / ${quizWords.length}`;
+  quizResult = {correct, total: quizWords.length};
+  document.getElementById('summaryQuiz').textContent = `${correct} / ${quizWords.length}`;
+}
+
+// ---------- SECTION 5: SUBMIT TO GOOGLE SHEET ----------
+// Paste the Web App URL you get after deploying your Apps Script here:
+const GOOGLE_SCRIPT_URL = "PASTE_YOUR_GOOGLE_APPS_SCRIPT_URL_HERE";
+
+async function submitResults(){
+  const statusEl = document.getElementById('submitStatus');
+  const btn = document.getElementById('submitBtn');
+  const name = document.getElementById('userName').value.trim();
+  const className = document.getElementById('userClass').value.trim();
+  const contact = document.getElementById('userContact').value.trim();
+
+  if(!name){
+    statusEl.textContent = "Please enter your name before submitting.";
+    statusEl.className = "submit-status err";
+    return;
+  }
+  if(!blankResult || !quizResult){
+    statusEl.textContent = "Please check both exercises above before submitting.";
+    statusEl.className = "submit-status err";
+    return;
+  }
+  if(GOOGLE_SCRIPT_URL.includes("PASTE_YOUR")){
+    statusEl.textContent = "The teacher hasn't connected this page to a spreadsheet yet.";
+    statusEl.className = "submit-status err";
+    return;
+  }
+
+  btn.disabled = true;
+  statusEl.textContent = "Submitting...";
+  statusEl.className = "submit-status";
+
+  // Combine class/contact into the name field, since the sheet only stores name + score + answers
+  let fullName = name;
+  if(className) fullName += ` | Lớp: ${className}`;
+  if(contact) fullName += ` | LH: ${contact}`;
+
+  const totalCorrect = blankResult.correct + quizResult.correct;
+  const totalQuestions = blankResult.total + quizResult.total;
+  const score = `${totalCorrect}/${totalQuestions}`;
+
+  // Build one readable answer string per question, in order: fill-in-the-blank first, then matching quiz
+  const answers = [];
+  blanks.forEach((b, i) => {
+    const input = document.getElementById(`blank-input-${i}`);
+    const userAnswer = input.value.trim();
+    const isCorrect = userAnswer.toLowerCase() === b.answer.toLowerCase();
+    answers.push(`Q${i+1}: ${userAnswer || "(blank)"} ${isCorrect ? "✓" : "✗"}`);
+  });
+  document.querySelectorAll('.quiz-item').forEach((item, i) => {
+    const answer = item.dataset.answer;
+    const selected = item.querySelector('.quiz-option.selected');
+    const chosenText = selected ? selected.dataset.value : "(no answer)";
+    const isCorrect = selected && selected.dataset.value === answer;
+    answers.push(`Match${i+1}: ${chosenText} ${isCorrect ? "✓" : "✗"}`);
+  });
+
+  const payload = { name: fullName, score, answers };
+
+  try{
+    await fetch(GOOGLE_SCRIPT_URL, {
+      method: "POST",
+      headers: {"Content-Type": "text/plain;charset=utf-8"},
+      body: JSON.stringify(payload)
+    });
+    statusEl.textContent = "Submitted — your results have been recorded.";
+    statusEl.className = "submit-status ok";
+  } catch(err){
+    statusEl.textContent = "Something went wrong. Please try again or tell your teacher.";
+    statusEl.className = "submit-status err";
+  } finally {
+    btn.disabled = false;
+  }
 }
 </script>
 
