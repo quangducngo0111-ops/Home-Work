@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Field Notes: Words Worth Saving</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --forest:#1f3b2c;
+    --forest-deep:#142720;
+    --moss:#5c7a54;
+    --parchment:#ede6d6;
+    --parchment-warm:#e4dcc6;
+    --gold:#c9a25d;
+    --ink:#26241f;
+    --rust:#a8532f;
+    --card-shadow: 0 6px 18px rgba(20,39,32,0.18);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--parchment);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    line-height:1.55;
+  }
+  .paper-texture{
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(92,122,84,0.05) 0%, transparent 45%),
+      radial-gradient(circle at 80% 70%, rgba(168,83,47,0.04) 0%, transparent 50%);
+  }
+  header.hero{
+    background: linear-gradient(160deg, var(--forest) 0%, var(--forest-deep) 100%);
+    color:var(--parchment);
+    padding:64px 24px 56px;
+    position:relative;
+    overflow:hidden;
+  }
+  header.hero::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background-image:repeating-linear-gradient(90deg, rgba(237,230,214,0.03) 0px, rgba(237,230,214,0.03) 1px, transparent 1px, transparent 40px);
+    pointer-events:none;
+  }
+  .hero-inner{max-width:920px;margin:0 auto;position:relative;}
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12.5px;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    color:var(--gold);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:18px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:26px;height:1px;background:var(--gold);
+  }
+  h1.display{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:clamp(2.2rem, 5vw, 3.4rem);
+    margin:0 0 18px;
+    letter-spacing:-0.01em;
+  }
+  .hero-sub{
+    max-width:640px;
+    color:#cdd9c9;
+    font-size:1.02rem;
+  }
+  .specimen-tags{
+    margin-top:32px;
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+  }
+  .specimen-tags span{
+    border:1px solid rgba(237,230,214,0.35);
+    padding:6px 12px;
+    border-radius:2px;
+    color:#e4dcc6;
+  }
+
+  main{max-width:920px;margin:0 auto;padding:56px 24px 100px;}
+
+  section{margin-bottom:64px;}
+  .section-head{
+    display:flex;
+    align-items:baseline;
+    gap:14px;
+    margin-bottom:8px;
+  }
+  .section-num{
+    font-family:'JetBrains Mono',monospace;
+    color:var(--rust);
+    font-size:13px;
+    letter-spacing:0.08em;
+  }
+  h2.section-title{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:1.7rem;
+    margin:0;
+    color:var(--forest-deep);
+  }
+  p.section-desc{
+    color:#54524a;
+    margin:6px 0 28px;
+    max-width:640px;
+    font-size:0.97rem;
+  }
+
+  /* Vocabulary log */
+  .log-entry{
+    display:grid;
+    grid-template-columns:32px 1fr;
+    gap:16px;
+    padding:16px 0;
+    border-top:1px solid rgba(38,36,31,0.12);
+  }
+  .log-entry:last-child{border-bottom:1px solid rgba(38,36,31,0.12);}
+  .log-index{
+    font-family:'JetBrains Mono',monospace;
+    color:var(--moss);
+    font-size:13px;
+    padding-top:4px;
+  }
+  .log-word-row{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:baseline;
+    gap:10px 14px;
+  }
+  .log-word{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:1.12rem;
+    color:var(--forest-deep);
+  }
+  .log-ipa{
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;
+    color:var(--rust);
+  }
+  .log-pos{
+    font-size:11.5px;
+    font-family:'JetBrains Mono',monospace;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    color:var(--moss);
+    border:1px solid var(--moss);
+    padding:1px 7px;
+    border-radius:2px;
+  }
+  .log-vn{
+    margin-top:4px;
+    color:var(--ink);
+    font-size:0.97rem;
+  }
+
+  /* Flashcards */
+  .card-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(200px, 1fr));
+    gap:16px;
+  }
+  .flip-card{
+    perspective:1200px;
+    height:150px;
+    cursor:pointer;
+  }
+  .flip-inner{
+    position:relative;
+    width:100%;height:100%;
+    transition:transform 0.55s cubic-bezier(.4,.2,.2,1);
+    transform-style:preserve-3d;
+  }
+  .flip-card.flipped .flip-inner{transform:rotateY(180deg);}
+  .flip-face{
+    position:absolute;inset:0;
+    backface-visibility:hidden;
+    border-radius:4px;
+    padding:18px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    box-shadow:var(--card-shadow);
+  }
+  .flip-front{
+    background:var(--forest);
+    color:var(--parchment);
+    border-left:3px solid var(--gold);
+  }
+  .flip-front .fw{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:1.15rem;
+    margin-bottom:6px;
+  }
+  .flip-front .fi{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    color:var(--gold);
+  }
+  .flip-hint{
+    position:absolute;
+    bottom:10px; right:14px;
+    font-size:10px;
+    font-family:'JetBrains Mono',monospace;
+    color:rgba(237,230,214,0.5);
+  }
+  .flip-back{
+    background:var(--parchment-warm);
+    color:var(--ink);
+    transform:rotateY(180deg);
+    border-left:3px solid var(--rust);
+    font-size:0.95rem;
+  }
+  .flip-back .fb-vn{font-weight:600;margin-bottom:4px;color:var(--forest-deep);}
+
+  /* Fill in the blank */
+  .word-bank{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-bottom:24px;
+    padding:16px;
+    background:var(--parchment-warm);
+    border-radius:4px;
+    border:1px dashed var(--moss);
+  }
+  .bank-item{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12.5px;
+    background:var(--forest);
+    color:var(--parchment);
+    padding:5px 10px;
+    border-radius:2px;
+  }
+  .blank-item{
+    margin-bottom:16px;
+    padding:14px 16px;
+    background:#fff;
+    border-radius:4px;
+    border:1px solid rgba(38,36,31,0.1);
+  }
+  .blank-item .qnum{
+    font-family:'JetBrains Mono',monospace;
+    color:var(--rust);
+    font-size:12px;
+    margin-right:6px;
+  }
+  .blank-item input{
+    font-family:'Inter',sans-serif;
+    font-size:0.95rem;
+    border:none;
+    border-bottom:2px solid var(--moss);
+    background:transparent;
+    padding:2px 4px;
+    width:170px;
+    outline:none;
+    color:var(--forest-deep);
+    font-weight:600;
+  }
+  .blank-item input:focus{border-bottom-color:var(--rust);}
+  .blank-item.correct input{border-bottom-color:#3f7a4e; background:rgba(63,122,78,0.08);}
+  .blank-item.incorrect input{border-bottom-color:var(--rust); background:rgba(168,83,47,0.08);}
+  .feedback-tag{
+    display:none;
+    font-family:'JetBrains Mono',monospace;
+    font-size:11.5px;
+    margin-left:8px;
+  }
+  .blank-item.correct .feedback-tag.ok{display:inline;color:#3f7a4e;}
+  .blank-item.incorrect .feedback-tag.no{display:inline;color:var(--rust);}
+
+  /* Matching quiz */
+  .quiz-item{
+    margin-bottom:18px;
+    padding:16px;
+    background:#fff;
+    border-radius:4px;
+    border:1px solid rgba(38,36,31,0.1);
+  }
+  .quiz-q{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    color:var(--forest-deep);
+    margin-bottom:10px;
+    font-size:1.02rem;
+  }
+  .quiz-options{
+    display:grid;
+    gap:8px;
+  }
+  .quiz-option{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:8px 10px;
+    border-radius:3px;
+    border:1px solid rgba(38,36,31,0.15);
+    cursor:pointer;
+    font-size:0.92rem;
+    transition:background 0.15s;
+  }
+  .quiz-option:hover{background:var(--parchment-warm);}
+  .quiz-option.selected{border-color:var(--forest); background:rgba(31,59,44,0.06);}
+  .quiz-option.right{border-color:#3f7a4e; background:rgba(63,122,78,0.12);}
+  .quiz-option.wrong{border-color:var(--rust); background:rgba(168,83,47,0.12);}
+  .quiz-option input{accent-color:var(--forest);}
+
+  /* Controls */
+  .controls{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    margin-top:20px;
+  }
+  button.check-btn{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12.5px;
+    letter-spacing:0.05em;
+    text-transform:uppercase;
+    background:var(--forest);
+    color:var(--parchment);
+    border:none;
+    padding:12px 22px;
+    border-radius:3px;
+    cursor:pointer;
+    transition:background 0.2s;
+  }
+  button.check-btn:hover{background:var(--forest-deep);}
+  .score-readout{
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;
+    color:var(--forest-deep);
+    min-height:20px;
+  }
+
+  footer{
+    text-align:center;
+    padding:32px 24px 48px;
+    color:#7a7768;
+    font-size:12.5px;
+    font-family:'JetBrains Mono',monospace;
+  }
+
+  /* User info form */
+  .info-card{
+    background:#fff;
+    border:1px solid rgba(38,36,31,0.1);
+    border-left:3px solid var(--forest);
+    border-radius:4px;
+    padding:22px 24px;
+  }
+  .info-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(180px,1fr));
+    gap:16px;
+  }
+  .info-field label{
+    display:block;
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    color:var(--moss);
+    margin-bottom:6px;
+  }
+  .info-field input{
+    width:100%;
+    font-family:'Inter',sans-serif;
+    font-size:0.95rem;
+    padding:9px 10px;
+    border:1px solid rgba(38,36,31,0.2);
+    border-radius:3px;
+    outline:none;
+    background:var(--parchment);
+    color:var(--ink);
+  }
+  .info-field input:focus{border-color:var(--forest);}
+
+  /* Submission section */
+  .submit-card{
+    background:var(--forest);
+    color:var(--parchment);
+    border-radius:4px;
+    padding:26px 24px;
+  }
+  .submit-summary{
+    display:flex;
+    gap:28px;
+    flex-wrap:wrap;
+    margin:14px 0 20px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;
+  }
+  .submit-summary div span.label{
+    display:block;
+    color:var(--gold);
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    margin-bottom:4px;
+  }
+  .submit-summary div span.value{font-size:1.3rem; color:var(--parchment);}
+  button.submit-btn{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12.5px;
+    letter-spacing:0.05em;
+    text-transform:uppercase;
+    background:var(--gold);
+    color:var(--forest-deep);
+    border:none;
+    padding:13px 24px;
+    border-radius:3px;
+    cursor:pointer;
+    font-weight:600;
+    transition:background 0.2s;
+  }
+  button.submit-btn:hover{background:#dab878;}
+  button.submit-btn:disabled{opacity:0.5; cursor:not-allowed;}
+  .submit-status{
+    margin-top:14px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:12.5px;
+    min-height:18px;
+  }
+  .submit-status.ok{color:#9edcae;}
+  .submit-status.err{color:#f2a98f;}
+
+  @media (max-width:600px){
+    .log-entry{grid-template-columns:24px 1fr;}
+    .card-grid{grid-template-columns:repeat(auto-fill, minmax(150px,1fr));}
+  }
+</style>
+</head>
+<body class="paper-texture">
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">Vocabulary Field Journal</div>
+    <h1 class="display">Words Worth Saving</h1>
+    <p class="hero-sub">Thirty-six terms recorded from two conservation case studies — the kākāpō of New Zealand and the manatees of Sirenia — for IELTS-level review, B1 to C2.</p>
+    <div class="specimen-tags">
+      <span>SPECIMEN COUNT: 36</span>
+      <span>SOURCE: PASSAGE 1 &amp; 2</span>
+      <span>LEVEL: B1–C2</span>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- SECTION 0: STUDENT INFO -->
+  <section id="student-info">
+    <div class="section-head">
+      <span class="section-num">00</span>
+      <h2 class="section-title">Before You Begin</h2>
+    </div>
+    <p class="section-desc">Enter your details once. They'll be attached to your results when you submit them at the end of this page.</p>
+    <div class="info-card">
+      <div class="info-grid">
+        <div class="info-field">
+          <label for="userName">Full name</label>
+          <input type="text" id="userName" placeholder="e.g. Nguyễn Văn A">
+        </div>
+        <div class="info-field">
+          <label for="userClass">Class</label>
+          <input type="text" id="userClass" placeholder="e.g. IELTS 6.5 - K12">
+        </div>
+        <div class="info-field">
+          <label for="userContact">Email / phone</label>
+          <input type="text" id="userContact" placeholder="e.g. a@gmail.com">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 1: VOCAB LOG -->
+  <section id="vocab-log">
+    <div class="section-head">
+      <span class="section-num">01</span>
+      <h2 class="section-title">The Field Log</h2>
+    </div>
+    <p class="section-desc">Read through each entry once before attempting the exercises below. Say the IPA aloud — pronunciation sticks better than silent reading.</p>
+    <div id="logContainer"></div>
+  </section>
+
+  <!-- SECTION 2: FLASHCARDS -->
+  <section id="flashcards">
+    <div class="section-head">
+      <span class="section-num">02</span>
+      <h2 class="section-title">Flip the Specimen Cards</h2>
+    </div>
+    <p class="section-desc">Click a card to reveal its Vietnamese meaning. Try to recall the meaning before flipping — that small effort is what builds memory.</p>
+    <div class="card-grid" id="cardGrid"></div>
+  </section>
+
+  <!-- SECTION 3: FILL IN THE BLANK -->
+  <section id="fill-blank">
+    <div class="section-head">
+      <span class="section-num">03</span>
+      <h2 class="section-title">Complete the Field Notes</h2>
+    </div>
+    <p class="section-desc">Type ONE word or phrase from the bank into each gap. Words may be used only once.</p>
+    <div class="word-bank" id="wordBank"></div>
+    <div id="blanksContainer"></div>
+    <div class="controls">
+      <button class="check-btn" onclick="checkBlanks()">Check my answers</button>
+      <span class="score-readout" id="blankScore"></span>
+    </div>
+  </section>
+
+  <!-- SECTION 4: MATCHING QUIZ -->
+  <section id="matching-quiz">
+    <div class="section-head">
+      <span class="section-num">04</span>
+      <h2 class="section-title">Match the Meaning</h2>
+    </div>
+    <p class="section-desc">Choose the Vietnamese meaning that correctly matches each word or phrase.</p>
+    <div id="quizContainer"></div>
+    <div class="controls">
+      <button class="check-btn" onclick="checkQuiz()">Check my answers</button>
+      <span class="score-readout" id="quizScore"></span>
+    </div>
+  </section>
+
+  <!-- SECTION 5: SUBMIT RESULTS -->
+  <section id="submit-results">
+    <div class="section-head">
+      <span class="section-num">05</span>
+      <h2 class="section-title">Send Your Results</h2>
+    </div>
+    <p class="section-desc">Complete both exercises above, then submit your scores. Your teacher will see them in the class spreadsheet.</p>
+    <div class="submit-card">
+      <div class="submit-summary">
+        <div><span class="label">Fill-in-the-blank</span><span class="value" id="summaryBlank">— / 36</span></div>
+        <div><span class="label">Matching quiz</span><span class="value" id="summaryQuiz">— / 15</span></div>
+      </div>
+      <button class="submit-btn" id="submitBtn" onclick="submitResults()">Submit results</button>
+      <div class="submit-status" id="submitStatus"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer>FIELD NOTES — COMPILED FROM READING PASSAGES ON KĀKĀPŌ &amp; MANATEE CONSERVATION</footer>
+
+<script>
+// ---------- DATA ----------
+const vocab = [
+  {w:"nocturnal", ipa:"/nɒkˈtɜːnl/", pos:"adj", vn:"hoạt động về đêm, thuộc về ban đêm"},
+  {w:"critically endangered", ipa:"/ˈkrɪtɪkli ɪnˈdeɪndʒəd/", pos:"adj phr", vn:"đang trong tình trạng cực kỳ nguy cấp (nguy cơ tuyệt chủng cao)"},
+  {w:"forage", ipa:"/ˈfɒrɪdʒ/", pos:"v", vn:"kiếm ăn, đi tìm thức ăn"},
+  {w:"vulnerable", ipa:"/ˈvʌlnərəbl/", pos:"adj", vn:"dễ bị tổn thương, dễ bị tấn công"},
+  {w:"predator", ipa:"/ˈpredətər/", pos:"n", vn:"động vật ăn thịt, kẻ săn mồi"},
+  {w:"confined to", ipa:"/kənˈfaɪnd tuː/", pos:"phr v", vn:"bị giới hạn/thu hẹp trong phạm vi nào đó"},
+  {w:"deplete", ipa:"/dɪˈpliːt/", pos:"v", vn:"làm cạn kiệt"},
+  {w:"relocate", ipa:"/ˌriːləʊˈkeɪt/", pos:"v", vn:"di dời, chuyển đến nơi khác"},
+  {w:"eradicate", ipa:"/ɪˈrædɪkeɪt/", pos:"v", vn:"loại bỏ hoàn toàn, xóa sổ"},
+  {w:"sanctuary", ipa:"/ˈsæŋktʃuəri/", pos:"n", vn:"khu bảo tồn, nơi trú ẩn an toàn"},
+  {w:"genetic diversity", ipa:"/dʒəˈnetɪk daɪˈvɜːsəti/", pos:"n phr", vn:"sự đa dạng di truyền"},
+  {w:"stakeholder", ipa:"/ˈsteɪkhəʊldər/", pos:"n", vn:"bên liên quan"},
+  {w:"aquatic", ipa:"/əˈkwætɪk/", pos:"adj", vn:"sống dưới nước, thuộc về môi trường nước"},
+  {w:"omnivorous", ipa:"/ɒmˈnɪvərəs/", pos:"adj", vn:"ăn tạp (cả động vật lẫn thực vật)"},
+  {w:"buoyancy", ipa:"/ˈbɔɪənsi/", pos:"n", vn:"độ nổi, khả năng nổi trên mặt nước"},
+  {w:"entanglement", ipa:"/ɪnˈtæŋɡlmənt/", pos:"n", vn:"sự mắc kẹt, vướng vào (lưới, dây...)"},
+  {w:"legislation", ipa:"/ˌledʒɪsˈleɪʃn/", pos:"n", vn:"luật pháp, pháp chế"},
+  {w:"heightened", ipa:"/ˈhaɪtnd/", pos:"adj", vn:"gia tăng, tăng cao"},
+  {w:"forelimb", ipa:"/ˈfɔːlɪm/", pos:"n", vn:"chi trước (của động vật)"},
+  {w:"propulsion", ipa:"/prəˈpʌlʃn/", pos:"n", vn:"lực đẩy, sự đẩy tới"},
+  {w:"leftover", ipa:"/ˈleftəʊvər/", pos:"n", vn:"phần còn sót lại (từ quá trình trước đó)"},
+  {w:"wrinkled", ipa:"/ˈrɪŋkld/", pos:"adj", vn:"nhăn nheo"},
+  {w:"graze", ipa:"/ɡreɪz/", pos:"v", vn:"gặm cỏ, ăn cỏ (của động vật)"},
+  {w:"uproot", ipa:"/ʌpˈruːt/", pos:"v", vn:"nhổ bật gốc, nhổ tận rễ"},
+  {w:"abrasive", ipa:"/əˈbreɪsɪv/", pos:"adj", vn:"có tính mài mòn"},
+  {w:"molar", ipa:"/ˈməʊlər/", pos:"n", vn:"răng hàm"},
+  {w:"incisor", ipa:"/ɪnˈsaɪzər/", pos:"n", vn:"răng cửa"},
+  {w:"diaphragm", ipa:"/ˈdaɪəfræm/", pos:"n", vn:"cơ hoành"},
+  {w:"contraction", ipa:"/kənˈtrækʃn/", pos:"n", vn:"sự co lại, co bóp"},
+  {w:"ambient", ipa:"/ˈæmbiənt/", pos:"adj", vn:"(thuộc) môi trường xung quanh"},
+  {w:"take refuge", ipa:"/teɪk ˈrefjuːdʒ/", pos:"phr", vn:"tìm nơi trú ẩn/lánh nạn"},
+  {w:"landlocked", ipa:"/ˈlændlɒkt/", pos:"adj", vn:"không giáp biển, bị đất liền bao quanh"},
+  {w:"extinction", ipa:"/ɪkˈstɪŋkʃn/", pos:"n", vn:"sự tuyệt chủng"},
+  {w:"incidental", ipa:"/ˌɪnsɪˈdentl/", pos:"adj", vn:"ngẫu nhiên, ngoài ý muốn/dự tính"},
+  {w:"decline", ipa:"/dɪˈklaɪn/", pos:"n/v", vn:"sự suy giảm, đi xuống"},
+  {w:"chief cause", ipa:"/tʃiːf kɔːz/", pos:"phr", vn:"nguyên nhân chính"}
+];
+
+// ---------- SECTION 1: LOG ----------
+const logContainer = document.getElementById('logContainer');
+vocab.forEach((item, i) => {
+  const entry = document.createElement('div');
+  entry.className = 'log-entry';
+  entry.innerHTML = `
+    <div class="log-index">${String(i+1).padStart(2,'0')}</div>
+    <div>
+      <div class="log-word-row">
+        <span class="log-word">${item.w}</span>
+        <span class="log-ipa">${item.ipa}</span>
+        <span class="log-pos">${item.pos}</span>
+      </div>
+      <div class="log-vn">${item.vn}</div>
+    </div>
+  `;
+  logContainer.appendChild(entry);
+});
+
+// ---------- SECTION 2: FLASHCARDS ----------
+const cardGrid = document.getElementById('cardGrid');
+vocab.forEach(item => {
+  const card = document.createElement('div');
+  card.className = 'flip-card';
+  card.innerHTML = `
+    <div class="flip-inner">
+      <div class="flip-face flip-front">
+        <div class="fw">${item.w}</div>
+        <div class="fi">${item.ipa}</div>
+        <div class="flip-hint">tap to flip</div>
+      </div>
+      <div class="flip-face flip-back">
+        <div class="fb-vn">${item.vn}</div>
+      </div>
+    </div>
+  `;
+  card.addEventListener('click', () => card.classList.toggle('flipped'));
+  cardGrid.appendChild(card);
+});
+
+// ---------- SECTION 3: FILL IN THE BLANK ----------
+const blanks = [
+  {sentence:"Owls and kākāpō are both examples of ___ animals that are far more active after dark than during the day.", answer:"nocturnal"},
+  {sentence:"With fewer than 250 birds left, the kākāpō is now classified as ___.", answer:"critically endangered"},
+  {sentence:"Manatees spend up to eight hours a day using their lips to ___ for seagrass along the seafloor.", answer:"forage"},
+  {sentence:"Unattended eggs and chicks are especially ___ to attack while the mother searches for food.", answer:"vulnerable"},
+  {sentence:"Rats, cats and stoats all acted as ___ that hunted the flightless kākāpō.", answer:"predator"},
+  {sentence:"By the 1800s, kākāpō had become ___ a small part of the North and South Islands.", answer:"confined to"},
+  {sentence:"Introduced deer began to ___ the forest of the food sources kākāpō depended on.", answer:"deplete"},
+  {sentence:"Surviving kākāpō were ___ to three predator-controlled island sanctuaries between 1980 and 1997.", answer:"relocate"},
+  {sentence:"Possums were successfully ___ from Codfish Island by 1986.", answer:"eradicate"},
+  {sentence:"Codfish Island now functions as a protected ___ where kākāpō can breed with fewer threats.", answer:"sanctuary"},
+  {sentence:"One key goal of the Recovery Plan is to minimise the loss of ___ within the remaining population.", answer:"genetic diversity"},
+  {sentence:"The Recovery Plan depends on ongoing engagement from every ___ involved in the species' survival.", answer:"stakeholder"},
+  {sentence:"Manatees are fully ___ mammals, yet they must still surface regularly to breathe.", answer:"aquatic"},
+  {sentence:"Unlike the strictly herbivorous West Indian manatee, the African manatee is partly ___, occasionally eating molluscs and fish.", answer:"omnivorous"},
+  {sentence:"Manatees may adjust their ___ by storing gas in folds of their large intestine.", answer:"buoyancy"},
+  {sentence:"Hundreds of recorded manatee cases involved ___ in fishing nets or discarded plastic.", answer:"entanglement"},
+  {sentence:"New ___ in parts of Florida now restricts boat speeds to protect slow-moving manatees.", answer:"legislation"},
+  {sentence:"Conservation efforts have led to a ___ level of public awareness about manatee protection.", answer:"heightened"},
+  {sentence:"Manatees use their flexible flippers, or ___, to steer their entire body when turning.", answer:"forelimb"},
+  {sentence:"A tail provides ___, since manatees have no back limbs to push them through the water.", answer:"propulsion"},
+  {sentence:"Manatees still have pelvic bones, a ___ from their ancestors' four-legged, land-dwelling past.", answer:"leftover"},
+  {sentence:"Like elephants, manatees have thick, ___ skin covered in a few sensory hairs.", answer:"wrinkled"},
+  {sentence:"Manatees spend around eight hours a day using their lips to ___ on seagrass meadows.", answer:"graze"},
+  {sentence:"To feed, manatees ___ plants from the seafloor rather than biting them off at the base.", answer:"uproot"},
+  {sentence:"A diet of tough, ___ aquatic plants wears manatee teeth down until they eventually fall out.", answer:"abrasive"},
+  {sentence:"Manatees rely entirely on flat ___ for grinding their food, since they have no incisors.", answer:"molar"},
+  {sentence:"Unlike manatees, most mammals use sharp ___ at the front of the mouth to grasp food.", answer:"incisor"},
+  {sentence:"Manatees may use their muscular ___ to help control how easily they float or sink.", answer:"diaphragm"},
+  {sentence:"Repeated ___ of the diaphragm can compress gas and store it in the intestine to aid buoyancy.", answer:"contraction"},
+  {sentence:"When the ___ water temperature falls below 20°C, Florida manatees seek out naturally warmed refuges.", answer:"ambient"},
+  {sentence:"In cold weather, manatees ___ near warm-water outfalls from power plants.", answer:"take refuge"},
+  {sentence:"African manatees are also found in ___ countries such as Mali and Niger, far from the coast.", answer:"landlocked"},
+  {sentence:"Both subspecies of West Indian manatee face a heightened risk of ___ in the coming decades.", answer:"extinction"},
+  {sentence:"Some manatee deaths result from ___ capture in fishing nets rather than deliberate hunting.", answer:"incidental"},
+  {sentence:"Researchers predict a 20% ___ in West Indian manatee numbers over the next 40 years.", answer:"decline"},
+  {sentence:"Boat strikes are recorded as the ___ of death among Florida manatees.", answer:"chief cause"}
+];
+
+const wordBank = document.getElementById('wordBank');
+const shuffledWords = [...blanks.map(b => b.answer)].sort(() => Math.random() - 0.5);
+shuffledWords.forEach(w => {
+  const tag = document.createElement('span');
+  tag.className = 'bank-item';
+  tag.textContent = w;
+  wordBank.appendChild(tag);
+});
+
+const blanksContainer = document.getElementById('blanksContainer');
+blanks.forEach((b, i) => {
+  const div = document.createElement('div');
+  div.className = 'blank-item';
+  div.id = `blank-${i}`;
+  const parts = b.sentence.split('___');
+  div.innerHTML = `
+    <span class="qnum">${i+1}.</span>${parts[0]}
+    <input type="text" id="blank-input-${i}" autocomplete="off" spellcheck="false">
+    ${parts[1]}
+    <span class="feedback-tag ok">✓ correct</span>
+    <span class="feedback-tag no">✗ try again</span>
+  `;
+  blanksContainer.appendChild(div);
+});
+
+let blankResult = null; // {correct, total}
+let quizResult = null;  // {correct, total}
+
+function checkBlanks(){
+  let correct = 0;
+  blanks.forEach((b, i) => {
+    const input = document.getElementById(`blank-input-${i}`);
+    const item = document.getElementById(`blank-${i}`);
+    const userAnswer = input.value.trim().toLowerCase();
+    item.classList.remove('correct','incorrect');
+    if(userAnswer === b.answer.toLowerCase()){
+      item.classList.add('correct');
+      correct++;
+    } else {
+      item.classList.add('incorrect');
+    }
+  });
+  document.getElementById('blankScore').textContent = `Score: ${correct} / ${blanks.length}`;
+  blankResult = {correct, total: blanks.length};
+  document.getElementById('summaryBlank').textContent = `${correct} / ${blanks.length}`;
+}
+
+// ---------- SECTION 4: MATCHING QUIZ ----------
+function shuffle(arr){ return [...arr].sort(() => Math.random() - 0.5); }
+
+const quizContainer = document.getElementById('quizContainer');
+const quizWords = shuffle(vocab).slice(0, 15); // 15 random questions from the full vocab pool
+
+quizWords.forEach((item, i) => {
+  const distractors = shuffle(vocab.filter(v => v.w !== item.w)).slice(0,3).map(v => v.vn);
+  const options = shuffle([item.vn, ...distractors]);
+
+  const div = document.createElement('div');
+  div.className = 'quiz-item';
+  div.dataset.answer = item.vn;
+  div.innerHTML = `
+    <div class="quiz-q">${i+1}. ${item.w} <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5c7a54;">${item.ipa}</span></div>
+    <div class="quiz-options">
+      ${options.map((opt, j) => `
+        <label class="quiz-option" data-value="${opt}">
+          <input type="radio" name="quiz-${i}" value="${opt}">
+          ${opt}
+        </label>
+      `).join('')}
+    </div>
+  `;
+  quizContainer.appendChild(div);
+});
+
+quizContainer.addEventListener('click', (e) => {
+  const option = e.target.closest('.quiz-option');
+  if(!option) return;
+  const group = option.closest('.quiz-item');
+  group.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected'));
+  option.classList.add('selected');
+});
+
+function checkQuiz(){
+  let correct = 0;
+  document.querySelectorAll('.quiz-item').forEach(item => {
+    const answer = item.dataset.answer;
+    const selected = item.querySelector('.quiz-option.selected');
+    item.querySelectorAll('.quiz-option').forEach(o => {
+      o.classList.remove('right','wrong');
+      if(o.dataset.value === answer) o.classList.add('right');
+    });
+    if(selected && selected.dataset.value === answer){
+      correct++;
+    } else if(selected){
+      selected.classList.add('wrong');
+    }
+  });
+  document.getElementById('quizScore').textContent = `Score: ${correct} / ${quizWords.length}`;
+  quizResult = {correct, total: quizWords.length};
+  document.getElementById('summaryQuiz').textContent = `${correct} / ${quizWords.length}`;
+}
+
+// ---------- SECTION 5: SUBMIT TO GOOGLE SHEET ----------
+// Paste the Web App URL you get after deploying your Apps Script here:
+const GOOGLE_SCRIPT_URL = "PASTE_YOUR_GOOGLE_APPS_SCRIPT_URL_HERE";
+
+async function submitResults(){
+  const statusEl = document.getElementById('submitStatus');
+  const btn = document.getElementById('submitBtn');
+  const name = document.getElementById('userName').value.trim();
+  const className = document.getElementById('userClass').value.trim();
+  const contact = document.getElementById('userContact').value.trim();
+
+  if(!name){
+    statusEl.textContent = "Please enter your name before submitting.";
+    statusEl.className = "submit-status err";
+    return;
+  }
+  if(!blankResult || !quizResult){
+    statusEl.textContent = "Please check both exercises above before submitting.";
+    statusEl.className = "submit-status err";
+    return;
+  }
+  if(GOOGLE_SCRIPT_URL.includes("PASTE_YOUR")){
+    statusEl.textContent = "The teacher hasn't connected this page to a spreadsheet yet.";
+    statusEl.className = "submit-status err";
+    return;
+  }
+
+  btn.disabled = true;
+  statusEl.textContent = "Submitting...";
+  statusEl.className = "submit-status";
+
+  // Combine class/contact into the name field, since the sheet only stores name + score + answers
+  let fullName = name;
+  if(className) fullName += ` | Lớp: ${className}`;
+  if(contact) fullName += ` | LH: ${contact}`;
+
+  const totalCorrect = blankResult.correct + quizResult.correct;
+  const totalQuestions = blankResult.total + quizResult.total;
+  const score = `${totalCorrect}/${totalQuestions}`;
+
+  // Build one readable answer string per question, in order: fill-in-the-blank first, then matching quiz
+  const answers = [];
+  blanks.forEach((b, i) => {
+    const input = document.getElementById(`blank-input-${i}`);
+    const userAnswer = input.value.trim();
+    const isCorrect = userAnswer.toLowerCase() === b.answer.toLowerCase();
+    answers.push(`Q${i+1}: ${userAnswer || "(blank)"} ${isCorrect ? "✓" : "✗"}`);
+  });
+  document.querySelectorAll('.quiz-item').forEach((item, i) => {
+    const answer = item.dataset.answer;
+    const selected = item.querySelector('.quiz-option.selected');
+    const chosenText = selected ? selected.dataset.value : "(no answer)";
+    const isCorrect = selected && selected.dataset.value === answer;
+    answers.push(`Match${i+1}: ${chosenText} ${isCorrect ? "✓" : "✗"}`);
+  });
+
+  const payload = { name: fullName, score, answers };
+
+  try{
+    // Apps Script web apps redirect internally, and that redirect target has no CORS
+    // headers — reading the response with normal fetch() throws even when the row
+    // was saved successfully. no-cors sends the request correctly but makes the
+    // response unreadable, so we treat "no network error" as success.
+    await fetch(GOOGLE_SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: {"Content-Type": "text/plain;charset=utf-8"},
+      body: JSON.stringify(payload)
+    });
+    statusEl.textContent = "Submitted — your results have been recorded.";
+    statusEl.className = "submit-status ok";
+    btn.textContent = "Submitted ✓";
+  } catch(err){
+    statusEl.textContent = "Could not reach the spreadsheet. Check your internet connection and try again.";
+    statusEl.className = "submit-status err";
+    btn.disabled = false;
+  }
+}
+</script>
+
+</body>
+</html>
