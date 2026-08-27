@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IELTS Vocabulary Games — Rethinking the Past</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --teal-dark:#0E3B41;
+    --teal:#155A63;
+    --paper:#F7F5F0;
+    --paper-line:#DAD6C9;
+    --white:#FFFFFF;
+    --coral:#E0714F;
+    --coral-dk:#B6552F;
+    --text-dark:#20272A;
+    --text-muted:#5D6B6D;
+    --good:#2E7D5B;
+    --bad:#B5442E;
+    --gold:#9B6A25;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--paper);color:var(--text-dark);font-family:'Inter',Arial,sans-serif;line-height:1.55;}
+  button,input,select{font:inherit;}
+  button{touch-action:manipulation;}
+
+  header.hero{
+    background:linear-gradient(160deg,var(--teal) 0%,var(--teal-dark) 100%);
+    color:var(--white);padding:58px 24px 50px;position:relative;overflow:hidden;
+  }
+  header.hero::after{
+    content:"";position:absolute;inset:0;
+    background-image:repeating-linear-gradient(90deg,rgba(255,255,255,.03) 0px,rgba(255,255,255,.03) 1px,transparent 1px,transparent 42px);
+    pointer-events:none;
+  }
+  .hero-inner{max-width:1000px;margin:0 auto;position:relative;z-index:1;}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--coral);display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+  .eyebrow::before{content:"";width:26px;height:1px;background:var(--coral);}
+  h1.display{font-family:'Fraunces',Georgia,serif;font-weight:700;font-size:clamp(2rem,4.7vw,3rem);line-height:1.1;margin:0 0 14px;}
+  .hero-sub{max-width:760px;color:#C9DEE0;font-size:1rem;margin:0;}
+  .tags{margin-top:25px;display:flex;gap:10px;flex-wrap:wrap;font-family:'JetBrains Mono',monospace;font-size:11px;}
+  .tags span{border:1px solid rgba(255,255,255,.28);padding:6px 10px;border-radius:3px;color:#DCEEEF;}
+
+  nav.jumpbar{position:sticky;top:0;z-index:20;background:rgba(247,245,240,.96);backdrop-filter:blur(10px);border-bottom:1px solid var(--paper-line);}
+  .jumpbar-inner{max-width:1000px;margin:auto;padding:10px 24px;display:flex;gap:8px;overflow:auto;}
+  .jumpbar a{white-space:nowrap;text-decoration:none;color:var(--teal-dark);font-size:12px;font-family:'JetBrains Mono',monospace;border:1px solid var(--paper-line);background:var(--white);padding:7px 10px;border-radius:3px;}
+  .jumpbar a:hover{border-color:var(--teal);}
+
+  main{max-width:1000px;margin:0 auto;padding:44px 24px 90px;}
+  section{margin-bottom:52px;scroll-margin-top:70px;}
+  .part-tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--white);background:var(--teal);padding:4px 10px;border-radius:2px;margin-bottom:10px;}
+  h2.section-title{font-family:'Fraunces',Georgia,serif;font-size:1.58rem;line-height:1.25;margin:0 0 7px;color:var(--teal-dark);}
+  p.instructions{color:var(--text-muted);font-size:.93rem;margin:0 0 20px;max-width:760px;}
+  p.instructions b{color:var(--text-dark);}
+
+  .level-legend{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0 0;}
+  .level-pill{font-family:'JetBrains Mono',monospace;font-size:10.5px;padding:4px 8px;border-radius:999px;border:1px solid var(--paper-line);background:var(--white);}
+  .level-pill[data-level="B1"]{color:#356B49;}
+  .level-pill[data-level="B2"]{color:#3D5E7A;}
+  .level-pill[data-level="C1"]{color:#825A27;}
+  .level-pill[data-level="C2"]{color:#743F58;}
+
+  .study-toolbar,.controls{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:16px 0 0;}
+  button.primary,button.secondary,button.mini{
+    border:none;border-radius:3px;cursor:pointer;transition:transform .1s ease,background .18s ease,opacity .18s ease;
+    font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.04em;
+  }
+  button.primary{background:var(--teal-dark);color:var(--white);padding:11px 18px;font-size:11.5px;}
+  button.primary:hover{background:var(--teal);}
+  button.secondary{background:var(--white);color:var(--teal-dark);border:1px solid var(--paper-line);padding:10px 16px;font-size:11.5px;}
+  button.secondary:hover{border-color:var(--teal);}
+  button.mini{background:transparent;color:var(--coral-dk);border:1px solid var(--paper-line);padding:6px 9px;font-size:10px;}
+  button:active{transform:translateY(1px);}
+  button:disabled{opacity:.55;cursor:default;}
+
+  .filter-row{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 16px;}
+  .filter-btn{border:1px solid var(--paper-line);background:var(--white);color:var(--text-muted);padding:7px 11px;border-radius:999px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:10.5px;}
+  .filter-btn.active{background:var(--teal-dark);border-color:var(--teal-dark);color:var(--white);}
+
+  .vocab-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:13px;}
+  .vocab-card{background:var(--white);border:1px solid var(--paper-line);border-radius:5px;padding:16px 17px;position:relative;min-height:166px;}
+  .vocab-card.learned{border-color:var(--good);box-shadow:inset 0 0 0 1px rgba(46,125,91,.08);}
+  .vocab-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:8px;}
+  .word{font-family:'Fraunces',Georgia,serif;font-size:1.25rem;color:var(--teal-dark);font-weight:700;}
+  .pos{font-size:11px;color:var(--text-muted);font-style:italic;margin-left:5px;}
+  .cefr{font-family:'JetBrains Mono',monospace;font-size:10px;border:1px solid var(--paper-line);padding:3px 7px;border-radius:999px;white-space:nowrap;}
+  .meaning{font-size:.92rem;margin:5px 0 8px;}
+  .vn{color:var(--coral-dk);font-size:.88rem;font-weight:600;margin-bottom:8px;}
+  .collocation{font-size:.82rem;color:var(--text-muted);border-top:1px dashed var(--paper-line);padding-top:8px;}
+  .learn-check{position:absolute;right:13px;bottom:11px;display:flex;align-items:center;gap:5px;font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--text-muted);}
+  .learn-check input{accent-color:var(--good);}
+
+  .flash-wrap{display:grid;grid-template-columns:minmax(0,1fr) 220px;gap:18px;align-items:stretch;}
+  .flashcard{background:var(--white);border:1px solid var(--paper-line);border-radius:6px;min-height:300px;padding:30px;display:flex;flex-direction:column;justify-content:center;position:relative;cursor:pointer;user-select:none;}
+  .flashcard .flash-level{position:absolute;top:16px;right:16px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--coral-dk);}
+  .flash-front{text-align:center;}
+  .flash-word{font-family:'Fraunces',Georgia,serif;font-size:clamp(2rem,5vw,3rem);line-height:1.1;color:var(--teal-dark);font-weight:700;}
+  .flash-pos{color:var(--text-muted);margin-top:8px;font-style:italic;}
+  .flash-hint{font-size:12px;color:#8A887D;margin-top:25px;font-family:'JetBrains Mono',monospace;}
+  .flash-back{display:none;}
+  .flashcard.flipped .flash-front{display:none;}
+  .flashcard.flipped .flash-back{display:block;}
+  .flash-back .big-meaning{font-size:1.1rem;color:var(--teal-dark);font-weight:600;margin-bottom:8px;}
+  .flash-back .example{background:#FBFAF6;border-left:3px solid var(--coral);padding:10px 12px;margin-top:14px;font-size:.91rem;}
+  .flash-side{background:var(--teal-dark);color:var(--white);border-radius:6px;padding:22px;display:flex;flex-direction:column;justify-content:space-between;}
+  .flash-side .label{font-family:'JetBrains Mono',monospace;text-transform:uppercase;color:var(--coral);font-size:10px;letter-spacing:.08em;}
+  .flash-count{font-family:'Fraunces',Georgia,serif;font-size:2.1rem;margin:5px 0 18px;}
+  .flash-side p{font-size:.86rem;color:#C9DEE0;}
+
+  .q-card{background:var(--white);border:1px solid var(--paper-line);border-radius:5px;padding:20px 22px;margin-bottom:17px;}
+  .q-title{display:flex;align-items:flex-start;font-weight:600;font-size:1rem;margin-bottom:13px;color:var(--teal-dark);}
+  .q-num-badge{display:inline-flex;align-items:center;justify-content:center;min-width:29px;height:29px;padding:0 7px;background:var(--teal-dark);color:var(--white);font-family:'JetBrains Mono',monospace;font-size:11px;border-radius:50%;margin-right:10px;flex-shrink:0;}
+  .opt{display:flex;align-items:flex-start;gap:9px;padding:9px 10px;border-radius:4px;border:1px solid var(--paper-line);margin-bottom:7px;cursor:pointer;transition:background .15s;}
+  .opt:hover{background:#FBFAF6;}
+  .opt input{margin-top:4px;accent-color:var(--teal);}
+  .opt-letter{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--coral-dk);margin-right:4px;}
+  .opt.right{border-color:var(--good);background:rgba(46,125,91,.08);}
+  .opt.wrong{border-color:var(--bad);background:rgba(181,68,46,.08);}
+  .opt.missed{border-color:var(--good);background:rgba(46,125,91,.03);border-style:dashed;}
+
+  table.match-table{width:100%;border-collapse:collapse;}
+  table.match-table td{padding:10px 8px;border-bottom:1px solid var(--paper-line);font-size:.92rem;vertical-align:middle;}
+  table.match-table td.num{font-family:'JetBrains Mono',monospace;color:var(--coral-dk);width:35px;}
+  table.match-table td.prompt{font-weight:700;width:185px;color:var(--teal-dark);}
+  select.match-select{width:100%;padding:9px 10px;border-radius:3px;border:1px solid var(--paper-line);background:var(--paper);color:var(--text-dark);}
+  select.match-select.right{border-color:var(--good);background:rgba(46,125,91,.08);}
+  select.match-select.wrong{border-color:var(--bad);background:rgba(181,68,46,.08);}
+
+  .blank-input{min-width:180px;max-width:100%;border:none;border-bottom:2px solid var(--teal);background:transparent;padding:3px 6px;outline:none;color:var(--teal-dark);font-weight:600;}
+  .blank-input.correct{border-bottom-color:var(--good);background:rgba(46,125,91,.08);}
+  .blank-input.incorrect{border-bottom-color:var(--bad);background:rgba(181,68,46,.08);}
+  .answer-note{font-size:.79rem;color:var(--good);margin-top:7px;display:none;}
+  .q-card.checked .answer-note{display:block;}
+
+  .score-readout{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--teal-dark);min-height:18px;}
+  .round-note{font-size:11px;color:var(--text-muted);font-family:'JetBrains Mono',monospace;}
+
+  .summary-card{background:var(--teal-dark);color:var(--white);border-radius:7px;padding:28px;}
+  .summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:15px;margin:18px 0;}
+  .summary-grid .metric{border:1px solid rgba(255,255,255,.12);padding:13px;border-radius:4px;}
+  .summary-grid .label{display:block;font-family:'JetBrains Mono',monospace;font-size:9.5px;text-transform:uppercase;color:var(--coral);letter-spacing:.05em;margin-bottom:4px;}
+  .summary-grid .value{font-size:1.35rem;font-weight:700;}
+  .grand-total{font-family:'Fraunces',Georgia,serif;font-size:1.5rem;color:#EAF6F2;margin:13px 0 4px;}
+  .performance{color:#C9DEE0;font-size:.92rem;}
+  .best-score{font-family:'JetBrains Mono',monospace;color:#F6D6CB;font-size:11px;margin-top:10px;}
+
+  .teacher-note{background:#FFFDF7;border:1px solid #E7DFC9;border-left:4px solid var(--gold);border-radius:4px;padding:16px 18px;font-size:.88rem;color:#5E5545;}
+  footer{text-align:center;padding:26px 24px 40px;color:#8B8878;font-size:11px;font-family:'JetBrains Mono',monospace;}
+
+  @media(max-width:760px){
+    header.hero{padding:44px 20px 38px;}
+    main{padding:36px 18px 70px;}
+    .jumpbar-inner{padding:9px 18px;}
+    .flash-wrap{grid-template-columns:1fr;}
+    .flash-side{min-height:150px;}
+    .q-card{padding:17px;}
+    table.match-table td{display:block;width:100%!important;border-bottom:none;padding:5px 0;}
+    table.match-table tr{display:block;border-bottom:1px solid var(--paper-line);padding:10px 0;}
+    .blank-input{width:100%;margin-top:8px;}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">IELTS Vocabulary Practice</div>
+    <h1 class="display">Rethinking the Past</h1>
+    <p class="hero-sub">Learn high-value vocabulary from the reading, then lock it into memory through self-marking games. CEFR labels are approximate learning levels, designed for IELTS study rather than official word certification.</p>
+    <div class="tags">
+      <span>34 TARGET ITEMS</span>
+      <span>B1 → C2</span>
+      <span>5 LEARNING GAMES</span>
+      <span>AUTO-GRADED</span>
+    </div>
+  </div>
+</header>
+
+<nav class="jumpbar" aria-label="Practice sections">
+  <div class="jumpbar-inner">
+    <a href="#bank">Word Bank</a>
+    <a href="#flashcards">Flashcards</a>
+    <a href="#matching">Match</a>
+    <a href="#context">Context</a>
+    <a href="#gaps">Gap Fill</a>
+    <a href="#collocations">Collocations</a>
+    <a href="#summary">Score</a>
+  </div>
+</nav>
+
+<main>
+  <section id="bank">
+    <span class="part-tag">Study First</span>
+    <h2 class="section-title">IELTS Vocabulary Bank</h2>
+    <p class="instructions">These words and phrases are taken from or directly motivated by <b>Rethinking the Past</b>. Focus on meaning, Vietnamese gloss, part of speech, and one useful IELTS-style collocation.</p>
+    <div class="level-legend">
+      <span class="level-pill" data-level="B1">B1 — Core</span>
+      <span class="level-pill" data-level="B2">B2 — Upper-intermediate</span>
+      <span class="level-pill" data-level="C1">C1 — Advanced</span>
+      <span class="level-pill" data-level="C2">C2 — Proficient</span>
+    </div>
+    <div class="filter-row" id="filterRow"></div>
+    <div class="vocab-grid" id="vocabGrid"></div>
+  </section>
+
+  <section id="flashcards">
+    <span class="part-tag">Game 1</span>
+    <h2 class="section-title">Flashcard Recall</h2>
+    <p class="instructions">Try to recall the meaning before clicking the card. Mark a word as learned only when you can explain it without looking.</p>
+    <div class="flash-wrap">
+      <div class="flashcard" id="flashcard" tabindex="0" role="button" aria-label="Vocabulary flashcard. Click to flip."></div>
+      <aside class="flash-side">
+        <div>
+          <span class="label">Card progress</span>
+          <div class="flash-count" id="flashCount">1 / 30</div>
+          <p id="flashProgressText">Build active recall: meaning → Vietnamese → example.</p>
+        </div>
+        <div class="study-toolbar">
+          <button class="secondary" onclick="prevCard()">← Prev</button>
+          <button class="secondary" onclick="nextCard()">Next →</button>
+          <button class="primary" id="flashLearnBtn" onclick="toggleCurrentLearned(event)">Mark learned</button>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section id="matching">
+    <span class="part-tag">Game 2</span>
+    <h2 class="section-title">Match the Meaning</h2>
+    <p class="instructions">Match each word with the correct Vietnamese meaning. A new round gives you a different set of words.</p>
+    <div class="q-card">
+      <table class="match-table" id="matchTable"></table>
+    </div>
+    <div class="controls">
+      <button class="primary" onclick="checkMatching()">Check Match</button>
+      <button class="secondary" onclick="newMatchingRound()">New Round</button>
+      <span class="score-readout" id="matchingScore"></span>
+    </div>
+  </section>
+
+  <section id="context">
+    <span class="part-tag">Game 3</span>
+    <h2 class="section-title">Choose by Context</h2>
+    <p class="instructions">Choose the word or phrase that best completes each IELTS-style sentence. Pay attention to meaning and register.</p>
+    <div id="contextQuestions"></div>
+    <div class="controls">
+      <button class="primary" onclick="checkContext()">Check Context</button>
+      <button class="secondary" onclick="buildContextGame()">New Round</button>
+      <span class="score-readout" id="contextScore"></span>
+    </div>
+  </section>
+
+  <section id="gaps">
+    <span class="part-tag">Game 4</span>
+    <h2 class="section-title">Active Recall — Gap Fill</h2>
+    <p class="instructions">Type the missing vocabulary item. Spelling matters, but capitalization does not. Hyphens are ignored.</p>
+    <div id="gapQuestions"></div>
+    <div class="controls">
+      <button class="primary" onclick="checkGaps()">Check Gaps</button>
+      <button class="secondary" onclick="buildGapGame()">New Round</button>
+      <span class="score-readout" id="gapScore"></span>
+    </div>
+  </section>
+
+  <section id="collocations">
+    <span class="part-tag">Game 5</span>
+    <h2 class="section-title">IELTS Collocations & Word Use</h2>
+    <p class="instructions">Choose the most natural academic collocation or form. This is the step that helps move vocabulary from recognition into Writing and Speaking.</p>
+    <div id="collocationQuestions"></div>
+    <div class="controls">
+      <button class="primary" onclick="checkCollocations()">Check Collocations</button>
+      <button class="secondary" onclick="buildCollocationGame()">New Round</button>
+      <span class="score-readout" id="collocationScore"></span>
+    </div>
+  </section>
+
+  <section id="summary">
+    <div class="summary-card">
+      <span class="part-tag" style="background:var(--coral-dk);">Progress</span>
+      <h2 class="section-title" style="color:white;margin-top:6px;">Your Vocabulary Score</h2>
+      <div class="summary-grid">
+        <div class="metric"><span class="label">Learned words</span><span class="value" id="learnedSummary">0 / 30</span></div>
+        <div class="metric"><span class="label">Matching</span><span class="value" id="sumMatching">— / 8</span></div>
+        <div class="metric"><span class="label">Context</span><span class="value" id="sumContext">— / 8</span></div>
+        <div class="metric"><span class="label">Gap Fill</span><span class="value" id="sumGaps">— / 7</span></div>
+        <div class="metric"><span class="label">Collocation</span><span class="value" id="sumCollocations">— / 7</span></div>
+      </div>
+      <div class="grand-total" id="grandTotal">Complete all four scored games to see your total out of 30.</div>
+      <div class="performance" id="performanceText">Your best score is saved on this device.</div>
+      <div class="best-score" id="bestScoreText">BEST: — / 30</div>
+      <div class="controls">
+        <button class="primary" onclick="checkAll()">Check Everything</button>
+        <button class="secondary" onclick="resetProgress()" style="color:white;background:transparent;border-color:rgba(255,255,255,.3);">Reset Progress</button>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="teacher-note"><b>Teaching note:</b> CEFR labels here are practical estimates for lesson design. Some items can shift by level depending on meaning and usage. For IELTS, the key goal is not to memorize a label, but to understand the word accurately and use it naturally in context.</div>
+  </section>
+</main>
+
+<footer>IELTS VOCABULARY PRACTICE — RETHINKING THE PAST · SELF-MARKING WORKSHEET</footer>
+
+<script>
+// ================================================================
+// VOCABULARY DATA
+// ================================================================
+const vocab = [
+  {word:"ancient",pos:"adj.",level:"B1",meaning:"belonging to a very distant period in history",vn:"cổ xưa, thời cổ đại",collocation:"ancient societies / ancient remains",example:"Ancient societies may have organised work in ways that differ sharply from modern assumptions."},
+  {word:"behaviour",pos:"n.",level:"B1",meaning:"the way a person, group, or species acts",vn:"hành vi, cách cư xử",collocation:"human behaviour / complex behaviour",example:"Researchers use archaeological evidence to infer patterns of human behaviour."},
+  {word:"society",pos:"n.",level:"B1",meaning:"a community of people living together under shared systems or customs",vn:"xã hội, cộng đồng",collocation:"modern society / prehistoric society",example:"Technology can transform how people participate in society."},
+  {word:"role",pos:"n.",level:"B1",meaning:"the function or position that someone or something has",vn:"vai trò",collocation:"gender roles / play a crucial role",example:"Education plays a crucial role in reducing long-term inequality."},
+
+  {word:"crucial",pos:"adj.",level:"B2",meaning:"extremely important because it affects the result",vn:"then chốt, cực kỳ quan trọng",collocation:"crucial factor / crucial evidence",example:"Reliable data is crucial when governments design public policy."},
+  {word:"supposedly",pos:"adv.",level:"B2",meaning:"according to what people claim or believe, although it may not be true",vn:"được cho là, theo lời đồn/quan niệm",collocation:"supposedly advanced / supposedly effective",example:"A supposedly effective solution may fail when it is applied on a large scale."},
+  {word:"trace back",pos:"phr. v.",level:"B2",meaning:"to discover that something began or existed at an earlier time",vn:"truy nguyên, lần ngược về",collocation:"trace sth back to its origins",example:"Many current social practices can be traced back to earlier historical periods."},
+  {word:"extreme",pos:"adj.",level:"B2",meaning:"very severe, unusual, or far from normal conditions",vn:"khắc nghiệt, cực đoan",collocation:"extreme conditions / extreme environments",example:"Infrastructure must be designed to operate under extreme weather conditions."},
+  {word:"widespread",pos:"adj.",level:"B2",meaning:"existing or happening over a large area or among many people",vn:"phổ biến, lan rộng",collocation:"widespread belief / widespread use",example:"There is widespread concern about the impact of misinformation online."},
+  {word:"notion",pos:"n.",level:"B2",meaning:"an idea, belief, or understanding of something",vn:"quan niệm, ý niệm",collocation:"challenge the notion / traditional notion",example:"Recent evidence challenges the notion that productivity always rises with longer working hours."},
+  {word:"contemporary",pos:"adj.",level:"B2",meaning:"belonging to the present time or to the same period as something else",vn:"đương đại; cùng thời",collocation:"contemporary society / a contemporary of",example:"Contemporary workplaces increasingly require digital skills."},
+  {word:"incapable",pos:"adj.",level:"B2",meaning:"not able to do something",vn:"không có khả năng",collocation:"incapable of doing sth",example:"A system that cannot adapt may be incapable of meeting future demand."},
+  {word:"inadequate",pos:"adj.",level:"B2",meaning:"not enough or not good enough for a particular purpose",vn:"không đầy đủ, không thỏa đáng",collocation:"inadequate evidence / inadequate funding",example:"Inadequate public transport can restrict access to employment."},
+  {word:"authority",pos:"n.",level:"B2",meaning:"the power or right to control, decide, or lead",vn:"quyền lực; thẩm quyền",collocation:"positions of authority / local authorities",example:"Women have historically been underrepresented in positions of authority."},
+  {word:"compile",pos:"v.",level:"B2",meaning:"to collect information from different sources and arrange it together",vn:"tổng hợp, biên soạn",collocation:"compile data / compile a report",example:"Researchers compiled data from dozens of studies before drawing a conclusion."},
+
+  {word:"discern",pos:"v.",level:"C1",meaning:"to notice, understand, or distinguish something that is not obvious",vn:"nhận ra, phân biệt, nhận diện",collocation:"discern a pattern / discern the difference",example:"It can be difficult to discern a clear trend when the available evidence is limited."},
+  {word:"impose",pos:"v.",level:"C1",meaning:"to force a rule, belief, or system to be accepted",vn:"áp đặt",collocation:"impose restrictions / impose values on",example:"Governments may impose restrictions when public safety is at risk."},
+  {word:"patriarchal",pos:"adj.",level:"C1",meaning:"relating to a social system in which men hold most power",vn:"mang tính phụ quyền",collocation:"patriarchal society / patriarchal values",example:"Some historical interpretations were shaped by patriarchal assumptions."},
+  {word:"upend",pos:"v.",level:"C1",meaning:"to overturn or completely change an established idea or situation",vn:"đảo lộn, làm thay đổi hoàn toàn",collocation:"upend an assumption / upend the old view",example:"Artificial intelligence may upend traditional models of assessment."},
+  {word:"contentious",pos:"adj.",level:"C1",meaning:"likely to cause disagreement or argument",vn:"gây tranh cãi",collocation:"contentious issue / contentious claim",example:"Whether governments should regulate social media remains a contentious issue."},
+  {word:"rudimentary",pos:"adj.",level:"C1",meaning:"very basic and not yet developed in a sophisticated way",vn:"sơ khai, thô sơ",collocation:"rudimentary system / rudimentary skills",example:"Some communities have only rudimentary access to digital infrastructure."},
+  {word:"heighten",pos:"v.",level:"C1",meaning:"to make a feeling, risk, or effect stronger",vn:"làm gia tăng, làm trầm trọng hơn",collocation:"heighten concerns / heighten the risk",example:"Economic uncertainty can heighten public anxiety about job security."},
+  {word:"fixated on",pos:"adj. phr.",level:"C1",meaning:"giving too much attention to one particular thing",vn:"quá tập trung, ám ảnh vào",collocation:"be fixated on a single measure",example:"Policy makers should not become fixated on GDP as the only measure of progress."},
+  {word:"inherently",pos:"adv.",level:"C1",meaning:"in a way that is a natural or essential part of something",vn:"vốn dĩ, về bản chất",collocation:"inherently difficult / inherently unequal",example:"Online learning is not inherently less effective than classroom instruction."},
+  {word:"incremental",pos:"adj.",level:"C1",meaning:"happening gradually through a series of small changes",vn:"từng bước, gia tăng dần",collocation:"incremental change / incremental improvement",example:"Sustainable reform often depends on incremental improvements rather than sudden transformation."},
+  {word:"tipping point",pos:"n. phr.",level:"C1",meaning:"the stage at which a small change causes a major or irreversible effect",vn:"điểm bùng phát, ngưỡng bước ngoặt",collocation:"reach a tipping point",example:"A transport network may reach a tipping point when congestion becomes unmanageable."},
+  {word:"undergo",pos:"v.",level:"C1",meaning:"to experience a process of change or development",vn:"trải qua",collocation:"undergo rapid change / undergo reform",example:"Many industries are undergoing rapid technological change."},
+  {word:"preconception",pos:"n.",level:"C1",meaning:"an opinion formed before having enough evidence",vn:"định kiến, quan niệm có sẵn",collocation:"challenge a preconception / preconceived idea",example:"Good research requires us to question our preconceptions before interpreting the data."},
+  {word:"dramatic",pos:"adj.",level:"C1",meaning:"very great, sudden, or noticeable",vn:"đáng kể, mạnh mẽ, đột ngột",collocation:"dramatic increase / dramatic change",example:"The city experienced a dramatic increase in housing costs over the decade."},
+  {word:"inevitable",pos:"adj.",level:"C1",meaning:"certain to happen and impossible to avoid",vn:"không thể tránh khỏi",collocation:"seem inevitable / inevitable consequence",example:"Technological unemployment is not an inevitable consequence of automation."},
+
+  {word:"truism",pos:"n.",level:"C2",meaning:"a statement that is obviously true and therefore says little that is new",vn:"điều hiển nhiên, chân lý sáo",collocation:"it is a truism that…",example:"It is a truism that education matters, but the quality of education is far more difficult to measure."},
+  {word:"dogma",pos:"n.",level:"C2",meaning:"a belief accepted as unquestionably true, often without enough evidence",vn:"giáo điều, quan điểm cứng nhắc",collocation:"challenge established dogma",example:"Scientific progress often depends on challenging established dogma."},
+  {word:"unpick",pos:"v.",level:"C2",meaning:"to analyse a complicated idea carefully in order to understand or separate its parts",vn:"gỡ rối, phân tích kỹ",collocation:"unpick an argument / unpick assumptions",example:"Researchers must unpick the assumptions hidden inside apparently neutral statistics."},
+  {word:"runaway",pos:"adj.",level:"C2",meaning:"developing rapidly and becoming difficult to control",vn:"mất kiểm soát, tăng nhanh khó kiểm soát",collocation:"runaway growth / runaway change",example:"Without regulation, runaway price growth can make housing unaffordable."}
+];
+
+const contextBank = [
+  {q:"When evidence from several countries points in different directions, it may be difficult to ___ a consistent pattern.",answer:"discern",options:["discern","impose","compile","undergo"]},
+  {q:"The latest findings may ___ the long-held assumption that only large cities benefit from digital innovation.",answer:"upend",options:["heighten","upend","trace back","undergo"]},
+  {q:"A policy can be popular but still be ___ if it does not provide enough support for low-income families.",answer:"inadequate",options:["inevitable","rudimentary","inadequate","contemporary"]},
+  {q:"Researchers should avoid becoming ___ one indicator, because social progress is multidimensional.",answer:"fixated on",options:["fixated on","incapable of","traced back to","in line with"]},
+  {q:"The idea that economic growth always improves well-being is increasingly ___ among researchers.",answer:"contentious",options:["ancient","contentious","widespread","incremental"]},
+  {q:"The origins of many cultural practices can be ___ earlier historical traditions.",answer:"traced back to",options:["traced back to","heightened by","compiled from","unpicked by"]},
+  {q:"Cities often ___ major changes when their populations grow rapidly.",answer:"undergo",options:["impose","undergo","discern","upend"]},
+  {q:"Policy makers may unintentionally ___ their own values on communities with different traditions.",answer:"impose",options:["compile","impose","heighten","discern"]},
+  {q:"Small improvements made every year can produce substantial long-term results through ___ change.",answer:"incremental",options:["dramatic","incremental","patriarchal","runaway"]},
+  {q:"The spread of misinformation can ___ distrust in public institutions.",answer:"heighten",options:["heighten","unpick","trace back","compile"]},
+  {q:"A sharp rise in temperature could push an ecosystem beyond a critical ___.",answer:"tipping point",options:["truism","role","tipping point","authority"]},
+  {q:"The belief that leadership is naturally male reflects a ___ view of social organisation.",answer:"patriarchal",options:["contemporary","patriarchal","rudimentary","incremental"]},
+  {q:"A conclusion based on very limited evidence may reflect a researcher’s existing ___.",answer:"preconception",options:["authority","preconception","notion","behaviour"]},
+  {q:"It is not ___ true that more technology will always lead to better learning outcomes.",answer:"inherently",options:["supposedly","inherently","dramatically","widely"]},
+  {q:"The research team ___ data from more than forty independent studies.",answer:"compiled",options:["upended","compiled","imposed","discerned"]},
+  {q:"Many experts now challenge the ___ that longer working hours necessarily mean higher productivity.",answer:"notion",options:["notion","dogma","authority","society"]}
+];
+
+const gapBank = [
+  {sentence:"Public attitudes can ______ major changes when new evidence becomes available.",answer:"undergo",hint:"v. = experience a process of change"},
+  {sentence:"A policy based on weak data may be completely ______ for the problem it is meant to solve.",answer:"inadequate",hint:"adj. = not enough / not good enough"},
+  {sentence:"Researchers should ______ complex social assumptions rather than accept them at face value.",answer:"unpick",hint:"v. = analyse carefully to separate the parts"},
+  {sentence:"There is now ______ recognition of the benefits of early education across many countries.",answer:"widespread",hint:"adj. = existing among many people or places"},
+  {sentence:"Scientific discoveries sometimes ______ established beliefs about human history.",answer:"upend",hint:"v. = overturn or radically change"},
+  {sentence:"There is a growing ______ that remote work can improve flexibility without reducing productivity.",answer:"notion",hint:"n. = idea or belief"},
+  {sentence:"Rapid urban growth can ______ pressure on housing and transport systems.",answer:"heighten",hint:"v. = make stronger or more serious"},
+  {sentence:"Many current institutions can be ______ to decisions made decades ago.",answer:"traced back",hint:"past participle of trace back = connected to an earlier origin"},
+  {sentence:"Social inequality is not necessarily ______; it can be shaped by policy choices.",answer:"inevitable",hint:"adj. = impossible to avoid"},
+  {sentence:"The study attempts to ______ a pattern from a large amount of conflicting evidence.",answer:"discern",hint:"v. = notice or distinguish something unclear"},
+  {sentence:"A ______ system may work at a basic level but lack the sophistication needed at scale.",answer:"rudimentary",hint:"adj. = basic and not fully developed"},
+  {sentence:"The debate became more ______ after new data contradicted earlier claims.",answer:"contentious",hint:"adj. = likely to cause disagreement"}
+];
+
+const collocationBank = [
+  {q:"Which is the most natural academic collocation?",answer:"crucial evidence",options:["crucial evidence","crucial weather","crucial noise","crucial distance"]},
+  {q:"Which phrase is most natural?",answer:"challenge established dogma",options:["challenge established dogma","repair established dogma","borrow established dogma","deliver established dogma"]},
+  {q:"Complete the phrase: reach a ___.",answer:"tipping point",options:["tipping point","dramatic role","social behaviour","truism point"]},
+  {q:"Which phrase best fits formal IELTS writing?",answer:"positions of authority",options:["places of commandness","positions of authority","authority seats","powerful positionship"]},
+  {q:"Choose the natural phrase: ___ a report from several sources.",answer:"compile",options:["compile","impose","discern","heighten"]},
+  {q:"Which collocation is correct?",answer:"incremental improvement",options:["incremental improvement","incremental argument","incremental authority","incremental evidence"]},
+  {q:"Which phrase is natural?",answer:"impose restrictions",options:["impose restrictions","impose discoveries","impose evidence","impose behaviours"]},
+  {q:"Which phrase is most natural?",answer:"dramatic increase",options:["dramatic increase","dramatic truism","dramatic authority","dramatic ancient"]},
+  {q:"Which phrase is correct?",answer:"runaway growth",options:["runaway growth","runaway evidence","runaway authority","runaway role"]},
+  {q:"Which is the most natural use?",answer:"inherently difficult",options:["inherently difficult","inherently compile","inherently authority","inherently notion"]},
+  {q:"Which phrase best expresses a historical assumption?",answer:"patriarchal values",options:["patriarchal values","patriarchal evidence","patriarchal data","patriarchal increase"]},
+  {q:"Which phrase is correct?",answer:"widespread belief",options:["widespread belief","widespread discern","widespread undergo","widespread truisming"]}
+];
+
+// ================================================================
+// HELPERS + STATE
+// ================================================================
+const $ = id => document.getElementById(id);
+const shuffle = arr => [...arr].sort(() => Math.random() - 0.5);
+const sample = (arr,n) => shuffle(arr).slice(0,n);
+const normalize = s => s.trim().toLowerCase().replace(/[\-–—]/g,' ').replace(/\s+/g,' ');
+const letters = ['A','B','C','D'];
+
+let learned = new Set(JSON.parse(localStorage.getItem('rethinkPastLearned') || '[]'));
+let currentFlash = 0;
+let filteredFlash = [...vocab];
+let matchingRound = [];
+let contextRound = [];
+let gapRound = [];
+let collocationRound = [];
+let scores = {matching:null,context:null,gaps:null,collocations:null};
+
+function persistLearned(){
+  localStorage.setItem('rethinkPastLearned', JSON.stringify([...learned]));
+  updateLearnedSummary();
+}
+function updateLearnedSummary(){
+  $('learnedSummary').textContent = `${learned.size} / ${vocab.length}`;
+}
+
+// ================================================================
+// WORD BANK
+// ================================================================
+function buildFilters(){
+  const row = $('filterRow');
+  const filters = ['ALL','B1','B2','C1','C2'];
+  row.innerHTML = filters.map((f,i)=>`<button class="filter-btn ${i===0?'active':''}" data-filter="${f}">${f}</button>`).join('');
+  row.querySelectorAll('button').forEach(btn=>btn.addEventListener('click',()=>{
+    row.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    renderVocab(btn.dataset.filter);
+  }));
+}
+
+function renderVocab(filter='ALL'){
+  const items = filter==='ALL' ? vocab : vocab.filter(v=>v.level===filter);
+  $('vocabGrid').innerHTML = items.map(v=>`
+    <article class="vocab-card ${learned.has(v.word)?'learned':''}">
+      <div class="vocab-head">
+        <div><span class="word">${v.word}</span><span class="pos">${v.pos}</span></div>
+        <span class="cefr">${v.level}</span>
+      </div>
+      <div class="meaning">${v.meaning}</div>
+      <div class="vn">${v.vn}</div>
+      <div class="collocation"><b>IELTS use:</b> ${v.collocation}</div>
+      <label class="learn-check"><input type="checkbox" ${learned.has(v.word)?'checked':''} onchange="toggleLearned('${v.word.replace(/'/g,"\\'")}',this.checked)"> learned</label>
+    </article>`).join('');
+}
+
+function toggleLearned(word,checked){
+  if(checked) learned.add(word); else learned.delete(word);
+  persistLearned();
+  renderVocab(document.querySelector('.filter-btn.active')?.dataset.filter || 'ALL');
+  renderFlashcard();
+}
+
+// ================================================================
+// FLASHCARDS
+// ================================================================
+function renderFlashcard(){
+  const v = filteredFlash[currentFlash];
+  if(!v) return;
+  $('flashcard').classList.remove('flipped');
+  $('flashcard').innerHTML = `
+    <span class="flash-level">${v.level}</span>
+    <div class="flash-front">
+      <div class="flash-word">${v.word}</div>
+      <div class="flash-pos">${v.pos}</div>
+      <div class="flash-hint">CLICK TO REVEAL MEANING</div>
+    </div>
+    <div class="flash-back">
+      <div class="big-meaning">${v.meaning}</div>
+      <div class="vn">${v.vn}</div>
+      <div class="collocation"><b>Collocation:</b> ${v.collocation}</div>
+      <div class="example"><b>IELTS example:</b> ${v.example}</div>
+      <div class="flash-hint">CLICK AGAIN TO RETURN</div>
+    </div>`;
+  $('flashCount').textContent = `${currentFlash+1} / ${filteredFlash.length}`;
+  $('flashLearnBtn').textContent = learned.has(v.word) ? '✓ Learned' : 'Mark learned';
+  $('flashProgressText').textContent = `${learned.size} of ${vocab.length} items marked as learned.`;
+}
+function nextCard(){currentFlash=(currentFlash+1)%filteredFlash.length;renderFlashcard();}
+function prevCard(){currentFlash=(currentFlash-1+filteredFlash.length)%filteredFlash.length;renderFlashcard();}
+function toggleCurrentLearned(event){
+  event.stopPropagation();
+  const v=filteredFlash[currentFlash];
+  if(learned.has(v.word)) learned.delete(v.word); else learned.add(v.word);
+  persistLearned();
+  renderVocab(document.querySelector('.filter-btn.active')?.dataset.filter || 'ALL');
+  renderFlashcard();
+}
+$('flashcard').addEventListener('click',()=> $('flashcard').classList.toggle('flipped'));
+$('flashcard').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();$('flashcard').classList.toggle('flipped');}});
+
+// ================================================================
+// MATCHING
+// ================================================================
+function newMatchingRound(){
+  matchingRound = sample(vocab,8);
+  const meanings = shuffle(matchingRound.map(v=>({word:v.word,vn:v.vn})));
+  $('matchTable').innerHTML = matchingRound.map((v,i)=>`
+    <tr>
+      <td class="num">${i+1}</td>
+      <td class="prompt">${v.word} <span class="pos">${v.pos}</span></td>
+      <td><select class="match-select" id="match-${i}" data-answer="${v.vn}">
+        <option value="">-- chọn nghĩa tiếng Việt --</option>
+        ${meanings.map(m=>`<option value="${m.vn}">${m.vn}</option>`).join('')}
+      </select></td>
+    </tr>`).join('');
+  $('matchingScore').textContent=''; scores.matching=null; updateSummary();
+}
+function checkMatching(){
+  let score=0;
+  matchingRound.forEach((v,i)=>{
+    const sel=$(`match-${i}`); sel.classList.remove('right','wrong');
+    if(sel.value===v.vn){sel.classList.add('right');score++;}
+    else if(sel.value){sel.classList.add('wrong');}
+  });
+  scores.matching=score; $('matchingScore').textContent=`Score: ${score} / 8`; updateSummary();
+}
+
+// ================================================================
+// CONTEXT MCQ
+// ================================================================
+function buildContextGame(){
+  contextRound = sample(contextBank,8);
+  $('contextQuestions').innerHTML = contextRound.map((item,i)=>`
+    <div class="q-card" id="context-card-${i}">
+      <div class="q-title"><span class="q-num-badge">${i+1}</span>${item.q}</div>
+      <div>
+        ${shuffle(item.options).map((opt,j)=>`
+          <label class="opt" data-value="${opt}">
+            <input type="radio" name="context-${i}" value="${opt}">
+            <span><span class="opt-letter">${letters[j]}</span>${opt}</span>
+          </label>`).join('')}
+      </div>
+      <div class="answer-note">Answer: <b>${item.answer}</b></div>
+    </div>`).join('');
+  $('contextScore').textContent=''; scores.context=null; updateSummary();
+}
+function checkContext(){
+  let score=0;
+  contextRound.forEach((item,i)=>{
+    const card=$(`context-card-${i}`); card.classList.add('checked');
+    const selected=card.querySelector('input:checked')?.value;
+    card.querySelectorAll('.opt').forEach(opt=>{
+      opt.classList.remove('right','wrong','missed');
+      const val=opt.dataset.value;
+      if(val===item.answer && selected===item.answer) opt.classList.add('right');
+      else if(val===selected && selected!==item.answer) opt.classList.add('wrong');
+      else if(val===item.answer && selected!==item.answer) opt.classList.add('missed');
+    });
+    if(selected===item.answer) score++;
+  });
+  scores.context=score; $('contextScore').textContent=`Score: ${score} / 8`; updateSummary();
+}
+
+// ================================================================
+// GAP FILL
+// ================================================================
+function buildGapGame(){
+  gapRound = sample(gapBank,7);
+  $('gapQuestions').innerHTML = gapRound.map((item,i)=>`
+    <div class="q-card" id="gap-card-${i}">
+      <div class="q-title"><span class="q-num-badge">${i+1}</span><span>${item.sentence.replace('______',`<input class="blank-input" id="gap-${i}" autocomplete="off" spellcheck="false" aria-label="Answer ${i+1}">`)}</span></div>
+      <div class="round-note">Hint: ${item.hint}</div>
+      <div class="answer-note">Answer: <b>${item.answer}</b></div>
+    </div>`).join('');
+  $('gapScore').textContent=''; scores.gaps=null; updateSummary();
+}
+function checkGaps(){
+  let score=0;
+  gapRound.forEach((item,i)=>{
+    const input=$(`gap-${i}`); const card=$(`gap-card-${i}`); card.classList.add('checked');
+    input.classList.remove('correct','incorrect');
+    if(normalize(input.value)===normalize(item.answer)){input.classList.add('correct');score++;}
+    else input.classList.add('incorrect');
+  });
+  scores.gaps=score; $('gapScore').textContent=`Score: ${score} / 7`; updateSummary();
+}
+
+// ================================================================
+// COLLOCATIONS
+// ================================================================
+function buildCollocationGame(){
+  collocationRound = sample(collocationBank,7);
+  $('collocationQuestions').innerHTML = collocationRound.map((item,i)=>`
+    <div class="q-card" id="coll-card-${i}">
+      <div class="q-title"><span class="q-num-badge">${i+1}</span>${item.q}</div>
+      ${shuffle(item.options).map((opt,j)=>`
+        <label class="opt" data-value="${opt}">
+          <input type="radio" name="coll-${i}" value="${opt}">
+          <span><span class="opt-letter">${letters[j]}</span>${opt}</span>
+        </label>`).join('')}
+      <div class="answer-note">Answer: <b>${item.answer}</b></div>
+    </div>`).join('');
+  $('collocationScore').textContent=''; scores.collocations=null; updateSummary();
+}
+function checkCollocations(){
+  let score=0;
+  collocationRound.forEach((item,i)=>{
+    const card=$(`coll-card-${i}`); card.classList.add('checked');
+    const selected=card.querySelector('input:checked')?.value;
+    card.querySelectorAll('.opt').forEach(opt=>{
+      opt.classList.remove('right','wrong','missed');
+      const val=opt.dataset.value;
+      if(val===item.answer && selected===item.answer) opt.classList.add('right');
+      else if(val===selected && selected!==item.answer) opt.classList.add('wrong');
+      else if(val===item.answer && selected!==item.answer) opt.classList.add('missed');
+    });
+    if(selected===item.answer) score++;
+  });
+  scores.collocations=score; $('collocationScore').textContent=`Score: ${score} / 7`; updateSummary();
+}
+
+// ================================================================
+// SUMMARY / RESET
+// ================================================================
+function updateSummary(){
+  $('sumMatching').textContent = scores.matching===null ? '— / 8' : `${scores.matching} / 8`;
+  $('sumContext').textContent = scores.context===null ? '— / 8' : `${scores.context} / 8`;
+  $('sumGaps').textContent = scores.gaps===null ? '— / 7' : `${scores.gaps} / 7`;
+  $('sumCollocations').textContent = scores.collocations===null ? '— / 7' : `${scores.collocations} / 7`;
+  updateLearnedSummary();
+
+  const done = Object.values(scores).every(v=>v!==null);
+  if(done){
+    const total = scores.matching + scores.context + scores.gaps + scores.collocations;
+    $('grandTotal').textContent = `Total: ${total} / 30`;
+    let msg='Keep reviewing the difficult items and try another randomized round.';
+    if(total>=27) msg='Excellent retention. Start using these items actively in Writing and Speaking.';
+    else if(total>=23) msg='Strong result. Review the few weak items, especially collocations.';
+    else if(total>=18) msg='Good foundation. Repeat the gap-fill and context rounds to strengthen recall.';
+    $('performanceText').textContent=msg;
+    const oldBest=Number(localStorage.getItem('rethinkPastBest')||0);
+    const best=Math.max(oldBest,total); localStorage.setItem('rethinkPastBest',best);
+    $('bestScoreText').textContent=`BEST: ${best} / 30`;
+  } else {
+    $('grandTotal').textContent='Complete all four scored games to see your total out of 30.';
+    const best=Number(localStorage.getItem('rethinkPastBest')||0);
+    $('bestScoreText').textContent=best?`BEST: ${best} / 30`:'BEST: — / 30';
+  }
+}
+function checkAll(){checkMatching();checkContext();checkGaps();checkCollocations();document.getElementById('summary').scrollIntoView({behavior:'smooth'});}
+function resetProgress(){
+  learned.clear(); scores={matching:null,context:null,gaps:null,collocations:null};
+  localStorage.removeItem('rethinkPastLearned'); localStorage.removeItem('rethinkPastBest');
+  renderVocab('ALL'); document.querySelectorAll('.filter-btn').forEach((b,i)=>b.classList.toggle('active',i===0));
+  currentFlash=0;renderFlashcard();newMatchingRound();buildContextGame();buildGapGame();buildCollocationGame();updateSummary();
+}
+
+// ================================================================
+// INIT
+// ================================================================
+buildFilters();
+renderVocab();
+renderFlashcard();
+newMatchingRound();
+buildContextGame();
+buildGapGame();
+buildCollocationGame();
+updateSummary();
+</script>
+</body>
+</html>
