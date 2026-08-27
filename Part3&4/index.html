@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IELTS Listening Practice — Part 3 &amp; 4</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --teal-dark:#0E3B41;
+    --teal:#155A63;
+    --paper:#F7F5F0;
+    --paper-line:#DAD6C9;
+    --white:#FFFFFF;
+    --coral:#E0714F;
+    --coral-dk:#B6552F;
+    --text-dark:#20272A;
+    --text-muted:#5D6B6D;
+    --good:#2E7D5B;
+    --bad:#B5442E;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--paper); color:var(--text-dark); font-family:'Inter',sans-serif; line-height:1.55;}
+
+  header.hero{
+    background:linear-gradient(160deg, var(--teal) 0%, var(--teal-dark) 100%);
+    color:var(--white); padding:56px 24px 46px; position:relative; overflow:hidden;
+  }
+  header.hero::after{
+    content:""; position:absolute; inset:0;
+    background-image:repeating-linear-gradient(90deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 42px);
+  }
+  .hero-inner{max-width:960px; margin:0 auto; position:relative;}
+  .eyebrow{font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:0.16em; text-transform:uppercase; color:var(--coral); display:flex; align-items:center; gap:10px; margin-bottom:14px;}
+  .eyebrow::before{content:""; width:26px; height:1px; background:var(--coral);}
+  h1.display{font-family:'Fraunces',serif; font-weight:700; font-size:clamp(1.9rem,4.4vw,2.7rem); margin:0 0 12px;}
+  .hero-sub{max-width:660px; color:#C9DEE0; font-size:0.98rem;}
+  .tags{margin-top:24px; display:flex; gap:12px; flex-wrap:wrap; font-family:'JetBrains Mono',monospace; font-size:11.5px;}
+  .tags span{border:1px solid rgba(255,255,255,0.3); padding:5px 11px; border-radius:2px; color:#DCEEEF;}
+
+  main{max-width:960px; margin:0 auto; padding:48px 24px 90px;}
+  section{margin-bottom:52px;}
+  .part-tag{
+    display:inline-block; font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.1em;
+    text-transform:uppercase; color:var(--white); background:var(--teal); padding:4px 10px; border-radius:2px; margin-bottom:10px;
+  }
+  h2.section-title{font-family:'Fraunces',serif; font-weight:700; font-size:1.5rem; margin:0 0 6px; color:var(--teal-dark);}
+  p.instructions{color:var(--text-muted); font-size:0.92rem; margin:0 0 20px; max-width:700px;}
+  p.instructions b{color:var(--text-dark);}
+
+  .q-card{background:var(--white); border:1px solid var(--paper-line); border-radius:5px; padding:20px 22px; margin-bottom:18px;}
+  .q-num-badge{
+    display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px;
+    background:var(--teal-dark); color:var(--white); font-family:'JetBrains Mono',monospace; font-size:12.5px;
+    border-radius:50%; margin-right:10px; flex-shrink:0;
+  }
+  .q-title{display:flex; align-items:center; font-weight:600; font-size:1rem; margin-bottom:14px; color:var(--teal-dark);}
+
+  .opt-limit-note{font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--coral-dk); margin-bottom:10px;}
+  .opt{display:flex; align-items:flex-start; gap:10px; padding:9px 10px; border-radius:4px; border:1px solid var(--paper-line); margin-bottom:7px; cursor:pointer; transition:background 0.15s;}
+  .opt:hover{background:#FBFAF6;}
+  .opt input{margin-top:3px; accent-color:var(--teal);}
+  .opt .opt-letter{font-family:'JetBrains Mono',monospace; font-weight:700; color:var(--coral-dk); margin-right:4px;}
+  .opt.right{border-color:var(--good); background:rgba(46,125,91,0.08);}
+  .opt.wrong{border-color:var(--bad); background:rgba(181,68,46,0.08);}
+  .opt.missed{border-color:var(--good); background:rgba(46,125,91,0.03); border-style:dashed;}
+
+  table.match-table{width:100%; border-collapse:collapse;}
+  table.match-table td{padding:10px 8px; border-bottom:1px solid var(--paper-line); font-size:0.95rem; vertical-align:middle;}
+  table.match-table td.jobnum{font-family:'JetBrains Mono',monospace; color:var(--coral-dk); width:34px;}
+  table.match-table td.jobname{font-weight:600; width:180px;}
+  select.match-select{
+    width:100%; max-width:520px; padding:8px 10px; border-radius:3px; border:1px solid var(--paper-line);
+    font-family:'Inter',sans-serif; font-size:0.9rem; background:var(--paper); color:var(--text-dark);
+  }
+  select.match-select.right{border-color:var(--good); background:rgba(46,125,91,0.08);}
+  select.match-select.wrong{border-color:var(--bad); background:rgba(181,68,46,0.08);}
+
+  .comment-box{background:var(--white); border:1px solid var(--paper-line); border-radius:5px; padding:16px 20px; margin-bottom:16px; font-size:0.88rem;}
+  .comment-box .clabel{font-family:'JetBrains Mono',monospace; font-size:10.5px; color:var(--coral-dk); margin-bottom:8px; text-transform:uppercase; letter-spacing:0.06em;}
+  .comment-row{display:flex; gap:8px; margin-bottom:5px;}
+  .comment-row .cletter{font-family:'JetBrains Mono',monospace; font-weight:700; color:var(--teal);}
+
+  .notes-card{background:var(--white); border:1px solid var(--paper-line); border-radius:5px; padding:22px 24px;}
+  .notes-card h4{font-family:'Fraunces',serif; font-size:1.05rem; color:var(--teal-dark); margin:18px 0 8px;}
+  .notes-card h4:first-child{margin-top:0;}
+  .notes-card ul{margin:0 0 4px; padding-left:22px;}
+  .notes-card li{margin-bottom:12px; font-size:0.95rem;}
+  .blank-wrap{display:inline-flex; align-items:baseline; gap:5px;}
+  .blank-wrap input{
+    font-family:'Inter',sans-serif; font-size:0.93rem; border:none; border-bottom:2px solid var(--teal);
+    background:transparent; padding:1px 4px; width:150px; outline:none; color:var(--teal-dark); font-weight:600;
+  }
+  .blank-wrap input:focus{border-bottom-color:var(--coral-dk);}
+  .blank-wrap.correct input{border-bottom-color:var(--good); background:rgba(46,125,91,0.08);}
+  .blank-wrap.incorrect input{border-bottom-color:var(--bad); background:rgba(181,68,46,0.08);}
+  .hint{font-style:italic; color:var(--text-muted); font-size:0.85rem;}
+  .qbadge{font-family:'JetBrains Mono',monospace; color:var(--coral-dk); font-weight:700; font-size:0.85rem;}
+
+  .controls{display:flex; align-items:center; gap:16px; margin-top:20px;}
+  button.check-btn{
+    font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:0.05em; text-transform:uppercase;
+    background:var(--teal-dark); color:var(--white); border:none; padding:12px 22px; border-radius:3px; cursor:pointer; transition:background 0.2s;
+  }
+  button.check-btn:hover{background:var(--teal);}
+  .score-readout{font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--teal-dark); min-height:18px;}
+
+  .summary-card{
+    background:var(--teal-dark); color:var(--white); border-radius:6px; padding:26px 26px; margin-top:10px;
+  }
+  .summary-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:16px; margin:16px 0 6px;}
+  .summary-grid div span.label{display:block; font-family:'JetBrains Mono',monospace; font-size:10.5px; color:var(--coral); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px;}
+  .summary-grid div span.value{font-size:1.4rem; font-weight:700;}
+  .grand-total{font-family:'JetBrains Mono',monospace; font-size:15px; margin-top:14px; color:#EAF6F2;}
+
+  footer{text-align:center; padding:28px 24px 40px; color:#8b8878; font-size:11.5px; font-family:'JetBrains Mono',monospace;}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">IELTS Listening Practice</div>
+    <h1 class="display">Part 3 &amp; Part 4 — Work, Automation &amp; Space Traffic</h1>
+    <p class="hero-sub">A self-marking practice set covering multiple selection, matching, and note completion — the three question types found in this recording.</p>
+    <div class="tags">
+      <span>QUESTIONS 21–40</span>
+      <span>20 MARKS TOTAL</span>
+      <span>AUTO-GRADED</span>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- PART 3 -->
+  <section id="part3">
+    <span class="part-tag">Part 3</span>
+    <h2 class="section-title">Questions 21–30</h2>
+
+    <!-- Q21-22 -->
+    <div class="q-card">
+      <div class="q-title"><span class="q-num-badge">21–22</span> Choose TWO letters, A–E.</div>
+      <p class="instructions">Which <b>TWO</b> opinions about the Luddites do the students express?</p>
+      <p class="opt-limit-note">Select exactly two options.</p>
+      <div id="group2122"></div>
+    </div>
+
+    <!-- Q23-24 -->
+    <div class="q-card">
+      <div class="q-title"><span class="q-num-badge">23–24</span> Choose TWO letters, A–E.</div>
+      <p class="instructions">Which <b>TWO</b> predictions about the future of work are the students doubtful about?</p>
+      <p class="opt-limit-note">Select exactly two options.</p>
+      <div id="group2324"></div>
+    </div>
+
+    <!-- Q25-30 -->
+    <div class="q-card">
+      <div class="q-title"><span class="q-num-badge">25–30</span> Matching</div>
+      <p class="instructions">What comment do the students make about each of the following jobs? Choose your answer from the box for each question.</p>
+
+      <div class="comment-box">
+        <div class="clabel">Comments</div>
+        <div id="commentList"></div>
+      </div>
+
+      <table class="match-table" id="matchTable"></table>
+    </div>
+
+    <div class="controls">
+      <button class="check-btn" onclick="checkPart3()">Check Part 3</button>
+      <span class="score-readout" id="part3Score"></span>
+    </div>
+  </section>
+
+  <!-- PART 4 -->
+  <section id="part4">
+    <span class="part-tag">Part 4</span>
+    <h2 class="section-title">Questions 31–40</h2>
+    <p class="instructions">Complete the notes below. <b>Write ONE WORD ONLY</b> for each answer. The word type you need is shown in brackets.</p>
+
+    <div class="notes-card">
+      <h4>Space Traffic Management</h4>
+      <ul id="notesList40a"></ul>
+      <h4>Problems in developing effective Space Traffic Management</h4>
+      <ul id="notesList40b"></ul>
+      <h4>Solutions</h4>
+      <ul id="notesList40c"></ul>
+    </div>
+
+    <div class="controls">
+      <button class="check-btn" onclick="checkPart4()">Check Part 4</button>
+      <span class="score-readout" id="part4Score"></span>
+    </div>
+  </section>
+
+  <!-- SUMMARY -->
+  <section id="summary">
+    <div class="summary-card">
+      <div class="part-tag" style="background:var(--coral-dk);">Total Score</div>
+      <div class="summary-grid">
+        <div><span class="label">Part 3 (Q21–30)</span><span class="value" id="sumPart3">— / 8</span></div>
+        <div><span class="label">Part 4 (Q31–40)</span><span class="value" id="sumPart4">— / 10</span></div>
+      </div>
+      <div class="grand-total" id="grandTotal">Check both parts above to see your total out of 20.</div>
+      <div class="controls">
+        <button class="check-btn" onclick="checkAll()">Check everything &amp; show total</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>IELTS LISTENING PRACTICE — PART 3 &amp; PART 4 SELF-MARKING WORKSHEET</footer>
+
+<script>
+// =====================================================================
+// DATA
+// =====================================================================
+const opts2122 = [
+  ["A","Their actions were ineffective."],
+  ["B","They are still influential today."],
+  ["C","They have received unfair criticism."],
+  ["D","They were proved right."],
+  ["E","Their attitude is understandable."]
+];
+const correct2122 = ["A","E"];
+
+const opts2324 = [
+  ["A","Work will be more rewarding."],
+  ["B","Unemployment will fall."],
+  ["C","People will want to delay retiring."],
+  ["D","Working hours will be shorter."],
+  ["E","People will change jobs more frequently."]
+];
+const correct2324 = ["B","D"];
+
+const comments = [
+  ["A","These jobs are likely to be at risk."],
+  ["B","Their role has become more interesting in recent years."],
+  ["C","The number of people working in this sector has fallen dramatically."],
+  ["D","This job will require more qualifications."],
+  ["E","Higher disposable income has led to a huge increase in jobs."],
+  ["F","There is likely to be a significant rise in demand for this service."],
+  ["G","Both employment and productivity have risen."]
+];
+
+const jobs = [
+  [25, "Accountants", "G"],
+  [26, "Hairdressers", "E"],
+  [27, "Administrative staff", "B"],
+  [28, "Agricultural workers", "C"],
+  [29, "Care workers", "F"],
+  [30, "Bank clerks", "A"]
+];
+
+const part4Blanks = {
+  a: [
+    {q:31, before:"would aim to set up legal and ", hint:"tính từ", after:" ways of improving safety.", answer:"technical"}
+  ],
+  b: [
+    {q:32, before:"Satellites are now quite ", hint:"tính từ", after:" and therefore more widespread (e.g. there are constellations made up of ", extra:true},
+    {q:33, before:"", hint:"danh từ", after:" of satellites).", answer2:"thousands"},
+    {q:34, before:"At present, satellites are not required to transmit information to help with their ", hint:"danh từ", after:".", answer:"identification"},
+    {q:35, before:"There are few systems for ", hint:"tính từ/danh từ/Ving", after:" satellites.", answer:"tracking"},
+    {q:36, before:"Operators may be unwilling to share details of satellites used for ", hint:"danh từ", after:" or commercial reasons.", answer:"military"},
+    {q:37, before:"It may be hard to collect details of the object\u2019s ", hint:"danh từ", after:" at a given time.", answer:"location"},
+    {q:38, before:"Scientists can only make a ", hint:"danh từ số ít", after:" about where the satellite will go.", answer:"prediction"}
+  ],
+  c: [
+    {q:39, before:"The information should be combined in one ", hint:"danh từ", after:".", answer:"database"},
+    {q:40, before:"A coordinated system must be designed to create ", hint:"danh từ", after:" in its users.", answer:"trust"}
+  ]
+};
+// fix Q32/33 combined sentence
+part4Blanks.b[0] = {q:32, before:"Satellites are now quite ", hint:"tính từ", after:" and therefore more widespread (e.g. there are constellations made up of ", answer:"cheap", inline:true};
+part4Blanks.b[1] = {q:33, before:"", hint:"danh từ", after:" of satellites).", answer:"thousands"};
+
+// =====================================================================
+// PART 3 — BUILD
+// =====================================================================
+function buildMultiSelect(containerId, options, groupName){
+  const container = document.getElementById(containerId);
+  options.forEach(([letter, text]) => {
+    const div = document.createElement('label');
+    div.className = 'opt';
+    div.dataset.letter = letter;
+    div.innerHTML = `
+      <input type="checkbox" name="${groupName}" value="${letter}">
+      <span><span class="opt-letter">${letter}</span>${text}</span>
+    `;
+    container.appendChild(div);
+  });
+  container.addEventListener('change', (e) => {
+    const checked = container.querySelectorAll('input:checked');
+    if(checked.length > 2){
+      e.target.checked = false;
+    }
+  });
+}
+buildMultiSelect('group2122', opts2122, 'q2122');
+buildMultiSelect('group2324', opts2324, 'q2324');
+
+// comments box
+const commentList = document.getElementById('commentList');
+comments.forEach(([letter, text]) => {
+  const row = document.createElement('div');
+  row.className = 'comment-row';
+  row.innerHTML = `<span class="cletter">${letter}</span><span>${text}</span>`;
+  commentList.appendChild(row);
+});
+
+// match table
+const matchTable = document.getElementById('matchTable');
+jobs.forEach(([num, name, answer]) => {
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td class="jobnum">${num}</td>
+    <td class="jobname">${name}</td>
+    <td>
+      <select class="match-select" id="job-${num}" data-answer="${answer}">
+        <option value="">-- choose a comment --</option>
+        ${comments.map(([l,t]) => `<option value="${l}">${l} — ${t}</option>`).join('')}
+      </select>
+    </td>
+  `;
+  matchTable.appendChild(tr);
+});
+
+let part3Result = null;
+
+function checkPart3(){
+  let score = 0;
+
+  // Q21-22
+  const sel2122 = [...document.querySelectorAll('#group2122 input:checked')].map(i => i.value);
+  document.querySelectorAll('#group2122 .opt').forEach(opt => {
+    opt.classList.remove('right','wrong','missed');
+    const letter = opt.dataset.letter;
+    const wasSelected = sel2122.includes(letter);
+    const isCorrect = correct2122.includes(letter);
+    if(wasSelected && isCorrect){ opt.classList.add('right'); score++; }
+    else if(wasSelected && !isCorrect){ opt.classList.add('wrong'); }
+    else if(!wasSelected && isCorrect){ opt.classList.add('missed'); }
+  });
+
+  // Q23-24
+  const sel2324 = [...document.querySelectorAll('#group2324 input:checked')].map(i => i.value);
+  document.querySelectorAll('#group2324 .opt').forEach(opt => {
+    opt.classList.remove('right','wrong','missed');
+    const letter = opt.dataset.letter;
+    const wasSelected = sel2324.includes(letter);
+    const isCorrect = correct2324.includes(letter);
+    if(wasSelected && isCorrect){ opt.classList.add('right'); score++; }
+    else if(wasSelected && !isCorrect){ opt.classList.add('wrong'); }
+    else if(!wasSelected && isCorrect){ opt.classList.add('missed'); }
+  });
+
+  // Q25-30
+  jobs.forEach(([num, name, answer]) => {
+    const sel = document.getElementById(`job-${num}`);
+    sel.classList.remove('right','wrong');
+    if(sel.value === answer){ sel.classList.add('right'); score++; }
+    else if(sel.value !== ""){ sel.classList.add('wrong'); }
+  });
+
+  document.getElementById('part3Score').textContent = `Score: ${score} / 8`;
+  part3Result = score;
+  document.getElementById('sumPart3').textContent = `${score} / 8`;
+  updateGrandTotal();
+}
+
+// =====================================================================
+// PART 4 — BUILD
+// =====================================================================
+function renderBlankLine(item){
+  return `<li>
+    <span class="qbadge">${item.q}.</span> ${item.before}
+    <span class="blank-wrap" id="wrap-${item.q}">
+      <input type="text" id="input-${item.q}" autocomplete="off" spellcheck="false">
+      <span class="hint">(${item.hint})</span>
+    </span>${item.after}
+  </li>`;
+}
+
+// Combine 32+33 into one sentence visually
+document.getElementById('notesList40a').innerHTML = part4Blanks.a.map(renderBlankLine).join('');
+
+document.getElementById('notesList40b').innerHTML = `
+  <li>
+    <span class="qbadge">32.</span> Satellites are now quite
+    <span class="blank-wrap" id="wrap-32"><input type="text" id="input-32" autocomplete="off" spellcheck="false"><span class="hint">(tính từ)</span></span>
+    and therefore more widespread (e.g. there are constellations made up of
+    <span class="blank-wrap" id="wrap-33"><input type="text" id="input-33" autocomplete="off" spellcheck="false"><span class="hint">(danh từ)</span></span>
+    of satellites).
+  </li>
+  <li>
+    <span class="qbadge">34.</span> At present, satellites are not required to transmit information to help with their
+    <span class="blank-wrap" id="wrap-34"><input type="text" id="input-34" autocomplete="off" spellcheck="false"><span class="hint">(danh từ)</span></span>.
+  </li>
+  <li>
+    <span class="qbadge">35.</span> There are few systems for
+    <span class="blank-wrap" id="wrap-35"><input type="text" id="input-35" autocomplete="off" spellcheck="false"><span class="hint">(tính từ/danh từ/Ving)</span></span>
+    satellites.
+  </li>
+  <li>Small pieces of debris may be difficult to identify.</li>
+  <li>
+    <span class="qbadge">36.</span> Operators may be unwilling to share details of satellites used for
+    <span class="blank-wrap" id="wrap-36"><input type="text" id="input-36" autocomplete="off" spellcheck="false"><span class="hint">(danh từ)</span></span>
+    or commercial reasons.
+  </li>
+  <li>
+    <span class="qbadge">37.</span> It may be hard to collect details of the object\u2019s
+    <span class="blank-wrap" id="wrap-37"><input type="text" id="input-37" autocomplete="off" spellcheck="false"><span class="hint">(danh từ)</span></span>
+    at a given time.
+  </li>
+  <li>
+    <span class="qbadge">38.</span> Scientists can only make a
+    <span class="blank-wrap" id="wrap-38"><input type="text" id="input-38" autocomplete="off" spellcheck="false"><span class="hint">(danh từ số ít)</span></span>
+    about where the satellite will go.
+  </li>
+`;
+
+document.getElementById('notesList40a').innerHTML = `
+  <li>is a concept similar to Air Traffic Control, but for satellites rather than planes.</li>
+  <li>
+    <span class="qbadge">31.</span> would aim to set up legal and
+    <span class="blank-wrap" id="wrap-31"><input type="text" id="input-31" autocomplete="off" spellcheck="false"><span class="hint">(tính từ)</span></span>
+    ways of improving safety.
+  </li>
+  <li>does not actually exist at present.</li>
+`;
+
+document.getElementById('notesList40c').innerHTML = `
+  <li>Common standards should be agreed on for the presentation of information.</li>
+  <li>
+    <span class="qbadge">39.</span> The information should be combined in one
+    <span class="blank-wrap" id="wrap-39"><input type="text" id="input-39" autocomplete="off" spellcheck="false"><span class="hint">(danh từ)</span></span>.
+  </li>
+  <li>
+    <span class="qbadge">40.</span> A coordinated system must be designed to create
+    <span class="blank-wrap" id="wrap-40"><input type="text" id="input-40" autocomplete="off" spellcheck="false"><span class="hint">(danh từ)</span></span>
+    in its users.
+  </li>
+`;
+
+const part4Answers = {
+  31:"technical", 32:"cheap", 33:"thousands", 34:"identification", 35:"tracking",
+  36:"military", 37:"location", 38:"prediction", 39:"database", 40:"trust"
+};
+
+let part4Result = null;
+
+function checkPart4(){
+  let score = 0;
+  for(let q = 31; q <= 40; q++){
+    const input = document.getElementById(`input-${q}`);
+    const wrap = document.getElementById(`wrap-${q}`);
+    wrap.classList.remove('correct','incorrect');
+    const val = input.value.trim().toLowerCase();
+    if(val === part4Answers[q]){
+      wrap.classList.add('correct');
+      score++;
+    } else {
+      wrap.classList.add('incorrect');
+    }
+  }
+  document.getElementById('part4Score').textContent = `Score: ${score} / 10`;
+  part4Result = score;
+  document.getElementById('sumPart4').textContent = `${score} / 10`;
+  updateGrandTotal();
+}
+
+function updateGrandTotal(){
+  if(part3Result !== null && part4Result !== null){
+    const total = part3Result + part4Result;
+    document.getElementById('grandTotal').textContent = `Total: ${total} / 20`;
+  }
+}
+
+function checkAll(){
+  checkPart3();
+  checkPart4();
+}
+</script>
+
+</body>
+</html>
