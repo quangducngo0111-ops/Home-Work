@@ -109,18 +109,46 @@ const rewriteData=[
 {q:"26. I like playing chess. (LOVE)",ans:["i love playing chess","i love playing chess."]},
 {q:"27. She hates drinking coffee. (DISLIKE)",ans:["she dislikes drinking coffee","she dislikes drinking coffee."]},
 {q:"28. They like walking after dinner. (ENJOY)",ans:["they enjoy walking after dinner","they enjoy walking after dinner."]},
-{q:"29. He begins to study at 7 p.m. (BEGIN)",ans:["he begins studying at 7 p.m","he begins studying at 7 p.m."]},
-{q:"30. I prefer to stay at home tonight. (PREFER)",ans:["i prefer staying at home tonight","i prefer staying at home tonight."]}
+{q:"29. He starts studying at 7 p.m. (BEGIN)",ans:["he begins studying at 7 p.m","he begins studying at 7 p.m."]},
+{q:"30. I like staying at home tonight more than going out. (PREFER)",ans:["i prefer staying at home tonight to going out","i prefer staying at home tonight to going out."]}
 ];
 function buildMC(id,data,prefix){const box=document.getElementById(id);data.forEach((item,i)=>{const card=document.createElement('div');card.className='card';card.innerHTML=`<div><span class="qnum">${item.q.split('.')[0]}.</span>${item.q.substring(item.q.indexOf('.')+1).trim()}</div>`+item.opts.map((o,j)=>`<label class="option" data-i="${i}" data-j="${j}"><input type="radio" name="${prefix}${i}" value="${j}"> ${o}</label>`).join('');box.appendChild(card)})}
 buildMC('readingQs',readingData,'r');buildMC('grammarQs',grammarData,'g');buildMC('errorQs',errorData,'e');
-ingData.forEach((x,i)=>document.getElementById('ingQs').insertAdjacentHTML('beforeend',`<div class="card"><b>${x[0]}</b><input type="text" id="ing${i}" placeholder="Type the -ing form"></div>`));
+ingData.forEach((x,i)=>document.getElementById('ingQs').insertAdjacentHTML('beforeend',`<div class="card"><b>${x[0]}</b><input type="text" id="ing${i}" placeholder="Type the -ing form" autocomplete="off"><div class="feedback" id="ingfb${i}"></div></div>`));
 rewriteData.forEach((x,i)=>document.getElementById('rewriteQs').insertAdjacentHTML('beforeend',`<div class="card"><b>${x.q}</b><input type="text" id="rw${i}" placeholder="Rewrite the sentence"></div>`));
 let scores={reading:null,grammar:null,ing:null,error:null,rewrite:null};
 function checkMC(id,data,prefix,scoreId,key){let s=0;const box=document.getElementById(id);data.forEach((item,i)=>{const labs=box.querySelectorAll(`label[data-i="${i}"]`);labs.forEach(l=>l.classList.remove('correct','wrong'));const ch=document.querySelector(`input[name="${prefix}${i}"]:checked`);if(ch){const v=+ch.value;if(v===item.ans){s++;labs[v].classList.add('correct')}else{labs[v].classList.add('wrong');labs[item.ans].classList.add('correct')}}else{labs[item.ans].classList.add('correct')}});document.getElementById(scoreId).textContent=`Score: ${s} / ${data.length}`;scores[key]=s;updateTotal()}
 function checkReading(){checkMC('readingQs',readingData,'r','readingScore','reading')}function checkGrammar(){checkMC('grammarQs',grammarData,'g','grammarScore','grammar')}function checkError(){checkMC('errorQs',errorData,'e','errorScore','error')}
-function norm(x){return x.trim().toLowerCase().replace(/\s+/g,' ')}
-function checkIng(){let s=0;ingData.forEach((x,i)=>{const el=document.getElementById('ing'+i);el.classList.remove('correct','wrong');if(norm(el.value)===x[1]){s++;el.classList.add('correct')}else el.classList.add('wrong')});document.getElementById('ingScore').textContent=`Score: ${s} / ${ingData.length}`;scores.ing=s;updateTotal()}
+function norm(x){
+  return String(x ?? '')
+    .normalize('NFKC')
+    .replace(/[\u200B-\u200D\uFEFF]/g,'')
+    .replace(/[’‘]/g,"'")
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g,' ');
+}
+function checkIng(){
+  let s=0;
+  ingData.forEach((x,i)=>{
+    const el=document.getElementById('ing'+i);
+    const fb=document.getElementById('ingfb'+i);
+    const userAnswer=norm(el.value);
+    const correctAnswer=norm(x[1]);
+    el.classList.remove('correct','wrong');
+    if(userAnswer===correctAnswer){
+      s++;
+      el.classList.add('correct');
+      if(fb){fb.className='feedback good';fb.textContent='✓ Correct';}
+    }else{
+      el.classList.add('wrong');
+      if(fb){fb.className='feedback bad';fb.textContent='Correct answer: '+x[1];}
+    }
+  });
+  document.getElementById('ingScore').textContent=`Score: ${s} / ${ingData.length}`;
+  scores.ing=s;
+  updateTotal();
+}
 function checkRewrite(){let s=0;rewriteData.forEach((x,i)=>{const el=document.getElementById('rw'+i);el.classList.remove('correct','wrong');if(x.ans.includes(norm(el.value))){s++;el.classList.add('correct')}else el.classList.add('wrong')});document.getElementById('rewriteScore').textContent=`Score: ${s} / ${rewriteData.length}`;scores.rewrite=s;updateTotal()}
 function updateTotal(){const v=Object.values(scores);if(v.every(x=>x!==null))document.getElementById('totalScore').textContent=`${v.reduce((a,b)=>a+b,0)} / 30`}
 function checkAll(){checkReading();checkGrammar();checkIng();checkError();checkRewrite();return Object.values(scores).reduce((a,b)=>a+(b||0),0)}
