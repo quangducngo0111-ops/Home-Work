@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grammar Practice — Verb of Liking + V-ing / To-infinitive</title>
+<style>
+:root{--navy:#17324D;--blue:#245B8F;--paper:#F7F5EF;--white:#fff;--line:#D8D5CC;--accent:#E07A4F;--good:#2E7D5B;--bad:#B5442E;--muted:#66727A}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--paper);color:#20272A;line-height:1.55}header{background:linear-gradient(145deg,var(--blue),var(--navy));color:#fff;padding:44px 22px}.wrap{max-width:980px;margin:auto}.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#FFD2C2;font-weight:700}h1{margin:6px 0 8px;font-size:clamp(1.9rem,5vw,2.8rem)}.sub{max-width:740px;color:#DCE7F0}.tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.tag{border:1px solid rgba(255,255,255,.35);padding:5px 10px;border-radius:999px;font-size:12px}main{padding:36px 20px 80px}section{margin-bottom:42px}.section-head{margin-bottom:16px}.kicker{display:inline-block;background:var(--navy);color:#fff;font-size:12px;font-weight:700;padding:4px 10px;border-radius:4px;text-transform:uppercase}h2{color:var(--navy);margin:8px 0 4px;font-size:1.5rem}.instructions{color:var(--muted);font-size:.94rem;margin:0}.card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:20px;margin:14px 0;box-shadow:0 2px 8px rgba(0,0,0,.03)}.qnum{font-weight:700;color:var(--accent);margin-right:6px}.option{display:block;padding:9px 10px;border:1px solid var(--line);border-radius:7px;margin:7px 0;cursor:pointer}.option:hover{background:#FAF9F5}.option.correct{border-color:var(--good);background:rgba(46,125,91,.08)}.option.wrong{border-color:var(--bad);background:rgba(181,68,46,.08)}input[type=text],textarea{width:100%;padding:10px 11px;border:1px solid var(--line);border-radius:7px;font-size:15px;background:#fff;margin-top:10px}input.correct{border-color:var(--good);background:rgba(46,125,91,.06)}input.wrong{border-color:var(--bad);background:rgba(181,68,46,.06)}textarea{min-height:100px;resize:vertical}button{background:var(--navy);color:#fff;border:0;border-radius:7px;padding:11px 17px;font-weight:700;cursor:pointer;margin-top:10px}button:hover{background:var(--blue)}.score{font-weight:700;color:var(--navy);margin-left:10px}.reading{background:#FFFDF8;border-left:4px solid var(--accent);padding:16px 18px;border-radius:6px;margin-bottom:18px}.rulebox{background:#EEF4F8;border:1px solid #CDDAE5;padding:15px 17px;border-radius:8px;margin-bottom:20px}.rulebox ul{margin:8px 0 0 20px}.model{display:none;background:#F1F6F3;border:1px solid #C9DCCF;padding:12px;border-radius:7px;margin-top:10px}.summary{background:var(--navy);color:#fff;border-radius:12px;padding:24px}.summary strong{font-size:1.4rem}
+</style>
+</head>
+<body>
+<header><div class="wrap"><div class="eyebrow">Grammar Practice</div><h1>Verb of Liking + V-ing / To-infinitive</h1><p class="sub">Reading, grammar, -ing spelling, error correction, sentence rewriting and guided writing.</p><div class="tags"><span class="tag">Reading</span><span class="tag">Grammar</span><span class="tag">Error correction</span><span class="tag">Writing</span><span class="tag">Auto-graded</span></div></div></header>
+<main class="wrap">
+<div class="rulebox"><b>Grammar focus</b><ul><li>Verbs of liking such as <b>adore, love, like, enjoy, fancy, dislike, hate, detest, prefer</b> are commonly followed by <b>V-ing</b>.</li><li>Some verbs may be followed by either <b>V-ing</b> or <b>to + verb</b> with little change in meaning: <b>begin, bear, stand, continue, hate, like, love, prefer, propose, start</b>.</li><li>Adding <b>-ing</b>: do → doing; live → living; lie → lying; run → running.</li></ul></div>
+
+<section><div class="section-head"><span class="kicker">Part 1</span><h2>Reading in Context</h2><p class="instructions">Read the passage and answer Questions 1–5.</p></div>
+<div class="reading"><b>Mai's Weekend</b><br><br>Mai loves spending time outdoors. On Saturday mornings, she enjoys riding her bike around the lake with her sister. Her sister prefers walking, but she sometimes agrees to cycle with Mai. After lunch, Mai likes reading comics or watching short videos. She dislikes staying indoors all day, so in the afternoon she often starts doing her homework early and then goes outside. On Sundays, she loves to visit her grandparents. Her grandfather likes gardening and Mai enjoys helping him water the plants.</div>
+<div id="readingQs"></div><button onclick="checkReading()">Check Part 1</button><span class="score" id="readingScore"></span></section>
+
+<section><div class="section-head"><span class="kicker">Part 2</span><h2>Grammar Choice</h2><p class="instructions">Choose the correct form of the verb.</p></div><div id="grammarQs"></div><button onclick="checkGrammar()">Check Part 2</button><span class="score" id="grammarScore"></span></section>
+
+<section><div class="section-head"><span class="kicker">Part 3</span><h2>How to Add -ing</h2><p class="instructions">Write the correct -ing form.</p></div><div id="ingQs"></div><button onclick="checkIng()">Check Part 3</button><span class="score" id="ingScore"></span></section>
+
+<section><div class="section-head"><span class="kicker">Part 4</span><h2>Correct or Incorrect?</h2><p class="instructions">Decide whether each sentence is correct. If wrong, choose the corrected version.</p></div><div id="errorQs"></div><button onclick="checkError()">Check Part 4</button><span class="score" id="errorScore"></span></section>
+
+<section><div class="section-head"><span class="kicker">Part 5</span><h2>Rewrite the Sentence</h2><p class="instructions">Rewrite each sentence using the word in brackets.</p></div><div id="rewriteQs"></div><button onclick="checkRewrite()">Check Part 5</button><span class="score" id="rewriteScore"></span></section>
+
+<section><div class="section-head"><span class="kicker">Part 6</span><h2>Guided Writing</h2><p class="instructions">Write your own sentences. This section is self-checked and not included in the automatic score.</p></div>
+<div class="card"><b>Task A.</b> Write 3 sentences about things you like or dislike doing. Use at least three different verbs from: <i>love, enjoy, like, dislike, hate, prefer</i>.<textarea placeholder="Example: I enjoy listening to music after school."></textarea><button onclick="toggleModel('modelA')">Show sample answer</button><div class="model" id="modelA">I love playing badminton with my friends. I enjoy listening to music before I go to bed. I dislike getting up early at weekends.</div></div>
+<div class="card"><b>Task B.</b> Write 4–5 sentences about your ideal weekend. Use at least two verbs followed by V-ing and one verb that can be followed by V-ing or to-infinitive.<textarea placeholder="Write your paragraph here..."></textarea><button onclick="toggleModel('modelB')">Show sample answer</button><div class="model" id="modelB">At weekends, I love sleeping a little later. I enjoy going to the park with my friends. In the afternoon, I like reading at home. I usually start doing my homework before dinner. In the evening, I prefer watching a film with my family.</div></div>
+<div class="card"><b>Self-check checklist</b><div><label><input type="checkbox"> I used V-ing after a verb of liking.</label></div><div><label><input type="checkbox"> I checked the spelling of -ing forms.</label></div><div><label><input type="checkbox"> I used full sentences.</label></div><div><label><input type="checkbox"> I checked capitalization and punctuation.</label></div></div></section>
+
+<section><div class="summary"><div>Total auto-graded score</div><strong id="totalScore">— / 30</strong><div><button style="background:var(--accent)" onclick="checkAll()">Check everything</button><button style="background:#49677E;margin-left:8px" onclick="location.reload()">Reset</button></div></div></section>
+</main>
+<script>
+const readingData=[
+{q:"1. What does Mai enjoy doing on Saturday mornings?",opts:["Walking around the lake","Riding her bike","Reading comics","Gardening"],ans:1},
+{q:"2. What does Mai's sister prefer doing?",opts:["Walking","Cycling","Watching videos","Watering plants"],ans:0},
+{q:"3. Why does Mai start doing her homework early?",opts:["She hates homework","She wants to go outside later","Her grandfather asks her to","She prefers staying indoors"],ans:1},
+{q:"4. Which activity does Mai enjoy doing with her grandfather?",opts:["Cooking","Reading","Watering plants","Riding a bike"],ans:2},
+{q:"5. Which sentence is TRUE?",opts:["Mai loves staying indoors all day.","Mai dislikes visiting her grandparents.","Mai enjoys outdoor activities.","Mai never does homework at weekends."],ans:2}
+];
+const grammarData=[
+{q:"6. Lan enjoys ___ books before bed.",opts:["read","reading","to reading"],ans:1},
+{q:"7. My brother dislikes ___ up early.",opts:["get","getting","to getting"],ans:1},
+{q:"8. We love ___ football after school.",opts:["playing","play","to playing"],ans:0},
+{q:"9. She prefers ___ at home on rainy days.",opts:["staying","stay","to staying"],ans:0},
+{q:"10. They started ___ dinner at 6 p.m.",opts:["cook","cooking","to cooking"],ans:1},
+{q:"11. I like ___ to music while I study.",opts:["listening","listen","to listening"],ans:0},
+{q:"12. He hates ___ in long queues.",opts:["waiting","wait","to waiting"],ans:0},
+{q:"13. We continued ___ even after it started raining.",opts:["walking","walk","to walking"],ans:0}
+];
+const ingData=[["14. do →","doing"],["15. live →","living"],["16. lie →","lying"],["17. run →","running"],["18. make →","making"],["19. swim →","swimming"],["20. dye →","dyeing"]];
+const errorData=[
+{q:"21. I enjoy to play basketball after school.",opts:["Correct","Incorrect → I enjoy playing basketball after school."],ans:1},
+{q:"22. She loves collecting stamps.",opts:["Correct","Incorrect → She loves collect stamps."],ans:0},
+{q:"23. Tom dislikes getting up early.",opts:["Correct","Incorrect → Tom dislikes get up early."],ans:0},
+{q:"24. My mother prefers cooking at home.",opts:["Correct","Incorrect → My mother prefers cook at home."],ans:0},
+{q:"25. He likes runing in the park.",opts:["Correct","Incorrect → He likes running in the park."],ans:1}
+];
+const rewriteData=[
+{q:"26. I like playing chess. (LOVE)",ans:["i love playing chess","i love playing chess."]},
+{q:"27. She hates drinking coffee. (DISLIKE)",ans:["she dislikes drinking coffee","she dislikes drinking coffee."]},
+{q:"28. They like walking after dinner. (ENJOY)",ans:["they enjoy walking after dinner","they enjoy walking after dinner."]},
+{q:"29. He begins to study at 7 p.m. (BEGIN)",ans:["he begins studying at 7 p.m","he begins studying at 7 p.m."]},
+{q:"30. I prefer to stay at home tonight. (PREFER)",ans:["i prefer staying at home tonight","i prefer staying at home tonight."]}
+];
+function buildMC(id,data,prefix){const box=document.getElementById(id);data.forEach((item,i)=>{const card=document.createElement('div');card.className='card';card.innerHTML=`<div><span class="qnum">${item.q.split('.')[0]}.</span>${item.q.substring(item.q.indexOf('.')+1).trim()}</div>`+item.opts.map((o,j)=>`<label class="option" data-i="${i}" data-j="${j}"><input type="radio" name="${prefix}${i}" value="${j}"> ${o}</label>`).join('');box.appendChild(card)})}
+buildMC('readingQs',readingData,'r');buildMC('grammarQs',grammarData,'g');buildMC('errorQs',errorData,'e');
+ingData.forEach((x,i)=>document.getElementById('ingQs').insertAdjacentHTML('beforeend',`<div class="card"><b>${x[0]}</b><input type="text" id="ing${i}" placeholder="Type the -ing form"></div>`));
+rewriteData.forEach((x,i)=>document.getElementById('rewriteQs').insertAdjacentHTML('beforeend',`<div class="card"><b>${x.q}</b><input type="text" id="rw${i}" placeholder="Rewrite the sentence"></div>`));
+let scores={reading:null,grammar:null,ing:null,error:null,rewrite:null};
+function checkMC(id,data,prefix,scoreId,key){let s=0;const box=document.getElementById(id);data.forEach((item,i)=>{const labs=box.querySelectorAll(`label[data-i="${i}"]`);labs.forEach(l=>l.classList.remove('correct','wrong'));const ch=document.querySelector(`input[name="${prefix}${i}"]:checked`);if(ch){const v=+ch.value;if(v===item.ans){s++;labs[v].classList.add('correct')}else{labs[v].classList.add('wrong');labs[item.ans].classList.add('correct')}}else{labs[item.ans].classList.add('correct')}});document.getElementById(scoreId).textContent=`Score: ${s} / ${data.length}`;scores[key]=s;updateTotal()}
+function checkReading(){checkMC('readingQs',readingData,'r','readingScore','reading')}function checkGrammar(){checkMC('grammarQs',grammarData,'g','grammarScore','grammar')}function checkError(){checkMC('errorQs',errorData,'e','errorScore','error')}
+function norm(x){return x.trim().toLowerCase().replace(/\s+/g,' ')}
+function checkIng(){let s=0;ingData.forEach((x,i)=>{const el=document.getElementById('ing'+i);el.classList.remove('correct','wrong');if(norm(el.value)===x[1]){s++;el.classList.add('correct')}else el.classList.add('wrong')});document.getElementById('ingScore').textContent=`Score: ${s} / ${ingData.length}`;scores.ing=s;updateTotal()}
+function checkRewrite(){let s=0;rewriteData.forEach((x,i)=>{const el=document.getElementById('rw'+i);el.classList.remove('correct','wrong');if(x.ans.includes(norm(el.value))){s++;el.classList.add('correct')}else el.classList.add('wrong')});document.getElementById('rewriteScore').textContent=`Score: ${s} / ${rewriteData.length}`;scores.rewrite=s;updateTotal()}
+function updateTotal(){const v=Object.values(scores);if(v.every(x=>x!==null))document.getElementById('totalScore').textContent=`${v.reduce((a,b)=>a+b,0)} / 30`}
+function checkAll(){checkReading();checkGrammar();checkIng();checkError();checkRewrite()}function toggleModel(id){const el=document.getElementById(id);el.style.display=el.style.display==='block'?'none':'block'}
+</script>
+</body>
+</html>
