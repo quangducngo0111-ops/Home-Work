@@ -7,11 +7,27 @@
 <style>
 :root{--navy:#17324D;--blue:#245B8F;--paper:#F7F5EF;--white:#fff;--line:#D8D5CC;--accent:#E07A4F;--good:#2E7D5B;--bad:#B5442E;--muted:#66727A}
 *{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--paper);color:#20272A;line-height:1.55}header{background:linear-gradient(145deg,var(--blue),var(--navy));color:#fff;padding:44px 22px}.wrap{max-width:980px;margin:auto}.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#FFD2C2;font-weight:700}h1{margin:6px 0 8px;font-size:clamp(1.9rem,5vw,2.8rem)}.sub{max-width:740px;color:#DCE7F0}.tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.tag{border:1px solid rgba(255,255,255,.35);padding:5px 10px;border-radius:999px;font-size:12px}main{padding:36px 20px 80px}section{margin-bottom:42px}.section-head{margin-bottom:16px}.kicker{display:inline-block;background:var(--navy);color:#fff;font-size:12px;font-weight:700;padding:4px 10px;border-radius:4px;text-transform:uppercase}h2{color:var(--navy);margin:8px 0 4px;font-size:1.5rem}.instructions{color:var(--muted);font-size:.94rem;margin:0}.card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:20px;margin:14px 0;box-shadow:0 2px 8px rgba(0,0,0,.03)}.qnum{font-weight:700;color:var(--accent);margin-right:6px}.option{display:block;padding:9px 10px;border:1px solid var(--line);border-radius:7px;margin:7px 0;cursor:pointer}.option:hover{background:#FAF9F5}.option.correct{border-color:var(--good);background:rgba(46,125,91,.08)}.option.wrong{border-color:var(--bad);background:rgba(181,68,46,.08)}input[type=text],textarea{width:100%;padding:10px 11px;border:1px solid var(--line);border-radius:7px;font-size:15px;background:#fff;margin-top:10px}input.correct{border-color:var(--good);background:rgba(46,125,91,.06)}input.wrong{border-color:var(--bad);background:rgba(181,68,46,.06)}textarea{min-height:100px;resize:vertical}button{background:var(--navy);color:#fff;border:0;border-radius:7px;padding:11px 17px;font-weight:700;cursor:pointer;margin-top:10px}button:hover{background:var(--blue)}.score{font-weight:700;color:var(--navy);margin-left:10px}.reading{background:#FFFDF8;border-left:4px solid var(--accent);padding:16px 18px;border-radius:6px;margin-bottom:18px}.rulebox{background:#EEF4F8;border:1px solid #CDDAE5;padding:15px 17px;border-radius:8px;margin-bottom:20px}.rulebox ul{margin:8px 0 0 20px}.model{display:none;background:#F1F6F3;border:1px solid #C9DCCF;padding:12px;border-radius:7px;margin-top:10px}.summary{background:var(--navy);color:#fff;border-radius:12px;padding:24px}.summary strong{font-size:1.4rem}
+
+.student-gate{background:#fff;border:1px solid var(--line);border-radius:12px;padding:24px;margin-bottom:28px;box-shadow:0 4px 14px rgba(0,0,0,.05)}
+.student-gate h2{margin-top:0}.student-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.student-gate label{font-weight:700;color:var(--navy);font-size:.92rem}.student-gate input{margin-top:6px}.gate-note{color:var(--muted);font-size:.9rem;margin-top:10px}.gate-error{color:var(--bad);font-weight:700;margin-top:10px}.student-bar{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;background:#fff;border:1px solid var(--line);border-radius:8px;padding:10px 14px;margin-bottom:18px;font-size:.92rem}.submit-btn{background:var(--good)}.submit-btn:hover{filter:brightness(.95)}.submit-status{margin-top:12px;font-weight:700}.submit-status.ok{color:#CDEDDC}.submit-status.err{color:#FFD0C8}.disabled-btn{opacity:.55;cursor:not-allowed}@media(max-width:700px){.student-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <header><div class="wrap"><div class="eyebrow">Grammar Practice</div><h1>Verb of Liking + V-ing / To-infinitive</h1><p class="sub">Reading, grammar, -ing spelling, error correction, sentence rewriting and guided writing.</p><div class="tags"><span class="tag">Reading</span><span class="tag">Grammar</span><span class="tag">Error correction</span><span class="tag">Writing</span><span class="tag">Auto-graded</span></div></div></header>
 <main class="wrap">
+<section id="studentGate" class="student-gate">
+  <span class="kicker">Before you start</span>
+  <h2>Student Information</h2>
+  <p class="instructions">Điền đầy đủ họ tên và lớp trước khi bắt đầu. Thông tin này sẽ được gửi cùng điểm số về Google Sheet của giáo viên khi em nộp bài.</p>
+  <div class="student-grid">
+    <label>Họ và tên *<input type="text" id="studentName" autocomplete="name" placeholder="Ví dụ: Nguyễn Minh Anh"></label>
+    <label>Lớp *<input type="text" id="studentClass" placeholder="Ví dụ: 8A1"></label>
+  </div>
+  <button onclick="startExercise()">Start exercise</button>
+  <div id="gateMessage" class="gate-error"></div>
+</section>
+<div id="exerciseContent" style="display:none">
+  <div class="student-bar"><span>Student: <b id="studentDisplay">—</b></span><span>Class: <b id="classDisplay">—</b></span></div>
 <div class="rulebox"><b>Grammar focus</b><ul><li>Verbs of liking such as <b>adore, love, like, enjoy, fancy, dislike, hate, detest, prefer</b> are commonly followed by <b>V-ing</b>.</li><li>Some verbs may be followed by either <b>V-ing</b> or <b>to + verb</b> with little change in meaning: <b>begin, bear, stand, continue, hate, like, love, prefer, propose, start</b>.</li><li>Adding <b>-ing</b>: do → doing; live → living; lie → lying; run → running.</li></ul></div>
 
 <section><div class="section-head"><span class="kicker">Part 1</span><h2>Reading in Context</h2><p class="instructions">Read the passage and answer Questions 1–5.</p></div>
@@ -27,13 +43,43 @@
 <section><div class="section-head"><span class="kicker">Part 5</span><h2>Rewrite the Sentence</h2><p class="instructions">Rewrite each sentence using the word in brackets.</p></div><div id="rewriteQs"></div><button onclick="checkRewrite()">Check Part 5</button><span class="score" id="rewriteScore"></span></section>
 
 <section><div class="section-head"><span class="kicker">Part 6</span><h2>Guided Writing</h2><p class="instructions">Write your own sentences. This section is self-checked and not included in the automatic score.</p></div>
-<div class="card"><b>Task A.</b> Write 3 sentences about things you like or dislike doing. Use at least three different verbs from: <i>love, enjoy, like, dislike, hate, prefer</i>.<textarea placeholder="Example: I enjoy listening to music after school."></textarea><button onclick="toggleModel('modelA')">Show sample answer</button><div class="model" id="modelA">I love playing badminton with my friends. I enjoy listening to music before I go to bed. I dislike getting up early at weekends.</div></div>
-<div class="card"><b>Task B.</b> Write 4–5 sentences about your ideal weekend. Use at least two verbs followed by V-ing and one verb that can be followed by V-ing or to-infinitive.<textarea placeholder="Write your paragraph here..."></textarea><button onclick="toggleModel('modelB')">Show sample answer</button><div class="model" id="modelB">At weekends, I love sleeping a little later. I enjoy going to the park with my friends. In the afternoon, I like reading at home. I usually start doing my homework before dinner. In the evening, I prefer watching a film with my family.</div></div>
+<div class="card"><b>Task A.</b> Write 3 sentences about things you like or dislike doing. Use at least three different verbs from: <i>love, enjoy, like, dislike, hate, prefer</i>.<textarea id="writeA" placeholder="Example: I enjoy listening to music after school."></textarea><button onclick="toggleModel('modelA')">Show sample answer</button><div class="model" id="modelA">I love playing badminton with my friends. I enjoy listening to music before I go to bed. I dislike getting up early at weekends.</div></div>
+<div class="card"><b>Task B.</b> Write 4–5 sentences about your ideal weekend. Use at least two verbs followed by V-ing and one verb that can be followed by V-ing or to-infinitive.<textarea id="writeB" placeholder="Write your paragraph here..."></textarea><button onclick="toggleModel('modelB')">Show sample answer</button><div class="model" id="modelB">At weekends, I love sleeping a little later. I enjoy going to the park with my friends. In the afternoon, I like reading at home. I usually start doing my homework before dinner. In the evening, I prefer watching a film with my family.</div></div>
 <div class="card"><b>Self-check checklist</b><div><label><input type="checkbox"> I used V-ing after a verb of liking.</label></div><div><label><input type="checkbox"> I checked the spelling of -ing forms.</label></div><div><label><input type="checkbox"> I used full sentences.</label></div><div><label><input type="checkbox"> I checked capitalization and punctuation.</label></div></div></section>
 
-<section><div class="summary"><div>Total auto-graded score</div><strong id="totalScore">— / 30</strong><div><button style="background:var(--accent)" onclick="checkAll()">Check everything</button><button style="background:#49677E;margin-left:8px" onclick="location.reload()">Reset</button></div></div></section>
+<section><div class="summary">
+  <div>Student: <b id="summaryStudent">—</b> &nbsp; | &nbsp; Class: <b id="summaryClass">—</b></div>
+  <div style="margin-top:8px">Total auto-graded score</div><strong id="totalScore">— / 30</strong>
+  <div><button style="background:var(--accent)" onclick="checkAll()">Check everything</button><button class="submit-btn" id="submitBtn" onclick="submitResults()">Nộp bài &amp; gửi điểm</button><button style="background:#49677E;margin-left:8px" onclick="location.reload()">Reset</button></div>
+  <div id="submitStatus" class="submit-status"></div>
+</div></section>
+</div>
 </main>
 <script>
+// ===== GOOGLE SHEET CONFIGURATION =====
+// After deploying the supplied Google Apps Script as a Web App, paste its /exec URL below.
+const GOOGLE_SCRIPT_URL = "PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE";
+const ACTIVITY_TITLE = "Verb of Liking + V-ing / To-infinitive";
+let studentInfo = {name:"", className:""};
+let startedAt = null;
+let submitted = false;
+const attemptId = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : (Date.now()+"-"+Math.random().toString(36).slice(2));
+
+function startExercise(){
+  const name=document.getElementById('studentName').value.trim();
+  const className=document.getElementById('studentClass').value.trim();
+  const msg=document.getElementById('gateMessage');
+  if(!name || !className){msg.textContent='Vui lòng điền đầy đủ Họ và tên và Lớp trước khi bắt đầu.';return;}
+  studentInfo={name,className};startedAt=new Date();msg.textContent='';
+  document.getElementById('studentDisplay').textContent=name;
+  document.getElementById('classDisplay').textContent=className;
+  document.getElementById('summaryStudent').textContent=name;
+  document.getElementById('summaryClass').textContent=className;
+  document.getElementById('studentGate').style.display='none';
+  document.getElementById('exerciseContent').style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
 const readingData=[
 {q:"1. What does Mai enjoy doing on Saturday mornings?",opts:["Walking around the lake","Riding her bike","Reading comics","Gardening"],ans:1},
 {q:"2. What does Mai's sister prefer doing?",opts:["Walking","Cycling","Watching videos","Watering plants"],ans:0},
@@ -77,7 +123,54 @@ function norm(x){return x.trim().toLowerCase().replace(/\s+/g,' ')}
 function checkIng(){let s=0;ingData.forEach((x,i)=>{const el=document.getElementById('ing'+i);el.classList.remove('correct','wrong');if(norm(el.value)===x[1]){s++;el.classList.add('correct')}else el.classList.add('wrong')});document.getElementById('ingScore').textContent=`Score: ${s} / ${ingData.length}`;scores.ing=s;updateTotal()}
 function checkRewrite(){let s=0;rewriteData.forEach((x,i)=>{const el=document.getElementById('rw'+i);el.classList.remove('correct','wrong');if(x.ans.includes(norm(el.value))){s++;el.classList.add('correct')}else el.classList.add('wrong')});document.getElementById('rewriteScore').textContent=`Score: ${s} / ${rewriteData.length}`;scores.rewrite=s;updateTotal()}
 function updateTotal(){const v=Object.values(scores);if(v.every(x=>x!==null))document.getElementById('totalScore').textContent=`${v.reduce((a,b)=>a+b,0)} / 30`}
-function checkAll(){checkReading();checkGrammar();checkIng();checkError();checkRewrite()}function toggleModel(id){const el=document.getElementById(id);el.style.display=el.style.display==='block'?'none':'block'}
+function checkAll(){checkReading();checkGrammar();checkIng();checkError();checkRewrite();return Object.values(scores).reduce((a,b)=>a+(b||0),0)}
+function toggleModel(id){const el=document.getElementById(id);el.style.display=el.style.display==='block'?'none':'block'}
+
+async function submitResults(){
+  const status=document.getElementById('submitStatus');
+  const btn=document.getElementById('submitBtn');
+  if(submitted){status.className='submit-status ok';status.textContent='Bài này đã được gửi điểm.';return;}
+  if(!studentInfo.name || !studentInfo.className){status.className='submit-status err';status.textContent='Thiếu thông tin học sinh. Hãy tải lại trang và điền tên/lớp.';return;}
+  if(GOOGLE_SCRIPT_URL.includes('PASTE_YOUR_')){
+    status.className='submit-status err';
+    status.textContent='Chưa cấu hình Google Sheet Web App URL. Giáo viên cần dán URL vào GOOGLE_SCRIPT_URL trong file HTML.';
+    return;
+  }
+
+  const total=checkAll();
+  const durationSeconds=startedAt ? Math.max(0,Math.round((Date.now()-startedAt.getTime())/1000)) : '';
+  const payload=new URLSearchParams({
+    submittedAt:new Date().toISOString(),
+    name:studentInfo.name,
+    className:studentInfo.className,
+    activity:ACTIVITY_TITLE,
+    reading:String(scores.reading ?? ''),
+    grammar:String(scores.grammar ?? ''),
+    ing:String(scores.ing ?? ''),
+    error:String(scores.error ?? ''),
+    rewrite:String(scores.rewrite ?? ''),
+    total:String(total),
+    maxScore:'30',
+    durationSeconds:String(durationSeconds),
+    writingA:document.getElementById('writeA')?.value.trim() || '',
+    writingB:document.getElementById('writeB')?.value.trim() || '',
+    attemptId:attemptId
+  });
+
+  btn.disabled=true;btn.classList.add('disabled-btn');
+  status.className='submit-status';status.textContent='Đang gửi điểm...';
+  try{
+    await fetch(GOOGLE_SCRIPT_URL,{method:'POST',mode:'no-cors',body:payload});
+    submitted=true;
+    status.className='submit-status ok';
+    status.textContent=`Đã gửi bài của ${studentInfo.name} — ${studentInfo.className}. Điểm: ${total}/30.`;
+    btn.textContent='Đã gửi điểm';
+  }catch(err){
+    btn.disabled=false;btn.classList.remove('disabled-btn');
+    status.className='submit-status err';
+    status.textContent='Không gửi được điểm. Hãy kiểm tra kết nối mạng hoặc Web App URL rồi thử lại.';
+  }
+}
 </script>
 </body>
 </html>
