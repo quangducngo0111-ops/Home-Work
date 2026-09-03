@@ -121,6 +121,27 @@ mark.user-highlight{background:#fff29a;color:inherit} .note-anchor{background:#d
 </div>
 
 <script>
+
+const STORAGE_PREFIX = "C21T4_LISTENING_";
+
+function ssKey(key){
+  return STORAGE_PREFIX + key;
+}
+function ssGet(key){
+  return sessionStorage.getItem(ssKey(key));
+}
+function ssSet(key,value){
+  sessionStorage.setItem(ssKey(key),value);
+}
+function clearListeningAttempt(){
+  const toDelete=[];
+  for(let i=0;i<sessionStorage.length;i++){
+    const k=sessionStorage.key(i);
+    if(k && k.startsWith(STORAGE_PREFIX)) toDelete.push(k);
+  }
+  toDelete.forEach(k=>sessionStorage.removeItem(k));
+}
+
 const GOOGLE_SCRIPT_URL="https://script.google.com/macros/s/AKfycbwfwWjJ7Q3VTJEF5ldKGnFKYoziQdntAzRjq1Yqy6HSmbZSc69ijSdOvMCC_Zogbpcm/exec";
 const keys={
 1:"leigh",2:"motorbike",3:"hairdresser",4:"suit",5:"laptop",6:"monday",7:"coffee",8:"books",9:"plants",10:"cinema",
@@ -232,9 +253,10 @@ const renderers={1:renderPart1,2:renderPart2,3:renderPart3,4:renderPart4};
 function startExam(){
  const n=document.getElementById("studentName").value.trim(),c=document.getElementById("studentClass").value.trim();
  if(!n||!c){document.getElementById("startError").textContent="Vui lòng nhập đầy đủ Họ tên và Lớp.";return}
+ clearListeningAttempt();
  document.getElementById("topName").textContent=n;document.getElementById("topClass").textContent=c;
  document.getElementById("start").classList.add("hidden");document.getElementById("exam").classList.remove("hidden");
- startedAt=Date.now();buildNav();showPart(1);timeHandle=setInterval(updateTime,500);updateTime();
+ submitted=false;savedSelection=null;activeHighlight=null;startedAt=Date.now();buildNav();showPart(1);timeHandle=setInterval(updateTime,500);updateTime();
 }
 function updateTime(){
  const s=Math.floor((Date.now()-startedAt)/1000),m=Math.floor(s/60),ss=s%60;
@@ -245,7 +267,7 @@ function showPart(p){
  document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",+b.dataset.p===p));
  document.getElementById("audioTitle").textContent="Audio — Part "+p;
  document.querySelectorAll("audio").forEach((a,i)=>{a.classList.toggle("hidden",i+1!==p);if(i+1!==p)a.pause()});
- const saved=sessionStorage.getItem("markup"+p);
+ const saved=ssGet("markup"+p);
  document.getElementById("questions").innerHTML=saved||renderers[p]();
  restoreAnswers(p);bindTracking();bindMultiLimits();bindAnnotations();renderNotes();
  if(submitted)markPart(p);
@@ -255,38 +277,38 @@ function partRange(p){return p===1?[1,10]:p===2?[11,20]:p===3?[21,30]:[31,40]}
 function restoreAnswers(p){
  const [a,b]=partRange(p);
  for(let n=a;n<=b;n++){
-   const val=sessionStorage.getItem("q"+n)||"";
+   const val=ssGet("q"+n)||"";
    const el=document.getElementById("q"+n);
    if(el)el.value=val;
    const radio=document.querySelector(`input[name="q${n}"][value="${CSS.escape(val)}"]`);if(radio)radio.checked=true;
  }
  [["g1112",11],["g1314",13]].forEach(([g,start])=>{
-   if(p!==2)return;const arr=JSON.parse(sessionStorage.getItem(g)||"[]");
+   if(p!==2)return;const arr=JSON.parse(ssGet(g)||"[]");
    document.querySelectorAll(`input[name="${g}"]`).forEach(x=>x.checked=arr.includes(x.value));
  });
 }
 function bindTracking(){
  document.querySelectorAll("input.ans,select.ans").forEach(el=>{
-   const fn=()=>{sessionStorage.setItem("q"+el.dataset.q,el.value);updateNav()};
+   const fn=()=>{ssSet("q"+el.dataset.q,el.value);updateNav()};
    el.addEventListener("input",fn);el.addEventListener("change",fn);
  });
- document.querySelectorAll('input[type="radio"]').forEach(el=>el.addEventListener("change",()=>{sessionStorage.setItem("q"+el.name.slice(1),el.value);updateNav()}));
+ document.querySelectorAll('input[type="radio"]').forEach(el=>el.addEventListener("change",()=>{ssSet("q"+el.name.slice(1),el.value);updateNav()}));
  document.querySelectorAll('input[type="checkbox"]').forEach(el=>el.addEventListener("change",()=>{
    const g=el.name;const vals=[...document.querySelectorAll(`input[name="${g}"]:checked`)].map(x=>x.value);
-   sessionStorage.setItem(g,JSON.stringify(vals));updateNav();
+   ssSet(g,JSON.stringify(vals));updateNav();
  }));
 }
 function bindMultiLimits(){
  ["g1112","g1314"].forEach(g=>document.querySelectorAll(`input[name="${g}"]`).forEach(el=>el.addEventListener("change",e=>{
    const checked=document.querySelectorAll(`input[name="${g}"]:checked`);
-   if(checked.length>2){e.target.checked=false;const vals=[...document.querySelectorAll(`input[name="${g}"]:checked`)].map(x=>x.value);sessionStorage.setItem(g,JSON.stringify(vals));alert("Chỉ chọn TWO đáp án.")}
+   if(checked.length>2){e.target.checked=false;const vals=[...document.querySelectorAll(`input[name="${g}"]:checked`)].map(x=>x.value);ssSet(g,JSON.stringify(vals));alert("Chỉ chọn TWO đáp án.")}
  })));
 }
 function buildNav(){document.getElementById("nav").innerHTML=Array.from({length:40},(_,i)=>`<button id="nav${i+1}" onclick="goQ(${i+1})">${i+1}</button>`).join("");updateNav()}
 function isAnswered(n){
- if(n===11||n===12)return JSON.parse(sessionStorage.getItem("g1112")||"[]").length===2;
- if(n===13||n===14)return JSON.parse(sessionStorage.getItem("g1314")||"[]").length===2;
- return !!(sessionStorage.getItem("q"+n)||"").trim();
+ if(n===11||n===12)return JSON.parse(ssGet("g1112")||"[]").length===2;
+ if(n===13||n===14)return JSON.parse(ssGet("g1314")||"[]").length===2;
+ return !!(ssGet("q"+n)||"").trim();
 }
 function updateNav(){for(let n=1;n<=40;n++)document.getElementById("nav"+n)?.classList.toggle("answered",isAnswered(n))}
 function goQ(n){
@@ -294,10 +316,10 @@ function goQ(n){
  setTimeout(()=>{const target=document.getElementById("card"+n)||document.getElementById("q"+n);target?.scrollIntoView({behavior:"smooth",block:"center"});document.getElementById("q"+n)?.focus({preventScroll:true})},80);
 }
 
-function saveQuestionMarkup(){const q=document.getElementById("questions");if(q&&q.innerHTML)sessionStorage.setItem("markup"+currentPart,q.innerHTML)}
+function saveQuestionMarkup(){const q=document.getElementById("questions");if(q&&q.innerHTML)ssSet("markup"+currentPart,q.innerHTML)}
 function notesKey(){return "listenNotes"+currentPart}
-function loadNotes(){try{return JSON.parse(sessionStorage.getItem(notesKey())||"[]")}catch(e){return[]}}
-function saveNotes(a){sessionStorage.setItem(notesKey(),JSON.stringify(a))}
+function loadNotes(){try{return JSON.parse(ssGet(notesKey())||"[]")}catch(e){return[]}}
+function saveNotes(a){ssSet(notesKey(),JSON.stringify(a))}
 function captureSelection(){
  if(submitted)return;const sel=window.getSelection(),root=document.getElementById("questions");
  if(!sel||!root||sel.rangeCount===0||sel.isCollapsed)return;const r=sel.getRangeAt(0);
@@ -338,12 +360,12 @@ function bindAnnotations(){
  const root=document.getElementById("questions");root.addEventListener("mouseup",captureSelection);root.addEventListener("keyup",captureSelection);root.addEventListener("click",e=>{const n=e.target.closest(".note-anchor");if(n){openNote(n.dataset.noteId);return}activeHighlight=e.target.closest("mark.user-highlight")||null})
 }
 
-function getQ(n){return sessionStorage.getItem("q"+n)||""}
+function getQ(n){return ssGet("q"+n)||""}
 function scoreExam(){
  let total=0,s={1:0,2:0,3:0,4:0},details=[];
  for(let n=1;n<=10;n++){const u=getQ(n),ok=norm(u)===keys[n];if(ok){total++;s[1]++}details.push({q:n,user:u,key:keys[n],ok})}
  [["g1112",[11,12],multiKeys["11-12"]],["g1314",[13,14],multiKeys["13-14"]]].forEach(([g,nums,key])=>{
-   const sel=JSON.parse(sessionStorage.getItem(g)||"[]"),correctSelected=sel.filter(x=>key.includes(x)).length;
+   const sel=JSON.parse(ssGet(g)||"[]"),correctSelected=sel.filter(x=>key.includes(x)).length;
    total+=correctSelected;s[2]+=correctSelected;
    nums.forEach((n,i)=>details.push({q:n,user:sel.join(", "),key:key.join(" & "),ok:correctSelected===2,group:g}));
  });
@@ -379,7 +401,7 @@ function markPart(p){
  }
  if(p===2){
    [["g1112",[11,12],multiKeys["11-12"]],["g1314",[13,14],multiKeys["13-14"]]].forEach(([g,nums,key])=>{
-     const sel=JSON.parse(sessionStorage.getItem(g)||"[]");
+     const sel=JSON.parse(ssGet(g)||"[]");
      document.querySelectorAll(`[data-group="${g}"]`).forEach(l=>{l.classList.remove("correct","wrong");if(key.includes(l.dataset.val))l.classList.add("correct");else if(sel.includes(l.dataset.val))l.classList.add("wrong")});
      nums.forEach(n=>{const nav=document.getElementById("nav"+n);nav?.classList.remove("answered");nav?.classList.add(sel.filter(x=>key.includes(x)).length===2?"correct":"wrong")});
    });
