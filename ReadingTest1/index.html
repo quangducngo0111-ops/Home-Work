@@ -20,6 +20,28 @@
 .evidence-pulse{outline:3px solid rgba(233,120,78,.45);background:#fff8e8;border-radius:5px;transition:background .2s}
 .perfect-review{padding:14px;border-radius:8px;background:#edf7f1;color:#245c43;font-weight:700}
 
+
+.completion-box{background:#fff;border:1px solid var(--line);border-radius:9px;padding:18px 20px;margin-top:12px;line-height:1.8}
+.completion-box h4{margin:0 0 12px;color:var(--navy);font-size:1.05rem}
+.completion-text{font-size:15px;line-height:2.05;margin:0}
+.inline-blank{display:inline-flex;align-items:center;gap:5px;margin:2px 4px;vertical-align:middle;scroll-margin:100px}
+.blank-num{display:inline-flex;align-items:center;justify-content:center;min-width:25px;height:25px;border-radius:50%;background:var(--navy);color:#fff;font-size:11px;font-weight:700}
+.inline-answer{width:auto!important;min-width:145px;max-width:245px;margin:0!important;padding:7px 9px!important;display:inline-block;vertical-align:middle;background:#fff}
+.inline-answer.short{min-width:115px;max-width:180px}
+.inline-answer.select-wide{min-width:190px;max-width:270px}
+.flowchart{display:flex;flex-direction:column;align-items:stretch;gap:4px;margin-top:10px}
+.flow-step{background:#fbfcfc;border:1px solid var(--line);border-radius:8px;padding:12px 14px;line-height:1.75}
+.flow-arrow{text-align:center;color:var(--blue);font-size:20px;font-weight:700;line-height:1}
+.notes-list{margin:8px 0 0;padding-left:20px}
+.notes-list li{margin:9px 0;line-height:1.8}
+.completion-box .bank{margin-top:14px;margin-bottom:16px}
+.inline-answer.correct{border-color:var(--good)!important;background:rgba(46,125,91,.06)!important}
+.inline-answer.wrong{border-color:var(--bad)!important;background:rgba(181,68,46,.06)!important}
+@media(max-width:600px){
+  .inline-answer,.inline-answer.select-wide{min-width:130px;max-width:100%;font-size:16px}
+  .completion-box{padding:15px}
+}
+
 .annotation-bar{position:sticky;top:-24px;z-index:8;display:flex;align-items:center;gap:7px;flex-wrap:wrap;background:#fff;border-bottom:1px solid var(--line);margin:-24px -26px 18px;padding:10px 14px}
 .annotation-btn{border:1px solid var(--line);background:#fff;color:var(--navy);padding:7px 10px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer}
 .annotation-btn:hover{background:#f4f7f9}
@@ -177,12 +199,118 @@ function bindAnnotations(){
 
 function showPassage(p){saveCurrentMarkup();current=p;activeHighlight=null;savedSelection=null;document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',+b.dataset.p===p));const markup=sessionStorage.getItem('passageMarkup'+p)||passages[p].text;document.getElementById('passage').innerHTML=`<div class="annotation-bar"><button type="button" class="annotation-btn" onclick="addHighlight()">🖍 Highlight</button><button type="button" class="annotation-btn" onclick="clearHighlight()">Xóa HL</button><button type="button" class="annotation-btn" onclick="addNote()">📝 Add note</button><button type="button" class="annotation-btn" onclick="toggleNotes()">Ghi chú (<span id="notesCount">0</span>)</button><span class="annotation-tip">Bôi đen chữ trong bài đọc rồi chọn công cụ.</span></div><div id="notesPanel" class="notes-panel"></div><h2>${passages[p].title}</h2><div class="copy" id="passageCopy">${markup}</div>`;bindAnnotations();renderNotesPanel(p,false);buildQuestions(p);document.getElementById('passage').scrollTop=0;document.getElementById('questions').scrollTop=0}
 function renderQ(q){let body='';if(q.type==='text')body=`<input class="ans" id="q${q.n}" data-q="${q.n}" type="text" autocomplete="off" placeholder="Type your answer">`;else if(q.type==='select')body=`<select class="ans" id="q${q.n}" data-q="${q.n}"><option value="">-- Choose --</option>${q.opts.map(x=>`<option value="${x.charAt(0)}">${x}</option>`).join('')}</select>`;else body=q.opts.map(x=>{const v=/^[A-D] —/.test(x)?x.charAt(0):x;return `<label class="option" data-q="${q.n}" data-val="${v}"><input type="radio" name="q${q.n}" value="${v}"> ${x}</label>`}).join('');return `<div class="card" id="card${q.n}"><div class="qhead"><span class="qnum">${q.n}</span><div class="qtext">${q.text}</div></div>${body}<div class="feedback" id="fb${q.n}"></div></div>`}
-function buildQuestions(p){const qs=questions.filter(q=>q.p===p);let h='',last='';for(const q of qs){const [t,i]=groupMeta(q.n,p);if(t!==last){if(last)h+='</div>';h+=`<div class="group"><h3>${t}</h3><div class="inst">${i}</div>`;if((p===2&&q.n===14)||(p===3&&q.n===27))h+=`<div class="bank">${q.opts.map(x=>`<div>${x}</div>`).join('')}</div>`;last=t}h+=renderQ(q)}if(last)h+='</div>';document.getElementById('questions').innerHTML=h;restore(p);bindTrack();if(submitted)markPassage(p)}
+
+function inlineText(n,placeholder=''){
+  return `<span class="inline-blank" id="card${n}"><span class="blank-num">${n}</span><input class="ans inline-answer short" id="q${n}" data-q="${n}" type="text" autocomplete="off" placeholder="${placeholder}"></span>`;
+}
+function inlineSelect(n,opts){
+  return `<span class="inline-blank" id="card${n}"><span class="blank-num">${n}</span><select class="ans inline-answer select-wide" id="q${n}" data-q="${n}"><option value="">-- choose --</option>${opts.map(x=>`<option value="${x.charAt(0)}">${x}</option>`).join('')}</select></span>`;
+}
+function renderP1Flow(){
+  return `<div class="group">
+    <h3>Questions 8–10</h3>
+    <div class="inst">Complete the flow-chart below. Choose <b>NO MORE THAN TWO WORDS</b> from the passage for each answer.</div>
+    <div class="completion-box">
+      <h4>Generating biogas for domestic use in Dunga</h4>
+      <div class="flowchart">
+        <div class="flow-step">First, place water hyacinth together with some ${inlineText(8,'answer')} into a digester</div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-step">Leave the mixture until the ${inlineText(9,'answer')} is completed</div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-step">Capture the gas emitted by the digester and use ${inlineText(10,'answer')} to transport it to individual homes</div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-step">Then use the gas for cooking as well as making water fit for human consumption</div>
+      </div>
+    </div>
+  </div>`;
+}
+function renderP1Notes(){
+  return `<div class="group">
+    <h3>Questions 11–13</h3>
+    <div class="inst">Complete the notes below. Choose <b>ONE WORD ONLY</b> from the passage for each answer.</div>
+    <div class="completion-box">
+      <h4>Cooking with biogas in Dunga</h4>
+      <b>Benefits for the women in the village of cooking with biogas</b>
+      <ul class="notes-list">
+        <li>no need for them to spend so much ${inlineText(11,'answer')} collecting fuel</li>
+        <li>they can focus on different tasks that bring in ${inlineText(12,'answer')}.</li>
+        <li>they are less likely to experience certain diseases connected to burning wood</li>
+      </ul>
+      <b>Drawbacks of changing to biogas</b>
+      <ul class="notes-list">
+        <li>the ${inlineText(13,'answer')} of the digesters is beyond the reach of most villages</li>
+      </ul>
+    </div>
+  </div>`;
+}
+function renderDelhiSummary(){
+  const opts=questions.find(q=>q.n===14).opts;
+  return `<div class="group">
+    <h3>Questions 14–19</h3>
+    <div class="inst">Complete the summary using the list of words, <b>A–J</b>, below. Click each blank and choose the correct option.</div>
+    <div class="bank">${opts.map(x=>`<div>${x}</div>`).join('')}</div>
+    <div class="completion-box">
+      <h4>Multilingualism in Delhi</h4>
+      <p class="completion-text">
+        The city of Delhi has a ${inlineSelect(14,opts)} and as you walk through its streets you hear people speaking a variety of languages.
+        Some of them have spent their entire life in Delhi, while others are ${inlineSelect(15,opts)}.
+        Whether they have come from a ${inlineSelect(16,opts)} or have travelled from the other side of India, they have all come in search of things such as improved ${inlineSelect(17,opts)}.
+      </p>
+      <p class="completion-text" style="margin-top:12px">
+        A team of researchers led by Professor Ianthi Tsimpli of Cambridge University is collecting data on primary-age schoolchildren in Delhi and other Indian cities.
+        The ${inlineSelect(18,opts)} of the research is to discover why multilingual Indian schoolchildren do not experience ${inlineSelect(19,opts)} to those that multilingual schoolchildren in Europe experience.
+      </p>
+    </div>
+  </div>`;
+}
+function renderGlobeSummary(){
+  const opts=questions.find(q=>q.n===27).opts;
+  return `<div class="group">
+    <h3>Questions 27–32</h3>
+    <div class="inst">Complete the summary using the list of words, <b>A–J</b>, below. Click each blank and choose the correct option.</div>
+    <div class="bank">${opts.map(x=>`<div>${x}</div>`).join('')}</div>
+    <div class="completion-box">
+      <h4>A birthday gift</h4>
+      <p class="completion-text">
+        Peter Bellerby's plan to give his father a globe for his birthday was an unexpectedly ${inlineSelect(27,opts)} for which he had to overcome ${inlineSelect(28,opts)}.
+      </p>
+      <p class="completion-text" style="margin-top:12px">
+        He soon learnt that a straightforward ${inlineSelect(29,opts)} would not be possible.
+        Some ${inlineSelect(30,opts)} that had been intended for ${inlineSelect(31,opts)} were available, as were some expensive antique globes, but these were beyond his budget.
+        He even travelled to places where people might still have the ${inlineSelect(32,opts)}, but Bellerby could not find what he wanted.
+      </p>
+    </div>
+  </div>`;
+}
+function renderStandardGroup(qs,title,inst){
+  return `<div class="group"><h3>${title}</h3><div class="inst">${inst}</div>${qs.map(renderQ).join('')}</div>`;
+}
+function buildQuestions(p){
+  let h='';
+  if(p===1){
+    h+=renderStandardGroup(questions.filter(q=>q.n>=1&&q.n<=7),'Questions 1–7','Choose TRUE, FALSE or NOT GIVEN.');
+    h+=renderP1Flow();
+    h+=renderP1Notes();
+  }else if(p===2){
+    h+=renderDelhiSummary();
+    h+=renderStandardGroup(questions.filter(q=>q.n>=20&&q.n<=23),'Questions 20–23','Choose YES, NO or NOT GIVEN.');
+    h+=renderStandardGroup(questions.filter(q=>q.n>=24&&q.n<=26),'Questions 24–26','Choose the correct letter A, B, C or D.');
+  }else{
+    h+=renderGlobeSummary();
+    h+=renderStandardGroup(questions.filter(q=>q.n>=33&&q.n<=36),'Questions 33–36','Choose YES, NO or NOT GIVEN.');
+    h+=renderStandardGroup(questions.filter(q=>q.n>=37&&q.n<=40),'Questions 37–40','Choose the correct letter A, B, C or D.');
+  }
+  document.getElementById('questions').innerHTML=h;
+  restore(p);
+  bindTrack();
+  if(submitted)markPassage(p);
+}
+
 function restore(p){for(const q of questions.filter(x=>x.p===p)){const v=sessionStorage.getItem('q'+q.n)||'';if(q.type==='text'||q.type==='select'){const e=document.getElementById('q'+q.n);if(e)e.value=v}else if(v){const e=[...document.querySelectorAll(`input[name="q${q.n}"]`)].find(x=>x.value===v);if(e)e.checked=true}}}
 function bindTrack(){document.querySelectorAll('.ans').forEach(e=>{e.oninput=e.onchange=()=>save(+e.dataset.q,e.value)});document.querySelectorAll('input[type=radio]').forEach(e=>e.onchange=()=>save(+e.closest('.option').dataset.q,e.value))}
 function save(n,v){sessionStorage.setItem('q'+n,v);const e=document.getElementById('nav'+n);if(e)e.classList.toggle('answered',String(v).trim()!=='')}
 function buildNav(){document.getElementById('nav').innerHTML=questions.map(q=>`<button class="nq" id="nav${q.n}" onclick="goQ(${q.n})">${q.n}</button>`).join('')}
-function goQ(n){const q=questions.find(x=>x.n===n);if(q.p!==current)showPassage(q.p);setTimeout(()=>document.getElementById('card'+n)?.scrollIntoView({behavior:'smooth',block:'center'}),40)}
+function goQ(n){const q=questions.find(x=>x.n===n);if(q.p!==current)showPassage(q.p);setTimeout(()=>{const target=document.getElementById('card'+n);target?.scrollIntoView({behavior:'smooth',block:'center'});const control=document.getElementById('q'+n);if(control&&(control.tagName==='SELECT'||control.type==='text'))control.focus({preventScroll:true})},60)}
 function correct(q,u){return q.type==='text'?q.ans.map(norm).includes(norm(u)):norm(u)===norm(q.ans)}
 function markPassage(p){for(const q of questions.filter(x=>x.p===p)){const u=sessionStorage.getItem('q'+q.n)||'',ok=correct(q,u),fb=document.getElementById('fb'+q.n);if(q.type==='text'||q.type==='select'){const e=document.getElementById('q'+q.n);if(e){e.classList.remove('correct','wrong');e.classList.add(ok?'correct':'wrong')}}else document.querySelectorAll(`label[data-q="${q.n}"]`).forEach(l=>{l.classList.remove('correct','wrong');if(norm(l.dataset.val)===norm(q.ans))l.classList.add('correct');else if(u&&norm(l.dataset.val)===norm(u))l.classList.add('wrong')});if(fb){const key=Array.isArray(q.ans)?q.ans.join(' / '):q.ans;fb.className='feedback '+(ok?'good':'bad');fb.textContent=ok?'✓ Correct':'Correct answer: '+key}}}
 
