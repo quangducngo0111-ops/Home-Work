@@ -42,6 +42,10 @@
   .completion-box{padding:15px}
 }
 
+
+.questions-pane .annotation-bar{background:#fbfbfa}
+.annotation-zone-label{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--blue);margin-right:2px}
+
 .annotation-bar{position:sticky;top:-24px;z-index:8;display:flex;align-items:center;gap:7px;flex-wrap:wrap;background:#fff;border-bottom:1px solid var(--line);margin:-24px -26px 18px;padding:10px 14px}
 .annotation-btn{border:1px solid var(--line);background:#fff;color:var(--navy);padding:7px 10px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer}
 .annotation-btn:hover{background:#f4f7f9}
@@ -66,41 +70,74 @@ const passages={"1": {"title": "The problems and benefits created by the spread 
 const questions=[{"n": 1, "p": 1, "type": "choice", "text": "Water hyacinth was introduced as a decorative plant in east Africa.", "ans": "TRUE", "opts": ["TRUE", "FALSE", "NOT GIVEN"]}, {"n": 2, "p": 1, "type": "choice", "text": "Fishermen took some water hyacinth plants to Lake Victoria.", "ans": "FALSE", "opts": ["TRUE", "FALSE", "NOT GIVEN"]}, {"n": 3, "p": 1, "type": "choice", "text": "It is now difficult to force boats through the thick water hyacinth on Lake Victoria.", "ans": "TRUE", "opts": ["TRUE", "FALSE", "NOT GIVEN"]}, {"n": 4, "p": 1, "type": "choice", "text": "Chemicals produced by the water hyacinth plants are affecting the numbers of fish in Lake Victoria.", "ans": "NOT GIVEN", "opts": ["TRUE", "FALSE", "NOT GIVEN"]}, {"n": 5, "p": 1, "type": "choice", "text": "Cooking with charcoal has been proved to be even worse for people's health than cooking with wood.", "ans": "NOT GIVEN", "opts": ["TRUE", "FALSE", "NOT GIVEN"]}, {"n": 6, "p": 1, "type": "choice", "text": "People found it impossible to remove much water hyacinth from Lake Victoria.", "ans": "FALSE", "opts": ["TRUE", "FALSE", "NOT GIVEN"]}, {"n": 7, "p": 1, "type": "choice", "text": "Scientists started investigating the possibility of using water hyacinth to generate biogas in the last century.", "ans": "TRUE", "opts": ["TRUE", "FALSE", "NOT GIVEN"]}, {"n": 8, "p": 1, "type": "text", "text": "First, place water hyacinth together with some ______ into a digester.", "ans": ["cow dung"], "opts": []}, {"n": 9, "p": 1, "type": "text", "text": "Leave the mixture until the ______ is completed.", "ans": ["fermentation", "fermentation process"], "opts": []}, {"n": 10, "p": 1, "type": "text", "text": "Capture the gas emitted by the digester and use ______ to transport it to individual homes.", "ans": ["pipes"], "opts": []}, {"n": 11, "p": 1, "type": "text", "text": "No need for the women to spend so much ______ collecting fuel.", "ans": ["time"], "opts": []}, {"n": 12, "p": 1, "type": "text", "text": "They can focus on different tasks that bring in ______.", "ans": ["money"], "opts": []}, {"n": 13, "p": 1, "type": "text", "text": "The ______ of the digesters is beyond the reach of most villages.", "ans": ["price"], "opts": []}, {"n": 14, "p": 2, "type": "select", "text": "The city of Delhi has a ______.", "ans": "I", "opts": ["A — basic outlook", "B — employment opportunities", "C — wealthy visitors", "D — distant country", "E — primary objective", "F — similar advantages", "G — thriving economy", "H — nearby district", "I — dense population", "J — new immigrants"]}, {"n": 15, "p": 2, "type": "select", "text": "Some have spent their entire life in Delhi, while others are ______.", "ans": "J", "opts": ["A — basic outlook", "B — employment opportunities", "C — wealthy visitors", "D — distant country", "E — primary objective", "F — similar advantages", "G — thriving economy", "H — nearby district", "I — dense population", "J — new immigrants"]}, {"n": 16, "p": 2, "type": "select", "text": "Whether they have come from a ______ or travelled from the other side of India...", "ans": "H", "opts": ["A — basic outlook", "B — employment opportunities", "C — wealthy visitors", "D — distant country", "E — primary objective", "F — similar advantages", "G — thriving economy", "H — nearby district", "I — dense population", "J — new immigrants"]}, {"n": 17, "p": 2, "type": "select", "text": "They have all come in search of things such as improved ______.", "ans": "B", "opts": ["A — basic outlook", "B — employment opportunities", "C — wealthy visitors", "D — distant country", "E — primary objective", "F — similar advantages", "G — thriving economy", "H — nearby district", "I — dense population", "J — new immigrants"]}, {"n": 18, "p": 2, "type": "select", "text": "The ______ of the research is to discover why...", "ans": "E", "opts": ["A — basic outlook", "B — employment opportunities", "C — wealthy visitors", "D — distant country", "E — primary objective", "F — similar advantages", "G — thriving economy", "H — nearby district", "I — dense population", "J — new immigrants"]}, {"n": 19, "p": 2, "type": "select", "text": "...do not experience ______ to those that multilingual schoolchildren in Europe experience.", "ans": "F", "opts": ["A — basic outlook", "B — employment opportunities", "C — wealthy visitors", "D — distant country", "E — primary objective", "F — similar advantages", "G — thriving economy", "H — nearby district", "I — dense population", "J — new immigrants"]}, {"n": 20, "p": 2, "type": "choice", "text": "Ten-year-old Indian schoolchildren tend to perform better in literacy tests than in numeracy tests.", "ans": "NO", "opts": ["YES", "NO", "NOT GIVEN"]}, {"n": 21, "p": 2, "type": "choice", "text": "Tsimpli had problems convincing some female students to take part in the study.", "ans": "NOT GIVEN", "opts": ["YES", "NO", "NOT GIVEN"]}, {"n": 22, "p": 2, "type": "choice", "text": "Tsimpli and her team wanted to know if there is a connection between poor academic performance and being taught in an unfamiliar language.", "ans": "YES", "opts": ["YES", "NO", "NOT GIVEN"]}, {"n": 23, "p": 2, "type": "choice", "text": "The researchers have decided against investigating the impact teaching methodology may have on learning outcomes.", "ans": "NO", "opts": ["YES", "NO", "NOT GIVEN"]}, {"n": 24, "p": 2, "type": "choice", "text": "What point does the writer make about primary schools in India in the sixth paragraph?", "ans": "C", "opts": ["A — Exposure to English outside of school is of limited benefit.", "B — Children learn English more easily when they are well motivated.", "C — Poor children may be disadvantaged further by being instructed in English.", "D — There is little consistency across schools with regard to instruction in English."]}, {"n": 25, "p": 2, "type": "choice", "text": "What is Tsimpli suggesting when she uses the phrase 'that ship has sailed'?", "ans": "D", "opts": ["A — The findings of the report may be of little help to some Indian schoolchildren.", "B — Instruction in English could be better adapted to the needs of schoolchildren.", "C — Schools have had limited success in teaching English as a separate subject.", "D — It is too late to remove English completely as a language of instruction in schools."]}, {"n": 26, "p": 2, "type": "choice", "text": "In the eighth paragraph, what do we learn has surprised researchers?", "ans": "D", "opts": ["A — Boys and girls from low socio-economic groups have similar general intelligence levels.", "B — The age at which children move into a slum does not affect their academic performance.", "C — Slum children and children from other urban poor backgrounds have similar life experiences.", "D — The literacy and numeracy skills of slum children are not lower than those of children from other urban poor backgrounds."]}, {"n": 27, "p": 3, "type": "select", "text": "Peter Bellerby's plan to give his father a globe for his birthday was an unexpectedly ______.", "ans": "G", "opts": ["A — educational use", "B — rare materials", "C — inferior makes", "D — product exchange markets", "E — necessary skills", "F — international", "G — challenging task", "H — memorable object", "I — internet purchase", "J — numerous problems"]}, {"n": 28, "p": 3, "type": "select", "text": "...for which he had to overcome ______.", "ans": "J", "opts": ["A — educational use", "B — rare materials", "C — inferior makes", "D — product exchange markets", "E — necessary skills", "F — international", "G — challenging task", "H — memorable object", "I — internet purchase", "J — numerous problems"]}, {"n": 29, "p": 3, "type": "select", "text": "He soon learnt that a straightforward ______ would not be possible.", "ans": "I", "opts": ["A — educational use", "B — rare materials", "C — inferior makes", "D — product exchange markets", "E — necessary skills", "F — international", "G — challenging task", "H — memorable object", "I — internet purchase", "J — numerous problems"]}, {"n": 30, "p": 3, "type": "select", "text": "Some ______ that had been intended for...", "ans": "C", "opts": ["A — educational use", "B — rare materials", "C — inferior makes", "D — product exchange markets", "E — necessary skills", "F — international", "G — challenging task", "H — memorable object", "I — internet purchase", "J — numerous problems"]}, {"n": 31, "p": 3, "type": "select", "text": "...had been intended for ______.", "ans": "A", "opts": ["A — educational use", "B — rare materials", "C — inferior makes", "D — product exchange markets", "E — necessary skills", "F — international", "G — challenging task", "H — memorable object", "I — internet purchase", "J — numerous problems"]}, {"n": 32, "p": 3, "type": "select", "text": "He travelled to places where people might still have the ______.", "ans": "E", "opts": ["A — educational use", "B — rare materials", "C — inferior makes", "D — product exchange markets", "E — necessary skills", "F — international", "G — challenging task", "H — memorable object", "I — internet purchase", "J — numerous problems"]}, {"n": 33, "p": 3, "type": "choice", "text": "The assumption today that people in the past knew very little about geography is correct.", "ans": "NO", "opts": ["YES", "NO", "NOT GIVEN"]}, {"n": 34, "p": 3, "type": "choice", "text": "Plato was criticised for saying the world was shaped like a leather ball.", "ans": "NOT GIVEN", "opts": ["YES", "NO", "NOT GIVEN"]}, {"n": 35, "p": 3, "type": "choice", "text": "The globe made by Crates of Mallus was an accurate representation of the known world.", "ans": "NOT GIVEN", "opts": ["YES", "NO", "NOT GIVEN"]}, {"n": 36, "p": 3, "type": "choice", "text": "Bellerby assumed he would have few problems locating a well-made globe.", "ans": "YES", "opts": ["YES", "NO", "NOT GIVEN"]}, {"n": 37, "p": 3, "type": "choice", "text": "When Bellerby had to attach the gores to the globe surface,", "ans": "B", "opts": ["A — he decided it was best to work quickly.", "B — he became aware of an unexpected issue.", "C — he was worried about the quality of his materials.", "D — he nearly gave up the whole project."]}, {"n": 38, "p": 3, "type": "choice", "text": "The reviewer mentions other globe makers of the past because", "ans": "C", "opts": ["A — Bellerby was particularly inspired by them.", "B — their achievements are not widely known.", "C — Bellerby had something in common with each of them.", "D — their difficulties could have been avoided."]}, {"n": 39, "p": 3, "type": "choice", "text": "What point is made about Bellerby in the seventh paragraph?", "ans": "D", "opts": ["A — He had long working relationships with numerous craftsmen.", "B — He understands the lack of interest in traditional crafts.", "C — He appreciates the importance of careful planning.", "D — He regrets the loss of many globe-making skills."]}, {"n": 40, "p": 3, "type": "choice", "text": "What does the reviewer say about Bellerby's book in the final paragraph?", "ans": "A", "opts": ["A — It does not tell you how to create a profitable business.", "B — It overlooks some important mapmakers.", "C — It fails to discuss the future of globe-making.", "D — It does not give enough details about individual customers."]}];
 const answerReview={1:{para:2,explain:"TRUE. Đoạn văn nói cây được người Bỉ mang tới Rwanda vì họ thích vẻ ngoài của lá và hoa, tức mục đích ban đầu là trang trí.",evidence:"the plant arrived with Belgian colonists in Rwanda, who liked the look of its glossy leaves and delicate purple flowers floating in their ponds."},2:{para:2,explain:"FALSE. Cây không được ngư dân mang tới Lake Victoria; nó thoát khỏi Rwanda và trôi theo sông Kagera xuống hồ.",evidence:"it had 'escaped' out of the country via the Kagera river and made its way downstream to Lake Victoria."},3:{para:3,explain:"TRUE. Khối cây dày khiến thuyền chở cá khó di chuyển, đúng với ý 'difficult to force boats through'.",evidence:"the boats that once brought the fish to shore by the hundreds struggle to navigate through the mass of plants."},4:{para:2,explain:"NOT GIVEN. Bài chỉ nói cây chặn tuyến đánh cá và tạo nơi sống cho muỗi; không có thông tin rằng hóa chất từ cây làm thay đổi số lượng cá.",evidence:"the plant began spreading in the open water, blocking fishing routes and providing a new habitat for disease-carrying mosquitoes."},5:{para:3,explain:"NOT GIVEN. Bài nói wood và charcoal đều là solid fuels làm tăng ô nhiễm trong nhà, nhưng không so sánh charcoal có hại hơn wood.",evidence:"Using solid fuels like these for cooking increases indoor pollution."},6:{para:4,explain:"FALSE. Người dân thực tế đã kéo được rất nhiều cây ra khỏi hồ, đến mức các đống water hyacinth từng là cảnh thường thấy.",evidence:"huge piles of water hyacinth that villagers had taken out of the water in an attempt to clear it were a common sight."},7:{para:4,explain:"TRUE. Việc nghiên cứu tiềm năng biofuel đã bắt đầu từ thập niên 1980, tức trong thế kỷ 20.",evidence:"since as early as the 1980s when, across the world, they began to explore its potential as a biofuel."},8:{para:6,explain:"Đáp án là cow dung vì digester nhận hỗn hợp water hyacinth và phân bò để tạo biogas.",evidence:"machines that would transform a mix of water hyacinth and cow dung into biogas for cooking."},9:{para:7,explain:"Đáp án là fermentation / fermentation process vì hỗn hợp được để 20–30 ngày để trải qua quá trình lên men.",evidence:"it goes through a fermentation process and breaks down, giving off gas"},10:{para:7,explain:"Đáp án là pipes vì khí sạch được dẫn qua đường ống tới nơi sử dụng.",evidence:"the clean-burning gas is passed through pipes to the point of use"},11:{para:8,explain:"Đáp án là time. Lợi ích được nêu trực tiếp là phụ nữ không còn phải dành nhiều thời gian mỗi ngày để kiếm củi.",evidence:"they don't have to devote a lot of time every day to gathering firewood"},12:{para:8,explain:"Đáp án là money. Nhờ tiết kiệm thời gian, họ có thể làm các công việc khác và kiếm thêm tiền.",evidence:"they're able to make more money for their families from other enterprises."},13:{para:10,explain:"Đáp án là price. Trở ngại chính là giá máy quá cao so với khả năng chi trả của phần lớn cộng đồng.",evidence:"unless the price of the machines drops, it's pretty clear that most communities will never be able to afford any"},14:{para:1,explain:"I = dense population. Delhi được mô tả có hơn 20 triệu người, phù hợp với ý mật độ/dân số đông.",evidence:"more than 20 million people go about their daily lives."},15:{para:1,explain:"J = new immigrants. Nhiều người mới chuyển tới Delhi và biến nơi đây thành nhà của họ.",evidence:"many millions more have recently made India's capital their home"},16:{para:1,explain:"H = nearby district. 'surrounding neighbourhoods' tương ứng với khu vực lân cận.",evidence:"having moved from surrounding neighbourhoods, cities and states or across the country"},17:{para:1,explain:"B = employment opportunities. Họ chuyển đến với hy vọng tìm việc tốt hơn.",evidence:"often in the hope of gaining better jobs and a better life."},18:{para:2,explain:"E = primary objective. 'The overriding aim' là cách diễn đạt tương đương với 'primary objective'.",evidence:"The overriding aim of the four-year project ... is to find out why"},19:{para:2,explain:"F = similar advantages. Nghiên cứu muốn biết vì sao trẻ đa ngôn ngữ ở Ấn Độ không nhận được những lợi ích giống trẻ ở châu Âu.",evidence:"the many benefits of speaking more than one language, observed in schools in Europe for instance, do not apply to many of India's schoolchildren."},20:{para:3,explain:"NO. Tỷ lệ không đọc được bài literacy là trên 50%, trong khi tỷ lệ không giải được phép trừ là dưới 50%; vì vậy không thể nói literacy tốt hơn numeracy.",evidence:"over 50% ... cannot read ... fluently, and just under 50% of them cannot solve a ... subtraction task"},21:{para:3,explain:"NOT GIVEN. Bài chỉ nói việc bỏ học ảnh hưởng nữ sinh nhiều hơn; không hề nói Tsimpli gặp khó khăn khi thuyết phục nữ sinh tham gia nghiên cứu.",evidence:"low educational achievement can lead to many of these students dropping out of school – a problem disproportionately affecting female students."},22:{para:4,explain:"YES. Đây chính là một câu hỏi nghiên cứu: thành tích thấp có liên quan tới việc ngôn ngữ giảng dạy khác ngôn ngữ ở nhà hay không.",evidence:"investigating whether these low learning outcomes could be caused by an Indian school system where the language that children are taught in often differs from the language used at home."},23:{para:5,explain:"NO. Ngược lại, nhóm nghiên cứu dự định xem xét cả teaching practices, nên họ không loại bỏ yếu tố phương pháp giảng dạy.",evidence:"They intend to look not only at test results, but also at variables such as the standard of schooling, the environment and the teaching practices themselves."},24:{para:6,explain:"C. Đoạn 6 nói việc dùng English làm medium of instruction có thể cản trở trẻ ít tiếp xúc với tiếng Anh, đặc biệt trẻ thuộc nhóm kinh tế-xã hội thấp.",evidence:"English ... may hold back those children who have little familiarity with, or exposure to, the language"},25:{para:7,explain:"D. 'That ship has sailed' ở đây nghĩa là việc loại bỏ hoàn toàn English khỏi giáo dục đã không còn thực tế.",evidence:"We are not suggesting that English be withdrawn – that ship has sailed"},26:{para:8,explain:"D. Điều gây bất ngờ là trẻ sống trong slum không tụt lại phía sau trẻ nghèo đô thị khác và đôi khi còn làm tốt hơn.",evidence:"an unanticipated finding has been that children from slum backgrounds do not seem to lag behind children from other urban poor backgrounds – and in some cases outperform them"},27:{para:2,explain:"G = challenging task. Việc tưởng đơn giản lại trở thành một hành trình kéo dài, đầy khó khăn.",evidence:"What seemed simple enough to start with triggered an almost obsessive, decade-long journey"},28:{para:2,explain:"J = numerous problems. Hành trình được mô tả là có hàng loạt trở ngại.",evidence:"marked by a series of obstacles that would have deterred anyone less determined."},29:{para:3,explain:"I = internet purchase. Ông sớm nhận ra việc mua một quả địa cầu chất lượng không thể chỉ là một đơn hàng online đơn giản.",evidence:"obtaining such a globe was not simply a matter of a quick online order"},30:{para:4,explain:"C = inferior makes. Những sản phẩm thương mại ông tìm thấy được mô tả là 'shoddy' – chất lượng kém.",evidence:"Bellerby came across shoddy commercial versions designed for school classrooms"},31:{para:4,explain:"A = educational use. Các phiên bản kém chất lượng đó được thiết kế cho lớp học.",evidence:"shoddy commercial versions designed for school classrooms"},32:{para:4,explain:"E = necessary skills. Ông đến Morocco và India vì nghĩ kiến thức/kỹ năng của các cartographer thủ công vẫn còn được lưu giữ.",evidence:"where surely the knowledge of artisan cartographers had been preserved"},33:{para:3,explain:"NO. Tác giả nói quan niệm cho rằng người xưa thiếu hiểu biết địa lý là một quan niệm sai; con người đã biết Trái Đất hình cầu từ rất sớm.",evidence:"contrary to stubbornly held popular views of our ancestors' geographical ignorance, we have known that the world is spherical since at least the 6th century BCE."},34:{para:3,explain:"NOT GIVEN. Bài chỉ nói Plato ví Trái Đất như quả bóng da; không nói ông bị chỉ trích vì nhận định đó.",evidence:"The ancient Greek philosopher Plato in his work Phaedo likened it to a leather ball"},35:{para:3,explain:"NOT GIVEN. Bài chỉ xác nhận Crates of Mallus được cho là làm quả địa cầu được ghi nhận đầu tiên; không đánh giá độ chính xác của nó.",evidence:"the accolade of producing the first recorded globe goes to ... Crates of Mallus"},36:{para:3,explain:"YES. Bellerby thực sự cho rằng tìm một quả địa cầu chất lượng sẽ không khó.",evidence:"Surely, Bellerby reasoned, a good-quality globe wouldn't be difficult to find."},37:{para:6,explain:"B. Khi dán các gores, ông phát hiện giấy đã giãn khiến mảnh cuối chồng lên mảnh đầu – một vấn đề bất ngờ.",evidence:"he learnt that the paper had stretched slightly and so the final one overlapped the first by a centimetre"},38:{para:7,explain:"C. Reviewer liên hệ Bellerby với các globemaker trước đây vì họ có những nét tương đồng: Behaim là 'kindred spirit', còn tham vọng của Bellerby được phản chiếu ở Coronelli.",evidence:"Bellerby clearly found a kindred spirit in Martin Behaim."},39:{para:8,explain:"D. Đoạn này nhấn mạnh sự tiếc nuối trước việc các nghề/kỹ năng thủ công lâu đời đang biến mất khi nhiều nghệ nhân nghỉ hưu hoặc qua đời.",evidence:"Bellerby's book is also a lament for the fading away of centuries-old traditions."},40:{para:9,explain:"A. Reviewer nói rõ cuốn sách không phải hướng dẫn để xây dựng một doanh nghiệp thành công về mặt thương mại.",evidence:"His book ... is hardly a blueprint for commercial success."}};
 
-let current=1,startedAt=0,endAt=0,remaining=3600,timerHandle=null,submitted=false,savedSelection=null,activeHighlight=null;
+let current=1,startedAt=0,endAt=0,remaining=3600,timerHandle=null,submitted=false,savedSelection=null,savedSelectionZone=null,activeHighlight=null,activeHighlightZone=null;
 const norm=v=>String(v??'').normalize('NFKC').trim().toLowerCase().replace(/\s+/g,' ');
 function startExam(){const n=document.getElementById('studentName').value.trim(),c=document.getElementById('studentClass').value.trim();if(!n||!c){document.getElementById('startError').textContent='Vui lòng nhập đầy đủ Họ tên và Lớp.';return}document.getElementById('topName').textContent=n;document.getElementById('topClass').textContent=c;document.getElementById('start').classList.add('hidden');document.getElementById('exam').classList.remove('hidden');startedAt=Date.now();endAt=startedAt+60*60*1000;buildNav();showPassage(1);tickTimer();timerHandle=setInterval(tickTimer,250)}
 function tickTimer(){remaining=Math.max(0,Math.ceil((endAt-Date.now())/1000));updateTimer();if(remaining<=0&&!submitted){clearInterval(timerHandle);submitExam(true)}}function updateTimer(){const e=document.getElementById('timer'),m=Math.floor(Math.max(remaining,0)/60),s=Math.max(remaining,0)%60;e.textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;e.classList.toggle('warning',remaining<=600&&remaining>300);e.classList.toggle('danger',remaining<=300)}
 function groupMeta(n,p){if(p===1){if(n<=7)return['Questions 1–7','Choose TRUE, FALSE or NOT GIVEN.'];if(n<=10)return['Questions 8–10','Complete the flow-chart. Choose NO MORE THAN TWO WORDS from the passage.'];return['Questions 11–13','Complete the notes. Choose ONE WORD ONLY from the passage.']}if(p===2){if(n<=19)return['Questions 14–19','Complete the summary using the list A–J.'];if(n<=23)return['Questions 20–23','Choose YES, NO or NOT GIVEN.'];return['Questions 24–26','Choose the correct letter A, B, C or D.']}if(n<=32)return['Questions 27–32','Complete the summary using the list A–J.'];if(n<=36)return['Questions 33–36','Choose YES, NO or NOT GIVEN.'];return['Questions 37–40','Choose the correct letter A, B, C or D.']}
 
-function saveCurrentMarkup(){
-  const copy=document.getElementById('passageCopy');
-  if(copy)sessionStorage.setItem('passageMarkup'+current,copy.innerHTML);
+function zoneRoot(zone){
+  return document.getElementById(zone==='questions'?'questionsCopy':'passageCopy');
 }
-function captureSelection(){
+function zoneMarkupKey(zone,p=current){
+  return (zone==='questions'?'questionsMarkup':'passageMarkup')+p;
+}
+function noteStoreKey(zone,p=current){
+  return 'notes_'+zone+'_'+p;
+}
+function notesPanelId(zone){
+  return zone==='questions'?'notesPanelQuestions':'notesPanelPassage';
+}
+function notesCountId(zone){
+  return zone==='questions'?'notesCountQuestions':'notesCountPassage';
+}
+function saveZoneMarkup(zone){
+  const root=zoneRoot(zone);
+  if(root)sessionStorage.setItem(zoneMarkupKey(zone),root.innerHTML);
+}
+function saveCurrentMarkups(){
+  saveZoneMarkup('passage');
+  saveZoneMarkup('questions');
+}
+function captureSelection(zone){
   if(submitted)return;
   const sel=window.getSelection();
-  const copy=document.getElementById('passageCopy');
-  if(!sel||!copy||sel.rangeCount===0||sel.isCollapsed)return;
+  const root=zoneRoot(zone);
+  if(!sel||!root||sel.rangeCount===0||sel.isCollapsed)return;
   const r=sel.getRangeAt(0);
-  if(copy.contains(r.commonAncestorContainer))savedSelection=r.cloneRange();
+  if(root.contains(r.commonAncestorContainer)){
+    savedSelection=r.cloneRange();
+    savedSelectionZone=zone;
+  }
 }
-function selectionParagraphsMatch(r){
-  const nodeToEl=n=>n.nodeType===3?n.parentElement:n;
-  const a=nodeToEl(r.startContainer),b=nodeToEl(r.endContainer);
-  return a&&b&&a.closest('p')===b.closest('p');
+function annotationBlock(node){
+  const el=node&&node.nodeType===3?node.parentElement:node;
+  if(!el)return null;
+  return el.closest('p,.completion-text,.flow-step,li,.card,.option,.inst,.bank div,h3,h4,.qtext');
 }
-function getUsableSelection(){
-  const copy=document.getElementById('passageCopy');
-  if(!savedSelection||!copy||!copy.contains(savedSelection.commonAncestorContainer)){
-    alert('Hãy bôi đen đoạn văn bản trong bài đọc trước.');
+function getUsableSelection(zone){
+  const root=zoneRoot(zone);
+  if(!savedSelection||savedSelectionZone!==zone||!root||!root.contains(savedSelection.commonAncestorContainer)){
+    alert(zone==='questions'
+      ?'Hãy bôi đen phần chữ ở bên câu hỏi trước.'
+      :'Hãy bôi đen phần chữ trong bài đọc trước.');
     return null;
   }
   if(savedSelection.collapsed||!savedSelection.toString().trim()){
-    alert('Hãy bôi đen đoạn văn bản trong bài đọc trước.');
+    alert('Hãy bôi đen một đoạn chữ trước.');
     return null;
   }
-  if(!selectionParagraphsMatch(savedSelection)){
-    alert('Để highlight/ghi chú ổn định, hãy chọn văn bản trong cùng một đoạn.');
+
+  const a=annotationBlock(savedSelection.startContainer);
+  const b=annotationBlock(savedSelection.endContainer);
+  if(!a||!b||a!==b){
+    alert('Để highlight/ghi chú ổn định, hãy chọn chữ trong cùng một câu hoặc cùng một khối nội dung.');
+    return null;
+  }
+
+  const cloned=savedSelection.cloneContents();
+  if(cloned.querySelector && cloned.querySelector('input,select,button,textarea')){
+    alert('Không thể highlight xuyên qua ô trả lời. Hãy chỉ chọn phần chữ.');
     return null;
   }
   return savedSelection.cloneRange();
@@ -109,95 +146,196 @@ function clearBrowserSelection(){
   const sel=window.getSelection();
   if(sel)sel.removeAllRanges();
   savedSelection=null;
+  savedSelectionZone=null;
 }
-function addHighlight(){
+function addHighlight(zone){
   if(submitted)return;
-  const r=getUsableSelection();if(!r)return;
+  const r=getUsableSelection(zone);if(!r)return;
   try{
     const mark=document.createElement('mark');
     mark.className='user-highlight';
+    mark.dataset.annotationZone=zone;
     const frag=r.extractContents();
     mark.appendChild(frag);
     r.insertNode(mark);
     activeHighlight=mark;
-    saveCurrentMarkup();
+    activeHighlightZone=zone;
+    saveZoneMarkup(zone);
     clearBrowserSelection();
-  }catch(e){alert('Không thể highlight vùng chọn này. Hãy chọn lại một đoạn ngắn hơn.')}
+  }catch(e){
+    alert('Không thể highlight vùng chọn này. Hãy chọn lại một đoạn chữ ngắn hơn.');
+  }
 }
-function clearHighlight(){
+function clearHighlight(zone){
   if(submitted)return;
   let targets=[];
-  if(activeHighlight&&document.body.contains(activeHighlight))targets=[activeHighlight];
-  else if(savedSelection){
-    const copy=document.getElementById('passageCopy');
-    if(copy)targets=[...copy.querySelectorAll('mark.user-highlight')].filter(m=>{
+  if(activeHighlight&&activeHighlightZone===zone&&document.body.contains(activeHighlight)){
+    targets=[activeHighlight];
+  }else if(savedSelection&&savedSelectionZone===zone){
+    const root=zoneRoot(zone);
+    if(root)targets=[...root.querySelectorAll('mark.user-highlight')].filter(m=>{
       try{return savedSelection.intersectsNode(m)}catch(e){return false}
     });
   }
-  if(!targets.length){alert('Hãy bấm vào phần đã highlight rồi chọn “Xóa HL”.');return}
-  targets.forEach(m=>{const p=m.parentNode;while(m.firstChild)p.insertBefore(m.firstChild,m);m.remove();p.normalize()});
-  activeHighlight=null;saveCurrentMarkup();clearBrowserSelection();
+  if(!targets.length){
+    alert('Hãy bấm vào phần đã highlight rồi chọn “Xóa HL”.');
+    return;
+  }
+  targets.forEach(m=>{
+    const p=m.parentNode;
+    while(m.firstChild)p.insertBefore(m.firstChild,m);
+    m.remove();
+    p.normalize();
+  });
+  activeHighlight=null;
+  activeHighlightZone=null;
+  saveZoneMarkup(zone);
+  clearBrowserSelection();
 }
-function loadNotes(p){
-  try{return JSON.parse(sessionStorage.getItem('notes'+p)||'[]')}catch(e){return[]}
+function loadNotes(zone,p=current){
+  try{return JSON.parse(sessionStorage.getItem(noteStoreKey(zone,p))||'[]')}catch(e){return[]}
 }
-function saveNotes(p,notes){sessionStorage.setItem('notes'+p,JSON.stringify(notes))}
-function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function addNote(){
+function saveNotes(zone,notes,p=current){
+  sessionStorage.setItem(noteStoreKey(zone,p),JSON.stringify(notes));
+}
+function esc(s){
+  return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function addNote(zone){
   if(submitted)return;
-  const r=getUsableSelection();if(!r)return;
+  const r=getUsableSelection(zone);if(!r)return;
   const quote=r.toString().trim();
   const text=prompt('Nhập ghi chú cho đoạn đã chọn:');
   if(text===null||!text.trim())return;
-  const id='note_'+Date.now()+'_'+Math.random().toString(36).slice(2,7);
+  const id='note_'+zone+'_'+Date.now()+'_'+Math.random().toString(36).slice(2,7);
   try{
     const span=document.createElement('span');
-    span.className='note-anchor';span.dataset.noteId=id;span.title='Bấm để xem/sửa ghi chú';
-    const frag=r.extractContents();span.appendChild(frag);r.insertNode(span);
-    const notes=loadNotes(current);notes.push({id,quote,text:text.trim()});saveNotes(current,notes);
-    saveCurrentMarkup();clearBrowserSelection();renderNotesPanel(current,true);
-  }catch(e){alert('Không thể tạo ghi chú cho vùng chọn này. Hãy chọn lại một đoạn ngắn hơn.')}
+    span.className='note-anchor';
+    span.dataset.noteId=id;
+    span.dataset.annotationZone=zone;
+    span.title='Bấm để xem/sửa ghi chú';
+    const frag=r.extractContents();
+    span.appendChild(frag);
+    r.insertNode(span);
+
+    const notes=loadNotes(zone);
+    notes.push({id,quote,text:text.trim()});
+    saveNotes(zone,notes);
+    saveZoneMarkup(zone);
+    clearBrowserSelection();
+    renderNotesPanel(zone,current,true);
+  }catch(e){
+    alert('Không thể tạo ghi chú cho vùng chọn này. Hãy chọn lại một đoạn chữ ngắn hơn.');
+  }
 }
-function toggleNotes(){
-  const panel=document.getElementById('notesPanel');
+function toggleNotes(zone){
+  const panel=document.getElementById(notesPanelId(zone));
   if(panel)panel.classList.toggle('open');
 }
-function renderNotesPanel(p,forceOpen=false){
-  const panel=document.getElementById('notesPanel'),count=document.getElementById('notesCount');
+function renderNotesPanel(zone,p=current,forceOpen=false){
+  const panel=document.getElementById(notesPanelId(zone));
+  const count=document.getElementById(notesCountId(zone));
   if(!panel)return;
-  const notes=loadNotes(p);if(count)count.textContent=notes.length;
-  panel.innerHTML=notes.length?notes.map(n=>`<div class="note-item"><div class="note-quote">“${esc(n.quote)}”</div><div class="note-text">${esc(n.text)}</div><div class="note-actions"><button type="button" onclick="editNote('${n.id}')">Sửa</button><button type="button" onclick="deleteNote('${n.id}')">Xóa</button></div></div>`).join(''):'<div style="font-size:13px;color:var(--muted)">Chưa có ghi chú ở passage này.</div>';
+  const notes=loadNotes(zone,p);
+  if(count)count.textContent=notes.length;
+  panel.innerHTML=notes.length
+    ?notes.map(n=>`<div class="note-item">
+        <div class="note-quote">“${esc(n.quote)}”</div>
+        <div class="note-text">${esc(n.text)}</div>
+        <div class="note-actions">
+          <button type="button" onclick="editNote('${zone}','${n.id}')">Sửa</button>
+          <button type="button" onclick="deleteNote('${zone}','${n.id}')">Xóa</button>
+        </div>
+      </div>`).join('')
+    :'<div style="font-size:13px;color:var(--muted)">Chưa có ghi chú ở phần này.</div>';
   if(forceOpen)panel.classList.add('open');
 }
-function editNote(id){
-  const notes=loadNotes(current),n=notes.find(x=>x.id===id);if(!n)return;
+function editNote(zone,id){
+  const notes=loadNotes(zone);
+  const n=notes.find(x=>x.id===id);if(!n)return;
   const t=prompt('Sửa ghi chú:',n.text);if(t===null)return;
-  if(!t.trim()){deleteNote(id);return}
-  n.text=t.trim();saveNotes(current,notes);renderNotesPanel(current,true);
+  if(!t.trim()){deleteNote(zone,id);return}
+  n.text=t.trim();
+  saveNotes(zone,notes);
+  renderNotesPanel(zone,current,true);
 }
-function deleteNote(id){
-  const notes=loadNotes(current).filter(x=>x.id!==id);saveNotes(current,notes);
-  const copy=document.getElementById('passageCopy');
-  if(copy)copy.querySelectorAll(`[data-note-id="${id}"]`).forEach(s=>{const p=s.parentNode;while(s.firstChild)p.insertBefore(s.firstChild,s);s.remove();p.normalize()});
-  saveCurrentMarkup();renderNotesPanel(current,true);
+function deleteNote(zone,id){
+  const notes=loadNotes(zone).filter(x=>x.id!==id);
+  saveNotes(zone,notes);
+  const root=zoneRoot(zone);
+  if(root)root.querySelectorAll(`[data-note-id="${id}"]`).forEach(s=>{
+    const p=s.parentNode;
+    while(s.firstChild)p.insertBefore(s.firstChild,s);
+    s.remove();
+    p.normalize();
+  });
+  saveZoneMarkup(zone);
+  renderNotesPanel(zone,current,true);
 }
-function openNote(id){
-  const notes=loadNotes(current),n=notes.find(x=>x.id===id);if(!n)return;
-  const t=prompt(`Đoạn đã ghi chú:\\n“${n.quote}”\\n\\nGhi chú:`,n.text);
-  if(t===null)return;if(!t.trim()){deleteNote(id);return}
-  n.text=t.trim();saveNotes(current,notes);renderNotesPanel(current,true);
+function openNote(zone,id){
+  const notes=loadNotes(zone);
+  const n=notes.find(x=>x.id===id);if(!n)return;
+  const t=prompt(`Đoạn đã ghi chú:\n“${n.quote}”\n\nGhi chú:`,n.text);
+  if(t===null)return;
+  if(!t.trim()){deleteNote(zone,id);return}
+  n.text=t.trim();
+  saveNotes(zone,notes);
+  renderNotesPanel(zone,current,true);
 }
-function bindAnnotations(){
-  const copy=document.getElementById('passageCopy');if(!copy)return;
-  copy.addEventListener('mouseup',captureSelection);
-  copy.addEventListener('keyup',captureSelection);
-  copy.addEventListener('click',e=>{
-    const note=e.target.closest('.note-anchor');if(note){openNote(note.dataset.noteId);return}
-    const mark=e.target.closest('mark.user-highlight');activeHighlight=mark||null;
+function bindAnnotations(zone){
+  const root=zoneRoot(zone);if(!root)return;
+  root.addEventListener('mouseup',()=>captureSelection(zone));
+  root.addEventListener('keyup',()=>captureSelection(zone));
+  root.addEventListener('click',e=>{
+    const note=e.target.closest('.note-anchor');
+    if(note){openNote(zone,note.dataset.noteId);return}
+    const mark=e.target.closest('mark.user-highlight');
+    if(mark){
+      activeHighlight=mark;
+      activeHighlightZone=zone;
+    }else if(zone===activeHighlightZone){
+      activeHighlight=null;
+      activeHighlightZone=null;
+    }
   });
 }
+function annotationToolbar(zone){
+  const isQ=zone==='questions';
+  const label=isQ?'Câu hỏi':'Bài đọc';
+  const countId=isQ?'notesCountQuestions':'notesCountPassage';
+  return `<div class="annotation-bar">
+    <span class="annotation-zone-label">${label}</span>
+    <button type="button" class="annotation-btn" onclick="addHighlight('${zone}')">🖍 Highlight</button>
+    <button type="button" class="annotation-btn" onclick="clearHighlight('${zone}')">Xóa HL</button>
+    <button type="button" class="annotation-btn" onclick="addNote('${zone}')">📝 Add note</button>
+    <button type="button" class="annotation-btn" onclick="toggleNotes('${zone}')">Ghi chú (<span id="${countId}">0</span>)</button>
+    <span class="annotation-tip">Bôi đen phần chữ rồi chọn công cụ.</span>
+  </div>`;
+}
 
-function showPassage(p){saveCurrentMarkup();current=p;activeHighlight=null;savedSelection=null;document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',+b.dataset.p===p));const markup=sessionStorage.getItem('passageMarkup'+p)||passages[p].text;document.getElementById('passage').innerHTML=`<div class="annotation-bar"><button type="button" class="annotation-btn" onclick="addHighlight()">🖍 Highlight</button><button type="button" class="annotation-btn" onclick="clearHighlight()">Xóa HL</button><button type="button" class="annotation-btn" onclick="addNote()">📝 Add note</button><button type="button" class="annotation-btn" onclick="toggleNotes()">Ghi chú (<span id="notesCount">0</span>)</button><span class="annotation-tip">Bôi đen chữ trong bài đọc rồi chọn công cụ.</span></div><div id="notesPanel" class="notes-panel"></div><h2>${passages[p].title}</h2><div class="copy" id="passageCopy">${markup}</div>`;bindAnnotations();renderNotesPanel(p,false);buildQuestions(p);document.getElementById('passage').scrollTop=0;document.getElementById('questions').scrollTop=0}
+function showPassage(p){
+  saveCurrentMarkups();
+  current=p;
+  activeHighlight=null;
+  activeHighlightZone=null;
+  savedSelection=null;
+  savedSelectionZone=null;
+  document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',+b.dataset.p===p));
+
+  const passageMarkup=sessionStorage.getItem(zoneMarkupKey('passage',p))||passages[p].text;
+  document.getElementById('passage').innerHTML=
+    annotationToolbar('passage')+
+    `<div id="notesPanelPassage" class="notes-panel"></div>
+     <h2>${passages[p].title}</h2>
+     <div class="copy" id="passageCopy">${passageMarkup}</div>`;
+
+  bindAnnotations('passage');
+  renderNotesPanel('passage',p,false);
+  buildQuestions(p);
+
+  document.getElementById('passage').scrollTop=0;
+  document.getElementById('questions').scrollTop=0;
+}
 function renderQ(q){let body='';if(q.type==='text')body=`<input class="ans" id="q${q.n}" data-q="${q.n}" type="text" autocomplete="off" placeholder="Type your answer">`;else if(q.type==='select')body=`<select class="ans" id="q${q.n}" data-q="${q.n}"><option value="">-- Choose --</option>${q.opts.map(x=>`<option value="${x.charAt(0)}">${x}</option>`).join('')}</select>`;else body=q.opts.map(x=>{const v=/^[A-D] —/.test(x)?x.charAt(0):x;return `<label class="option" data-q="${q.n}" data-val="${v}"><input type="radio" name="q${q.n}" value="${v}"> ${x}</label>`}).join('');return `<div class="card" id="card${q.n}"><div class="qhead"><span class="qnum">${q.n}</span><div class="qtext">${q.text}</div></div>${body}<div class="feedback" id="fb${q.n}"></div></div>`}
 
 function inlineText(n,placeholder=''){
@@ -300,9 +438,17 @@ function buildQuestions(p){
     h+=renderStandardGroup(questions.filter(q=>q.n>=33&&q.n<=36),'Questions 33–36','Choose YES, NO or NOT GIVEN.');
     h+=renderStandardGroup(questions.filter(q=>q.n>=37&&q.n<=40),'Questions 37–40','Choose the correct letter A, B, C or D.');
   }
-  document.getElementById('questions').innerHTML=h;
+  const savedQuestionMarkup=sessionStorage.getItem(zoneMarkupKey('questions',p));
+  const questionMarkup=savedQuestionMarkup||h;
+  document.getElementById('questions').innerHTML=
+    annotationToolbar('questions')+
+    `<div id="notesPanelQuestions" class="notes-panel"></div>
+     <div id="questionsCopy">${questionMarkup}</div>`;
+
   restore(p);
   bindTrack();
+  bindAnnotations('questions');
+  renderNotesPanel('questions',p,false);
   if(submitted)markPassage(p);
 }
 
@@ -374,6 +520,6 @@ function gotoEvidence(n){
   },100);
 }
 
-async function submitExam(auto=false){if(submitted)return;saveCurrentMarkup();const unanswered=questions.filter(q=>!(sessionStorage.getItem('q'+q.n)||'').trim()).length;if(!auto&&unanswered&& !confirm(`Bạn còn ${unanswered} câu chưa trả lời. Vẫn nộp bài?`))return;submitted=true;clearInterval(timerHandle);let total=0,s=[0,0,0,0],details=[];for(const q of questions){const u=sessionStorage.getItem('q'+q.n)||'',ok=correct(q,u);if(ok){total++;s[q.p]++}details.push({q:q.n,answer:u,correct:ok,key:Array.isArray(q.ans)?q.ans.join(' / '):q.ans});const ne=document.getElementById('nav'+q.n);if(ne){ne.classList.remove('answered');ne.classList.add(ok?'correct':'wrong')}}markPassage(current);const name=document.getElementById('studentName').value.trim(),cls=document.getElementById('studentClass').value.trim(),dur=Math.round((Date.now()-startedAt)/1000);document.getElementById('rstudent').textContent=`${name} — ${cls}`;document.getElementById('rscore').textContent=`${total} / 40`;document.getElementById('rpercent').textContent=`${Math.round(total/40*100)}% correct`;document.getElementById('p1s').textContent=`${s[1]} / 13`;document.getElementById('p2s').textContent=`${s[2]} / 13`;document.getElementById('p3s').textContent=`${s[3]} / 14`;renderWrongReview(details);document.getElementById('overlay').classList.remove('hidden');document.getElementById('status').textContent='Đang gửi kết quả về Google Sheet...';const p=new URLSearchParams({name,className:cls,total:String(total),maxScore:'40',durationSeconds:String(dur),activity:'IELTS Reading Computer-Based Test',reading:String(s[1]),grammar:String(s[2]),ing:String(s[3]),writingA:JSON.stringify(details),submittedAt:new Date().toISOString()});try{await fetch(GOOGLE_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:p.toString()});document.getElementById('status').textContent='✓ Đã gửi kết quả về Google Sheet.'}catch(e){document.getElementById('status').textContent='Không gửi được kết quả về Google Sheet. Hãy kiểm tra Web App URL hoặc kết nối mạng.'}}
+async function submitExam(auto=false){if(submitted)return;saveCurrentMarkups();const unanswered=questions.filter(q=>!(sessionStorage.getItem('q'+q.n)||'').trim()).length;if(!auto&&unanswered&& !confirm(`Bạn còn ${unanswered} câu chưa trả lời. Vẫn nộp bài?`))return;submitted=true;clearInterval(timerHandle);let total=0,s=[0,0,0,0],details=[];for(const q of questions){const u=sessionStorage.getItem('q'+q.n)||'',ok=correct(q,u);if(ok){total++;s[q.p]++}details.push({q:q.n,answer:u,correct:ok,key:Array.isArray(q.ans)?q.ans.join(' / '):q.ans});const ne=document.getElementById('nav'+q.n);if(ne){ne.classList.remove('answered');ne.classList.add(ok?'correct':'wrong')}}markPassage(current);const name=document.getElementById('studentName').value.trim(),cls=document.getElementById('studentClass').value.trim(),dur=Math.round((Date.now()-startedAt)/1000);document.getElementById('rstudent').textContent=`${name} — ${cls}`;document.getElementById('rscore').textContent=`${total} / 40`;document.getElementById('rpercent').textContent=`${Math.round(total/40*100)}% correct`;document.getElementById('p1s').textContent=`${s[1]} / 13`;document.getElementById('p2s').textContent=`${s[2]} / 13`;document.getElementById('p3s').textContent=`${s[3]} / 14`;renderWrongReview(details);document.getElementById('overlay').classList.remove('hidden');document.getElementById('status').textContent='Đang gửi kết quả về Google Sheet...';const p=new URLSearchParams({name,className:cls,total:String(total),maxScore:'40',durationSeconds:String(dur),activity:'IELTS Reading Computer-Based Test',reading:String(s[1]),grammar:String(s[2]),ing:String(s[3]),writingA:JSON.stringify(details),submittedAt:new Date().toISOString()});try{await fetch(GOOGLE_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:p.toString()});document.getElementById('status').textContent='✓ Đã gửi kết quả về Google Sheet.'}catch(e){document.getElementById('status').textContent='Không gửi được kết quả về Google Sheet. Hãy kiểm tra Web App URL hoặc kết nối mạng.'}}
 function closeResult(){document.getElementById('overlay').classList.add('hidden');markPassage(current)}
 </script></body></html>
