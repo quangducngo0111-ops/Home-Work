@@ -76,10 +76,10 @@ mark.user-highlight{background:#fff29a;color:inherit} .note-anchor{background:#d
   <div class="content">
     <div class="audio-card">
       <div class="audio-head"><b id="audioTitle">Audio — Part 1</b><span style="font-size:12px;color:var(--muted)">Use headphones if possible</span></div>
-      <audio id="audio1" controls preload="metadata" src="cam21-test4-part1.mp3"></audio>
-      <audio id="audio2" controls preload="metadata" class="hidden" src="cam21-test4-part2.mp3"></audio>
-      <audio id="audio3" controls preload="metadata" class="hidden" src="cam21-test4-part3.mp3"></audio>
-      <audio id="audio4" controls preload="metadata" class="hidden" src="cam21-test4-part4.mp3"></audio>
+      <audio id="audio1" controls preload="metadata"></audio>
+      <audio id="audio2" controls preload="metadata" class="hidden"></audio>
+      <audio id="audio3" controls preload="metadata" class="hidden"></audio>
+      <audio id="audio4" controls preload="metadata" class="hidden"></audio>
     </div>
 
     <div class="annot-bar">
@@ -140,6 +140,29 @@ function clearListeningAttempt(){
     if(k && k.startsWith(STORAGE_PREFIX)) toDelete.push(k);
   }
   toDelete.forEach(k=>sessionStorage.removeItem(k));
+}
+
+
+// ============================================================
+// AUDIO CONFIG
+// Cách 1: để 4 file MP3 cùng thư mục với file HTML -> giữ nguyên.
+// Cách 2: upload MP3 lên hosting rồi thay bằng URL đầy đủ.
+// ============================================================
+const AUDIO_FILES = {
+  1: "cam21-test4-part1.mp3",
+  2: "cam21-test4-part2.mp3",
+  3: "cam21-test4-part3.mp3",
+  4: "cam21-test4-part4.mp3"
+};
+
+function initAudioSources(){
+  for(let i=1;i<=4;i++){
+    const audio = document.getElementById("audio"+i);
+    if(audio){
+      audio.src = AUDIO_FILES[i];
+      audio.load();
+    }
+  }
 }
 
 const GOOGLE_SCRIPT_URL="https://script.google.com/macros/s/AKfycbwfwWjJ7Q3VTJEF5ldKGnFKYoziQdntAzRjq1Yqy6HSmbZSc69ijSdOvMCC_Zogbpcm/exec";
@@ -254,6 +277,7 @@ function startExam(){
  const n=document.getElementById("studentName").value.trim(),c=document.getElementById("studentClass").value.trim();
  if(!n||!c){document.getElementById("startError").textContent="Vui lòng nhập đầy đủ Họ tên và Lớp.";return}
  clearListeningAttempt();
+ initAudioSources();
  document.getElementById("topName").textContent=n;document.getElementById("topClass").textContent=c;
  document.getElementById("start").classList.add("hidden");document.getElementById("exam").classList.remove("hidden");
  submitted=false;savedSelection=null;activeHighlight=null;startedAt=Date.now();buildNav();showPart(1);timeHandle=setInterval(updateTime,500);updateTime();
