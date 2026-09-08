@@ -118,14 +118,70 @@ footer{color:#9ca3af;text-align:center;font-size:12px;padding:0 0 38px}
   .hero h1{font-size:31px}.cards,.options,.fill-grid{grid-template-columns:1fr}
   .progress-wrap{min-width:160px}.sidebar{display:none}
 }
+
+.start-overlay{
+  position:fixed;inset:0;z-index:100;background:rgba(15,23,42,.48);
+  display:grid;place-items:center;padding:20px
+}
+.start-card{
+  width:min(460px,100%);background:#fff;border-radius:22px;padding:24px;
+  box-shadow:0 24px 70px rgba(15,23,42,.24)
+}
+.start-card h2{margin:0 0 7px;font-size:25px;letter-spacing:-.5px}
+.start-card p{margin:0 0 18px;color:var(--muted);font-size:13px;line-height:1.55}
+.form-row{margin-top:12px}
+.form-row label{display:block;font-size:12px;font-weight:900;margin-bottom:6px;color:#374151}
+.form-row input{
+  width:100%;border:1px solid #d1d5db;border-radius:12px;padding:12px 13px;
+  outline:none;background:#fff
+}
+.form-row input:focus{border-color:#93c5fd;box-shadow:0 0 0 3px #dbeafe}
+.start-error{display:none;margin-top:10px;color:#b91c1c;font-size:12px;font-weight:700}
+.start-btn{
+  width:100%;margin-top:16px;border:0;border-radius:12px;padding:12px 14px;
+  background:var(--blue);color:#fff;font-weight:900;cursor:pointer
+}
+.student-chip{
+  display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid var(--line);
+  border-radius:999px;background:#fff;font-size:12px;font-weight:800;color:#374151;
+  white-space:nowrap
+}
+.student-chip span{color:var(--muted);font-weight:700}
+@media(max-width:650px){.student-chip{display:none}}
+
 </style>
 </head>
 <body>
+
+<div class="start-overlay" id="startOverlay">
+  <div class="start-card">
+    <div class="kicker">Dynamic Dataset · Vocabulary Lesson 01</div>
+    <h2>Thông tin học sinh</h2>
+    <p>Nhập họ tên và lớp trước khi bắt đầu bài học.</p>
+
+    <div class="form-row">
+      <label for="studentName">Họ và tên</label>
+      <input id="studentName" type="text" placeholder="Ví dụ: Nguyễn Minh Anh" autocomplete="name">
+    </div>
+
+    <div class="form-row">
+      <label for="studentClass">Lớp</label>
+      <input id="studentClass" type="text" placeholder="Ví dụ: 11A1">
+    </div>
+
+    <div class="start-error" id="startError">Vui lòng nhập đầy đủ họ tên và lớp.</div>
+    <button class="start-btn" id="startBtn" type="button">Bắt đầu học</button>
+  </div>
+</div>
+
 <header class="topbar">
   <div class="wrap top-inner">
     <div class="brand">
       <strong>IELTS Writing Task 1</strong>
       <span>Dynamic Dataset · Vocabulary Lesson</span>
+    </div>
+    <div class="student-chip" id="studentChip" style="display:none">
+      <b id="studentNameTop"></b><span id="studentClassTop"></span>
     </div>
     <div class="progress-wrap">
       <div class="progress"><i id="progressBar"></i></div>
@@ -399,6 +455,44 @@ footer{color:#9ca3af;text-align:center;font-size:12px;padding:0 0 38px}
 <footer>IELTS Writing Task 1 · Dynamic Dataset Vocabulary</footer>
 
 <script>
+
+const STUDENT_KEY = "IELTS_HOMEWORK_STUDENT";
+let studentInfo = {name:"", className:""};
+
+function loadStudentPrefill(){
+  const params = new URLSearchParams(location.search);
+  let saved = {};
+  try { saved = JSON.parse(localStorage.getItem(STUDENT_KEY) || "{}"); } catch(e){}
+  const name = params.get("name") || saved.name || "";
+  const className = params.get("className") || params.get("class") || saved.className || "";
+  document.getElementById("studentName").value = name;
+  document.getElementById("studentClass").value = className;
+}
+
+function startLesson(){
+  const name = document.getElementById("studentName").value.trim();
+  const className = document.getElementById("studentClass").value.trim();
+  const err = document.getElementById("startError");
+  if(!name || !className){
+    err.style.display = "block";
+    return;
+  }
+  err.style.display = "none";
+  studentInfo = {name, className};
+  localStorage.setItem(STUDENT_KEY, JSON.stringify(studentInfo));
+
+  document.getElementById("studentNameTop").textContent = name;
+  document.getElementById("studentClassTop").textContent = "· " + className;
+  document.getElementById("studentChip").style.display = "flex";
+  document.getElementById("startOverlay").style.display = "none";
+}
+
+document.getElementById("startBtn").addEventListener("click", startLesson);
+document.getElementById("studentClass").addEventListener("keydown", e=>{
+  if(e.key==="Enter") startLesson();
+});
+loadStudentPrefill();
+
 const flashcards = [
   ["an upward trend","xu hướng tăng","The figure showed an upward trend over the period."],
   ["a downward trend","xu hướng giảm","The price followed a downward trend over the period."],
