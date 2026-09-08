@@ -79,6 +79,29 @@ button,input,select{font:inherit}
 .field input{width:100%;border:1px solid #d1d5db;border-radius:12px;padding:12px;outline:none}
 .err{display:none;margin-top:9px;color:var(--red);font-size:12px;font-weight:800}
 @media(max-width:720px){.grid,.options{grid-template-columns:1fr}.hero h1{font-size:30px}.meta .student{display:none}}
+
+.passage{
+  font-family:Georgia,"Times New Roman",serif;font-size:16px;line-height:1.78;color:#1f2937
+}
+.passage p{margin:0 0 15px;text-align:justify}
+.passage p:last-child{margin-bottom:0}
+.people-box{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:12px 0 16px}
+.person{border:1px solid var(--line);border-radius:12px;padding:10px;background:#f8fafc;font-size:12px;text-align:center}
+.person b{display:block;color:var(--blue2);font-size:15px;margin-bottom:3px}
+.match-row{
+  display:grid;grid-template-columns:36px 1fr 190px;gap:10px;align-items:center;
+  border-top:1px solid var(--line);padding:12px 0
+}
+.match-row:first-child{border-top:0}
+.match-row select{width:100%;border:1px solid #d1d5db;border-radius:10px;padding:9px 10px;background:#fff}
+.match-row select.good{border-color:#86efac;background:var(--greenbg)}
+.match-row select.bad{border-color:#fecaca;background:var(--redbg)}
+@media(max-width:650px){
+  .people-box{grid-template-columns:repeat(2,1fr)}
+  .match-row{grid-template-columns:30px 1fr}
+  .match-row select{grid-column:2}
+}
+
 </style>
 </head>
 <body>
@@ -118,7 +141,7 @@ button,input,select{font:inherit}
   <section class="hero">
     <div class="kicker">Homework · Vocabulary</div>
     <h1>Life on a Floating Village</h1>
-    <p>Học 11 từ vựng, sau đó hoàn thành 3 dạng bài: chọn nghĩa, viết từ tiếng Anh và chọn từ theo ngữ cảnh. Hệ thống tự chấm và gửi kết quả về giáo viên.</p>
+    <p>Học 11 từ vựng, sau đó hoàn thành bài chọn nghĩa, viết từ, Word Challenge, đọc hiểu và Matching Features. Hệ thống tự chấm và gửi kết quả về giáo viên.</p>
     <div class="progress-wrap">
       <div class="progress"><i id="progressBar"></i></div>
       <div class="progress-text" id="progressText">0%</div>
@@ -166,8 +189,41 @@ button,input,select{font:inherit}
     <div id="challengeBox"></div>
   </section>
 
+
   <section class="card">
-    <h2>5. Nộp bài</h2>
+    <h2>5. Reading Practice</h2>
+    <p class="sub">Đọc đoạn văn dưới đây. Các từ trong bài đều liên quan đến nhóm từ vựng vừa học.</p>
+
+    <div class="passage">
+      <p><b><i>Can you imagine living in a house that moves gently with the water? Can you imagine travelling to school by boat every day?</i></b></p>
+
+      <p>In her photo story <i>Life on the Lake</i>, photographer Emma Brooks travels from Melbourne to a floating village in Southeast Asia. She spends six weeks with the local people and learns about their traditional way of life.</p>
+
+      <p>The village is built on a large lake. There are no roads between the houses, so people travel by boat. Most families get up before sunrise. The men usually fish in the early morning and take their catch to the market later in the day.</p>
+
+      <p>Many women work at small shops or prepare food for their families. Some also repair fishing nets and help to sell fish at the market. The children travel to school by boat and often help their parents after class.</p>
+
+      <p>The whole community works together during the rainy season. When the water rises, families check their homes, repair boats and move important things to higher places. Emma says the village is very different from city life, but the people are friendly and work closely together.</p>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>6. Matching Features</h2>
+    <p class="sub">Match each statement with the correct person or group. Một chữ cái có thể dùng nhiều lần.</p>
+
+    <div class="people-box">
+      <div class="person"><b>A</b>Emma Brooks</div>
+      <div class="person"><b>B</b>Village men</div>
+      <div class="person"><b>C</b>Village women</div>
+      <div class="person"><b>D</b>Village children</div>
+      <div class="person"><b>E</b>The whole community</div>
+    </div>
+
+    <div id="matchBox"></div>
+  </section>
+
+  <section class="card">
+    <h2>7. Nộp bài</h2>
     <p class="sub">Sau khi nộp, đáp án sẽ bị khóa và hệ thống sẽ gửi kết quả về giáo viên.</p>
     <div class="actions">
       <button class="btn primary" id="submitBtn">Nộp bài & xem kết quả</button>
@@ -222,6 +278,17 @@ const challengeQs=[
   {q:"People in this area still wear ________ clothes on special days.",a:["floating","traditional","local","community"],c:1},
   {q:"They ________ on the lake every morning and sell their catch later.",a:["repair","travel","fish","market"],c:2},
   {q:"The school is important to the whole ________.",a:["community","sunrise","boat","photographer"],c:0}
+];
+
+const matchQs=[
+  {s:"travels to the village to take photographs",a:"A"},
+  {s:"catches fish early in the morning",a:"B"},
+  {s:"may work in small shops",a:"C"},
+  {s:"goes to school by boat",a:"D"},
+  {s:"repairs fishing nets",a:"C"},
+  {s:"works together when the water rises",a:"E"},
+  {s:"says the village is different from city life",a:"A"},
+  {s:"takes fish to the market later in the day",a:"B"}
 ];
 
 function norm(s){return String(s||"").trim().toLowerCase().replace(/\s+/g," ")}
@@ -284,16 +351,29 @@ function render(){
     cb.appendChild(d);
   });
 
+  const mb=document.getElementById("matchBox");
+  matchQs.forEach((x,i)=>{
+    const row=document.createElement("div");
+    row.className="match-row";
+    row.innerHTML=`<b>${i+1}</b><div>${x.s}</div>
+      <select id="mq${i}">
+        <option value="">— Chọn —</option>
+        <option>A</option><option>B</option><option>C</option><option>D</option><option>E</option>
+      </select>`;
+    mb.appendChild(row);
+  });
+
   document.querySelectorAll("select,input").forEach(el=>{
     if(el.id!=="studentName"&&el.id!=="studentClass") el.addEventListener("input",updateProgress);
   });
 }
 
 function updateProgress(){
-  let answered=0,total=meaningQs.length+spellingQs.length+challengeQs.length;
+  let answered=0,total=meaningQs.length+spellingQs.length+challengeQs.length+matchQs.length;
   meaningQs.forEach((_,i)=>{if(document.getElementById("m"+i).value)answered++});
   spellingQs.forEach((_,i)=>{if(document.getElementById("s"+i).value.trim())answered++});
   challengeQs.forEach((_,i)=>{if(document.getElementById("copts"+i).dataset.choice!==undefined)answered++});
+  matchQs.forEach((_,i)=>{if(document.getElementById("mq"+i).value)answered++});
   const pct=Math.round(answered/total*100);
   document.getElementById("progressBar").style.width=pct+"%";
   document.getElementById("progressText").textContent=pct+"%";
@@ -335,6 +415,17 @@ function grade(){
     details.push({part:"challenge",question:i+1,answer:selected>=0?x.a[selected]:"",correct:x.a[x.c],isCorrect:ok});
   });
 
+  matchQs.forEach((x,i)=>{
+    total++;
+    const el=document.getElementById("mq"+i);
+    const ok=el.value===x.a;
+    el.disabled=true;
+    el.classList.add(ok?"good":"bad");
+    if(ok)score++;
+    else wrong.push(`Matching Features ${i+1}: "${el.value||"—"}" → ${x.a}`);
+    details.push({part:"matching_features",question:i+1,answer:el.value,correct:x.a,isCorrect:ok});
+  });
+
   const percent=Math.round(score/total*100);
   const duration=Math.floor((Date.now()-startedAt)/1000);
 
@@ -367,7 +458,7 @@ async function sendResult(r){
     duration:String(r.duration),
     details:JSON.stringify({
       testId:"VOCABULARY_01",
-      title:"Life on a Floating Village",
+      title:"Life on a Floating Village — Vocabulary + Reading + Matching Features",
       answers:r.details
     })
   });
