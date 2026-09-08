@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dynamic Dataset Vocabulary | IELTS Writing Task 1</title>
+<style>
+:root{
+  --ink:#111827;--muted:#6b7280;--line:#e5e7eb;--bg:#f5f7fb;--card:#fff;
+  --blue:#2563eb;--blue2:#1d4ed8;--soft:#eff6ff;--green:#15803d;--red:#b91c1c;
+  --amber:#b45309;--purple:#7e22ce;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+}
+button,input{font:inherit}
+.topbar{
+  position:sticky;top:0;z-index:30;background:rgba(255,255,255,.96);
+  backdrop-filter:blur(10px);border-bottom:1px solid var(--line)
+}
+.wrap{width:min(1180px,calc(100% - 32px));margin:auto}
+.top-inner{min-height:68px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand strong{display:block;font-size:18px}
+.brand span{color:var(--muted);font-size:12px}
+.progress-wrap{display:flex;align-items:center;gap:10px;min-width:260px}
+.progress{height:8px;background:#e5e7eb;border-radius:999px;overflow:hidden;flex:1}
+.progress>i{display:block;height:100%;width:0;background:var(--blue);transition:.25s}
+.progress-text{font-size:12px;font-weight:800;color:var(--muted)}
+.hero{padding:42px 0 24px}
+.kicker{font-size:12px;font-weight:900;color:var(--blue);letter-spacing:.08em;text-transform:uppercase}
+.hero h1{font-size:38px;line-height:1.08;letter-spacing:-1.2px;margin:8px 0 12px}
+.hero p{max-width:820px;color:var(--muted);line-height:1.65;margin:0}
+.layout{display:grid;grid-template-columns:250px 1fr;gap:22px;align-items:start;padding-bottom:56px}
+.sidebar{
+  position:sticky;top:90px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px
+}
+.sidebar h3{font-size:13px;margin:2px 8px 10px;color:#374151}
+.sidebar a{
+  display:block;text-decoration:none;color:#374151;padding:10px 10px;border-radius:10px;
+  font-size:13px;font-weight:700
+}
+.sidebar a:hover{background:#f3f4f6}
+.main{min-width:0}
+.section{
+  background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px;margin-bottom:16px
+}
+.section h2{font-size:23px;margin:0 0 6px;letter-spacing:-.4px}
+.section .sub{margin:0 0 18px;color:var(--muted);font-size:13px;line-height:1.55}
+.rule{
+  background:#f8fafc;border:1px solid var(--line);border-left:4px solid var(--blue);
+  border-radius:14px;padding:14px 15px;margin:14px 0
+}
+.rule strong{color:#1d4ed8}
+.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:14px}
+table{width:100%;border-collapse:collapse;min-width:720px;background:#fff}
+th,td{padding:12px 13px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;font-size:13px;line-height:1.45}
+th{background:#f8fafc;color:#374151;font-size:12px;text-transform:uppercase;letter-spacing:.03em}
+tr:last-child td{border-bottom:0}
+.term{font-weight:900;color:#111827}
+.example strong{color:var(--blue2)}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.flash{
+  border:1px solid var(--line);border-radius:16px;background:#fff;padding:16px;min-height:132px;
+  cursor:pointer;transition:.16s;position:relative
+}
+.flash:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(15,23,42,.06)}
+.flash .front{font-size:16px;font-weight:900}
+.flash .hint{position:absolute;bottom:12px;right:12px;color:#9ca3af;font-size:11px;font-weight:700}
+.flash .back{display:none;margin-top:10px;color:var(--muted);font-size:13px;line-height:1.45}
+.flash.open{background:#f8fbff;border-color:#bfdbfe}
+.flash.open .back{display:block}
+.practice-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.score-pill{background:#eff6ff;color:#1d4ed8;font-size:12px;font-weight:900;padding:8px 10px;border-radius:999px}
+.q{
+  border:1px solid var(--line);border-radius:16px;padding:16px;margin-top:12px;background:#fff
+}
+.q p{margin:0 0 10px;font-weight:800;line-height:1.5}
+.options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.option{
+  border:1px solid var(--line);background:#fff;border-radius:11px;padding:10px 12px;text-align:left;cursor:pointer
+}
+.option:hover{background:#f8fafc}
+.option.correct{border-color:#86efac;background:#f0fdf4;color:#166534}
+.option.wrong{border-color:#fecaca;background:#fef2f2;color:#991b1b}
+.explain{display:none;margin-top:9px;font-size:12px;color:var(--muted);line-height:1.45}
+.q.done .explain{display:block}
+.fill-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fill{
+  border:1px solid var(--line);border-radius:14px;padding:14px
+}
+.fill label{display:block;font-size:13px;font-weight:800;line-height:1.5;margin-bottom:8px}
+.fill input{
+  width:100%;border:1px solid #d1d5db;border-radius:10px;padding:10px 11px;outline:none
+}
+.fill input.good{border-color:#86efac;background:#f0fdf4}
+.fill input.bad{border-color:#fecaca;background:#fef2f2}
+.feedback{font-size:12px;margin-top:7px;color:var(--muted)}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.btn{
+  border:0;border-radius:12px;padding:11px 14px;font-weight:900;cursor:pointer
+}
+.btn.primary{background:var(--blue);color:#fff}
+.btn.ghost{background:#eef2f7;color:#374151}
+.summary{
+  display:none;background:#111827;color:#fff;border-radius:18px;padding:20px;margin-top:16px
+}
+.summary.show{display:block}
+.summary h3{margin:0 0 8px}
+.summary p{margin:0;color:#d1d5db;line-height:1.55}
+footer{color:#9ca3af;text-align:center;font-size:12px;padding:0 0 38px}
+@media(max-width:900px){
+  .layout{grid-template-columns:1fr}.sidebar{position:static}.cards{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:650px){
+  .hero h1{font-size:31px}.cards,.options,.fill-grid{grid-template-columns:1fr}
+  .progress-wrap{min-width:160px}.sidebar{display:none}
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap top-inner">
+    <div class="brand">
+      <strong>IELTS Writing Task 1</strong>
+      <span>Dynamic Dataset · Vocabulary Lesson</span>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress"><i id="progressBar"></i></div>
+      <div class="progress-text" id="progressText">0%</div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <div class="kicker">Dynamic Dataset · Vocabulary Lesson 01</div>
+    <h1>Trend Vocabulary for Dynamic Charts</h1>
+    <p>Học và luyện các nhóm từ vựng quan trọng để mô tả xu hướng trong IELTS Writing Task 1: tăng, giảm, ổn định, dao động, điểm cao/thấp, so sánh nhiều đường, mức độ thay đổi và cụm từ chỉ thời gian.</p>
+  </section>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <h3>Nội dung bài học</h3>
+      <a href="#up">↑ Upward Trends</a>
+      <a href="#down">↓ Downward Trends</a>
+      <a href="#steady">→ Steady Trends</a>
+      <a href="#fluctuate">↕ Fluctuating Trends</a>
+      <a href="#high">High Points</a>
+      <a href="#low">Low Points</a>
+      <a href="#compare">Two or More Trends</a>
+      <a href="#degree">Degree of Change</a>
+      <a href="#time">Periods of Time</a>
+      <a href="#flashcards">Flashcards</a>
+      <a href="#practice">Practice</a>
+    </aside>
+
+    <div class="main">
+      <section class="section" id="up">
+        <h2>1. Xu hướng tăng – Upward Trends</h2>
+        <p class="sub">Các từ và động từ mô tả số liệu tăng lên theo thời gian.</p>
+        <div class="rule"><strong>Key vocabulary:</strong> <b>an upward trend</b> = xu hướng tăng.<br>
+        Ví dụ: <b>The figure showed an upward trend over the period.</b></div>
+        <div class="rule"><strong>Nhớ 3 cấu trúc:</strong> rose <b>to 120</b> = tăng đến 120 · rose <b>from 115 to 120</b> = tăng từ 115 lên 120 · rose <b>by 5</b> = tăng 5 đơn vị.</div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Verb</th><th>Ví dụ</th><th>Cấu trúc</th><th>Ý nghĩa</th></tr></thead>
+          <tbody>
+            <tr><td class="term">increase</td><td class="example">The price of petrol <strong>increased</strong>.</td><td>rose <b>to 120</b></td><td>tăng <b>đến</b> 120</td></tr>
+            <tr><td class="term">rise</td><td class="example">The figure <strong>rose</strong>.</td><td>rose <b>from 115 to 120</b></td><td>tăng <b>từ 115 lên 120</b></td></tr>
+            <tr><td class="term">climb</td><td class="example">The price <strong>climbed</strong>.</td><td>rose <b>by 5</b></td><td>tăng <b>5 đơn vị</b></td></tr>
+            <tr><td class="term">go up</td><td class="example">The figure <strong>went up</strong>.</td><td>—</td><td>tăng lên</td></tr>
+            <tr><td class="term">jump up</td><td class="example">The figure <strong>jumped up</strong>.</td><td>—</td><td>tăng lên</td></tr>
+            <tr><td class="term">shoot up</td><td class="example">The price <strong>shot up</strong>.</td><td>—</td><td>tăng lên</td></tr>
+          </tbody>
+        </table></div>
+      </section>
+
+      <section class="section" id="down">
+        <h2>2. Xu hướng giảm – Downward Trends</h2>
+        <p class="sub">Các từ và động từ mô tả số liệu giảm xuống.</p>
+        <div class="rule"><strong>Key vocabulary:</strong> <b>a downward trend</b> = xu hướng giảm.<br>
+        Ví dụ: <b>The price followed a downward trend over the period.</b></div>
+        <div class="rule"><strong>Nhớ 3 cấu trúc:</strong> fell <b>to 110</b> = giảm xuống còn 110 · fell <b>from 115 to 110</b> = giảm từ 115 xuống 110 · fell <b>by 5</b> = giảm 5 đơn vị.</div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Verb</th><th>Ví dụ</th><th>Cấu trúc</th><th>Ý nghĩa</th></tr></thead>
+          <tbody>
+            <tr><td class="term">decrease</td><td class="example">The price of petrol <strong>decreased</strong>.</td><td>fell <b>to 110</b></td><td>giảm xuống còn 110</td></tr>
+            <tr><td class="term">fall</td><td class="example">The figure <strong>fell</strong>.</td><td>fell <b>from 115 to 110</b></td><td>giảm từ 115 xuống 110</td></tr>
+            <tr><td class="term">decline</td><td class="example">The price <strong>declined</strong>.</td><td>fell <b>by 5</b></td><td>giảm 5 đơn vị</td></tr>
+            <tr><td class="term">drop</td><td class="example">The figure <strong>dropped</strong>.</td><td>—</td><td>giảm</td></tr>
+            <tr><td class="term">go down</td><td class="example">The figure <strong>went down</strong>.</td><td>—</td><td>giảm xuống</td></tr>
+          </tbody>
+        </table></div>
+      </section>
+
+      <section class="section" id="steady">
+        <h2>3. Xu hướng ổn định – Steady Trends</h2>
+        <p class="sub">Dùng khi số liệu giữ nguyên, duy trì ổn định hoặc chững lại.</p>
+        <div class="rule"><strong>Key vocabulary:</strong> <b>stability</b> = sự ổn định · <b>remain stable</b> = duy trì ổn định.<br>
+        Ví dụ: <b>The figure remained stable throughout the period.</b></div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Từ/Cụm từ</th><th>Ý nghĩa</th><th>Cấu trúc/Ví dụ</th></tr></thead>
+          <tbody>
+            <tr><td class="term">stay the same</td><td>giữ nguyên</td><td>The price stayed the same.</td></tr>
+            <tr><td class="term">stay constant</td><td>duy trì không đổi</td><td>The figure stayed constant.</td></tr>
+            <tr><td class="term">remain</td><td>duy trì ở mức</td><td>The price remained at 115 USD.</td></tr>
+            <tr><td class="term">remain steady</td><td>duy trì ổn định</td><td>The figure remained steady.</td></tr>
+            <tr><td class="term">level out</td><td>ổn định sau biến động</td><td>The price levelled out at 115 USD.</td></tr>
+            <tr><td class="term">plateau</td><td>chững lại/đi ngang</td><td>The figure plateaued.</td></tr>
+          </tbody>
+        </table></div>
+      </section>
+
+      <section class="section" id="fluctuate">
+        <h2>4. Xu hướng dao động – Fluctuating Trends</h2>
+        <div class="rule"><strong>Key vocabulary:</strong> <b>a fluctuating trend</b> = xu hướng dao động · <b>fluctuation</b> = sự dao động.<br>
+        Ví dụ: <b>The figure showed a fluctuating trend throughout the period.</b></div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Từ/Cụm từ</th><th>Ý nghĩa</th><th>Ví dụ</th></tr></thead>
+          <tbody>
+            <tr><td class="term">fluctuate</td><td>dao động</td><td>The price of petrol <b>fluctuated</b>.</td></tr>
+            <tr><td class="term">show fluctuations</td><td>có sự dao động</td><td>The figure <b>showed fluctuations</b> throughout the period.</td></tr>
+            <tr><td class="term">experience fluctuations</td><td>trải qua sự dao động</td><td>The price <b>experienced fluctuations</b> over the period.</td></tr>
+          </tbody>
+        </table></div>
+      </section>
+
+      <section class="section" id="high">
+        <h2>5. Điểm cao nhất – High Points</h2>
+        <div class="rule"><strong>Key vocabulary:</strong> <b>peak / high point</b> = điểm cao nhất, mức đỉnh.<br>
+        Ví dụ: <b>The figure reached a peak of 116 USD.</b></div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Từ/Cụm từ</th><th>Ý nghĩa</th><th>Ví dụ</th></tr></thead>
+          <tbody>
+            <tr><td class="term">reach its peak at + số liệu</td><td>đạt đỉnh ở mức</td><td>The price of petrol <b>reached its peak at 116 USD</b>.</td></tr>
+            <tr><td class="term">reach its highest point at + số liệu</td><td>đạt điểm cao nhất ở mức</td><td>The price of petrol <b>reached its highest point at 116 USD</b>.</td></tr>
+            <tr><td class="term">reach a peak of + số liệu</td><td>đạt mức đỉnh là</td><td>The price of petrol <b>reached a peak of 116 USD</b>.</td></tr>
+            <tr><td class="term">reach a high of + số liệu</td><td>đạt mức cao là</td><td>The price of petrol <b>reached a high of 116 USD</b>.</td></tr>
+          </tbody>
+        </table></div>
+      </section>
+
+      <section class="section" id="low">
+        <h2>6. Điểm thấp nhất – Low Points</h2>
+        <div class="rule"><strong>Key vocabulary:</strong> <b>low point / lowest point</b> = điểm thấp nhất · <b>trough</b> = đáy / mức thấp nhất trong một chu kỳ.<br>
+        Ví dụ: <b>The figure reached its lowest point at 109 USD.</b></div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Từ/Cụm từ</th><th>Ý nghĩa</th><th>Ví dụ</th></tr></thead>
+          <tbody>
+            <tr><td class="term">reach its lowest point at + số liệu</td><td>đạt điểm thấp nhất ở mức</td><td>The price of petrol <b>reached its lowest point at 109 USD</b>.</td></tr>
+            <tr><td class="term">reach its lowest level at + số liệu</td><td>đạt mức thấp nhất ở mức</td><td>The price of petrol <b>reached its lowest level at 109 USD</b>.</td></tr>
+            <tr><td class="term">reach a low of + số liệu</td><td>chạm mức thấp là</td><td>The price of petrol <b>reached a low of 109 USD</b>.</td></tr>
+          </tbody>
+        </table></div>
+      </section>
+
+      <section class="section" id="compare">
+        <h2>7. So sánh hai hoặc nhiều đường – Two or More Trends</h2>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Cấu trúc</th><th>Ý nghĩa</th><th>Ví dụ</th></tr></thead>
+          <tbody>
+            <tr><td class="term">A was cheaper than B</td><td>A rẻ hơn B</td><td>Petrol in the UK <b>was cheaper than</b> in the USA.</td></tr>
+            <tr><td class="term">A was more expensive than B</td><td>A đắt hơn B</td><td>Petrol in the UK <b>was more expensive than</b> in the USA.</td></tr>
+            <tr><td class="term">A was the cheapest</td><td>A thấp nhất/rẻ nhất</td><td>In 1980, petrol in the UK <b>was the cheapest</b>.</td></tr>
+            <tr><td class="term">A surpassed B</td><td>A vượt B</td><td>The figure for the UK <b>surpassed</b> that for the USA.</td></tr>
+            <tr><td class="term">A exceeded B</td><td>A vượt B</td><td>The UK figure <b>exceeded</b> the USA figure.</td></tr>
+            <tr><td class="term">A and B increased at roughly the same rate</td><td>A và B tăng với tốc độ gần tương đương</td><td>Both figures <b>increased at roughly the same rate</b>.</td></tr>
+          </tbody>
+        </table></div>
+      </section>
+
+      <section class="section" id="degree">
+        <h2>8. Tính từ và trạng từ mô tả mức độ thay đổi</h2>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Mức độ</th><th>Adjective</th><th>Adverb</th></tr></thead>
+          <tbody>
+            <tr><td>Nhỏ</td><td>marginal</td><td>marginally</td></tr>
+            <tr><td>Nhỏ</td><td>slight</td><td>slightly</td></tr>
+            <tr><td>Trung bình</td><td>moderate</td><td>moderately</td></tr>
+            <tr><td>Khá lớn</td><td>considerable</td><td>considerably</td></tr>
+            <tr><td>Khá lớn</td><td>noticeable</td><td>noticeably</td></tr>
+            <tr><td>Khá lớn</td><td>significant</td><td>significantly</td></tr>
+            <tr><td>Lớn</td><td>substantial</td><td>substantially</td></tr>
+            <tr><td>Lớn</td><td>steep</td><td>steeply</td></tr>
+          </tbody>
+        </table></div>
+        <div class="rule">
+          There was a <b>slight increase</b> in the figure. → The figure <b>increased slightly</b>.<br><br>
+          There was a <b>significant decline</b> in emissions. → Emissions <b>declined significantly</b>.
+        </div>
+      </section>
+
+      <section class="section" id="time">
+        <h2>9. Cụm từ mô tả thời gian – Describing Periods of Time</h2>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Cụm từ</th><th>Cách dùng</th><th>Ví dụ</th></tr></thead>
+          <tbody>
+            <tr><td class="term">at the beginning of the period</td><td>nói về thời điểm đầu kỳ</td><td><b>At the beginning of the period</b>, the price was 115 USD.</td></tr>
+            <tr><td class="term">at the end of the period</td><td>nói về thời điểm cuối kỳ</td><td><b>At the end of the period</b>, the price was around 112 USD.</td></tr>
+            <tr><td class="term">over the period</td><td>mô tả xu hướng/tổng thể của cả giai đoạn</td><td><b>Over the period</b>, the price experienced a downward trend.</td></tr>
+            <tr><td class="term">throughout the period</td><td>nhấn mạnh điều diễn ra xuyên suốt cả giai đoạn</td><td><b>Throughout the period</b>, the price fluctuated.</td></tr>
+            <tr><td class="term">during the period</td><td>nói về một/số sự kiện xảy ra tại các thời điểm trong giai đoạn</td><td><b>During the period</b>, the price reached a high of 116 USD and a low of 109 USD.</td></tr>
+          </tbody>
+        </table></div>
+      </section>
+
+      <section class="section" id="flashcards">
+        <h2>Flashcards</h2>
+        <p class="sub">Bấm vào từng thẻ để xem nghĩa và ví dụ.</p>
+        <div class="cards" id="flashGrid"></div>
+      </section>
+
+      <section class="section" id="practice">
+        <div class="practice-head">
+          <div>
+            <h2>Practice</h2>
+            <p class="sub" style="margin-bottom:0">Làm nhanh để kiểm tra khả năng nhận diện và sử dụng từ.</p>
+          </div>
+          <div class="score-pill" id="scorePill">0 / 10 đúng</div>
+        </div>
+
+        <div id="mcqBox"></div>
+
+        <h3 style="margin:24px 0 8px">Điền từ vào chỗ trống</h3>
+        <p class="sub">Nhập từ/cụm từ phù hợp. Không phân biệt chữ hoa/chữ thường.</p>
+        <div class="fill-grid" id="fillGrid"></div>
+
+        <div class="actions">
+          <button class="btn primary" onclick="checkFill()">Chấm phần điền từ</button>
+          <button class="btn ghost" onclick="resetAll()">Làm lại bài</button>
+        </div>
+
+        <div class="summary" id="summary">
+          <h3 id="summaryTitle">Kết quả</h3>
+          <p id="summaryText"></p>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>
+<footer>IELTS Writing Task 1 · Dynamic Dataset Vocabulary</footer>
+
+<script>
+const flashcards = [
+  ["an upward trend","xu hướng tăng","The figure showed an upward trend over the period."],
+  ["a downward trend","xu hướng giảm","The price followed a downward trend over the period."],
+  ["stability","sự ổn định","The figure showed a period of stability."],
+  ["remain stable","duy trì ổn định","The figure remained stable throughout the period."],
+  ["a fluctuating trend","xu hướng dao động","The figure showed a fluctuating trend throughout the period."],
+  ["fluctuation","sự dao động","The figure showed fluctuations throughout the period."],
+  ["peak / high point","điểm cao nhất / mức đỉnh","The figure reached a peak of 116 USD."],
+  ["low point / lowest point","điểm thấp nhất","The figure reached its lowest point at 109 USD."],
+
+  ["increase","tăng","The price of petrol increased."],
+  ["rise","tăng","The figure rose."],
+  ["climb","tăng","The price climbed."],
+  ["go up","tăng lên","The figure went up."],
+  ["jump up","tăng lên","The figure jumped up."],
+  ["shoot up","tăng lên","The price shot up."],
+  ["decrease","giảm","The price of petrol decreased."],
+  ["fall","giảm","The figure fell."],
+  ["decline","giảm","The price declined."],
+  ["drop","giảm","The figure dropped."],
+  ["go down","giảm xuống","The figure went down."],
+  ["remain steady","duy trì ổn định","The figure remained steady."],
+  ["level out","ổn định sau biến động","The price levelled out at 115 USD."],
+  ["plateau","chững lại/đi ngang","The figure plateaued."],
+  ["fluctuate","dao động","The price of petrol fluctuated."],
+  ["reach its peak at","đạt đỉnh ở mức","The price reached its peak at 116 USD."],
+  ["reach a low of","chạm mức thấp là","The price reached a low of 109 USD."],
+  ["surpass","vượt","The figure for the UK surpassed that for the USA."],
+  ["significantly","đáng kể","Emissions declined significantly."],
+  ["throughout the period","xuyên suốt cả giai đoạn","Throughout the period, the price fluctuated."]
+];
+
+const flashGrid = document.getElementById("flashGrid");
+flashcards.forEach(([term,meaning,ex])=>{
+  const el=document.createElement("div");
+  el.className="flash";
+  el.innerHTML=`<div class="front">${term}</div><div class="back"><b>${meaning}</b><br>${ex}</div><div class="hint">Bấm để xem</div>`;
+  el.onclick=()=>{el.classList.toggle("open");updateProgress()};
+  flashGrid.appendChild(el);
+});
+
+const mcqs = [
+  {q:"“rose by 5” có nghĩa là gì?",a:["tăng đến 5","tăng 5 đơn vị","tăng từ 5","tăng gấp 5"],c:1,e:"by + số liệu = mức thay đổi."},
+  {q:"“fell from 115 to 110” mô tả điều gì?",a:["giảm 5 đơn vị","giảm từ 115 xuống 110","giảm xuống còn 115","tăng từ 110 lên 115"],c:1,e:"from A to B = từ A đến B."},
+  {q:"Cụm nào phù hợp nhất với ý “duy trì ổn định”?",a:["remain steady","shoot up","reach a low of","surpass"],c:0,e:"remain steady = duy trì ổn định."},
+  {q:"Động từ nào mô tả “dao động”?",a:["plateau","fluctuate","exceed","climb"],c:1,e:"fluctuate = dao động."},
+  {q:"“reached its peak at 116 USD” nghĩa là gì?",a:["giảm xuống 116 USD","dao động quanh 116 USD","đạt đỉnh ở 116 USD","bắt đầu ở 116 USD"],c:2,e:"reach its peak at + số liệu = đạt đỉnh ở mức đó."},
+  {q:"Câu nào diễn đạt “A vượt B”?",a:["A stayed the same as B","A surpassed B","A fell below B","A levelled out"],c:1,e:"surpassed = vượt."},
+  {q:"Trạng từ của “significant” là gì?",a:["significance","significantly","significant","signify"],c:1,e:"Adverb: significantly."},
+  {q:"Cấu trúc nào đúng với ý “giảm xuống còn 110”?",a:["fell by 110","fell from 110","fell to 110","fell at 110"],c:2,e:"to + số liệu = mức cuối cùng."},
+  {q:"Cụm nào nói về thời điểm đầu kỳ?",a:["throughout the period","during the period","at the end of the period","at the beginning of the period"],c:3,e:"at the beginning of the period = ở đầu giai đoạn."},
+  {q:"“Both figures increased at roughly the same rate” nghĩa là gì?",a:["Hai số liệu tăng gần cùng tốc độ","Hai số liệu bằng nhau","Hai số liệu giảm cùng lúc","Một số liệu vượt số liệu còn lại"],c:0,e:"roughly the same rate = tốc độ gần tương đương."}
+];
+
+let mcqCorrect=0, mcqDone=0;
+const mcqBox=document.getElementById("mcqBox");
+mcqs.forEach((item,idx)=>{
+  const q=document.createElement("div");
+  q.className="q";
+  q.innerHTML=`<p>${idx+1}. ${item.q}</p><div class="options"></div><div class="explain">${item.e}</div>`;
+  const opts=q.querySelector(".options");
+  item.a.forEach((txt,i)=>{
+    const b=document.createElement("button");
+    b.className="option";
+    b.textContent=txt;
+    b.onclick=()=>{
+      if(q.classList.contains("done"))return;
+      q.classList.add("done");mcqDone++;
+      if(i===item.c){b.classList.add("correct");mcqCorrect++}else{
+        b.classList.add("wrong");opts.children[item.c].classList.add("correct");
+      }
+      document.getElementById("scorePill").textContent=`${mcqCorrect} / ${mcqs.length} đúng`;
+      updateProgress();updateSummary();
+    };
+    opts.appendChild(b);
+  });
+  mcqBox.appendChild(q);
+});
+
+const fills=[
+  {s:"The price ________ from 115 to 120.",a:["rose","increased","climbed","went up"]},
+  {s:"The figure ________ to 110.",a:["fell","decreased","declined","dropped","went down"]},
+  {s:"The price ________ at 115 USD after several changes.",a:["levelled out","leveled out"]},
+  {s:"Throughout the period, the price ________.",a:["fluctuated"]},
+  {s:"The price reached its ________ at 116 USD.",a:["peak","highest point"]},
+  {s:"The UK figure ________ the USA figure.",a:["surpassed","exceeded"]},
+  {s:"There was a ________ increase in the figure.",a:["slight","marginal","moderate","considerable","noticeable","significant","substantial","steep"]},
+  {s:"The figure increased ________.",a:["slightly","marginally","moderately","considerably","noticeably","significantly","substantially","steeply"]}
+];
+const fillGrid=document.getElementById("fillGrid");
+fills.forEach((f,i)=>{
+  const d=document.createElement("div");d.className="fill";
+  d.innerHTML=`<label>${i+1}. ${f.s}</label><input id="fill${i}" autocomplete="off"><div class="feedback" id="fb${i}"></div>`;
+  fillGrid.appendChild(d);
+});
+
+let fillScore=0,fillChecked=false;
+function norm(s){return s.trim().toLowerCase().replace(/\s+/g," ")}
+function checkFill(){
+  fillScore=0;fillChecked=true;
+  fills.forEach((f,i)=>{
+    const inp=document.getElementById("fill"+i),fb=document.getElementById("fb"+i);
+    const ok=f.a.map(norm).includes(norm(inp.value));
+    inp.classList.remove("good","bad");
+    inp.classList.add(ok?"good":"bad");
+    if(ok){fillScore++;fb.textContent="✓ Chính xác"}else{fb.textContent="Đáp án gợi ý: "+f.a[0]}
+  });
+  updateProgress();updateSummary();
+}
+function updateProgress(){
+  const opened=document.querySelectorAll(".flash.open").length;
+  const flashPct=Math.min(opened/10,1)*25;
+  const mcqPct=(mcqDone/mcqs.length)*45;
+  const fillPct=fillChecked?30:0;
+  const pct=Math.round(flashPct+mcqPct+fillPct);
+  document.getElementById("progressBar").style.width=pct+"%";
+  document.getElementById("progressText").textContent=pct+"%";
+}
+function updateSummary(){
+  if(mcqDone===mcqs.length && fillChecked){
+    const total=mcqCorrect+fillScore,max=mcqs.length+fills.length;
+    const box=document.getElementById("summary");box.classList.add("show");
+    document.getElementById("summaryTitle").textContent=`Kết quả: ${total}/${max}`;
+    let msg= total>=15 ? "Rất tốt. Bạn đã nắm khá chắc nhóm từ vựng mô tả xu hướng." :
+             total>=11 ? "Khá ổn. Hãy xem lại những nhóm từ còn nhầm trước khi sang bài viết câu." :
+             "Nên xem lại bảng từ vựng và flashcards, đặc biệt là to / from…to / by.";
+    document.getElementById("summaryText").textContent=msg;
+  }
+}
+function resetAll(){location.reload()}
+</script>
+</body>
+</html>
