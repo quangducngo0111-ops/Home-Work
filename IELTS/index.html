@@ -75,7 +75,7 @@
     }
     .tabs {
       display:grid;
-      grid-template-columns:repeat(4,1fr);
+      grid-template-columns:repeat(5,1fr);
       gap:10px;
       margin:28px 0;
     }
@@ -196,7 +196,7 @@
     <div class="wrap topbar">
       <div class="brand">
         <h1>IELTS</h1>
-        <p>Homework Practice · Reading · Listening · Writing</p>
+        <p>Homework Practice · Reading · Listening · Writing · Vocabulary</p>
       </div>
       <div class="pill">IELTS Practice Hub</div>
     </div>
@@ -205,7 +205,7 @@
   <main class="wrap">
     <section class="hero">
       <h2>Chọn kỹ năng và dạng bài cần luyện</h2>
-      <p>Reading và Listening được chia theo từng dạng bài. Writing được tách riêng Task 1 và Task 2 để thuận tiện giao bài tập và luyện tập theo nhóm dạng đề.</p>
+      <p>Reading và Listening được chia theo từng dạng bài. Writing được tách riêng Task 1 và Task 2. Vocabulary là khu vực riêng để học và luyện từ vựng theo từng bài.</p>
     </section>
 
     <nav class="tabs">
@@ -213,6 +213,7 @@
       <button class="tab" data-tab="listening">Listening<span>15 lesson</span></button>
       <button class="tab" data-tab="task1">Writing Task 1<span>4 dạng</span></button>
       <button class="tab" data-tab="task2">Writing Task 2<span>5 nhóm dạng</span></button>
+      <button class="tab" data-tab="vocab">Vocabulary<span>Từ vựng</span></button>
     </nav>
 
     <section class="panel active" id="reading">
@@ -550,6 +551,28 @@
         </a>
       </div>
     </section>
+
+    <section class="panel" id="vocab">
+      <div class="section-head">
+        <div>
+          <h3>Vocabulary</h3>
+          <p>Luyện từ vựng theo từng bài học</p>
+        </div>
+        <div class="count">1 bài</div>
+      </div>
+
+      <div class="grid">
+        <a class="card" href="./Vocabulary/01/">
+          <span class="num">01</span>
+          <div class="card-copy">
+            <strong>Vocabulary 01</strong>
+            <p>Life on a Floating Village · Meaning · Spelling · Word Challenge</p>
+          </div>
+          <span class="arrow">→</span>
+        </a>
+      </div>
+    </section>
+
   </main>
 
   <footer>IELTS Practice Hub</footer>
