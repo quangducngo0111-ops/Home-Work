@@ -323,12 +323,68 @@ footer{color:#9ca3af;text-align:center;font-size:12px;padding:0 0 38px}
 
         <div id="mcqBox"></div>
 
-        <h3 style="margin:24px 0 8px">Điền từ vào chỗ trống</h3>
-        <p class="sub">Nhập từ/cụm từ phù hợp. Không phân biệt chữ hoa/chữ thường.</p>
+        <h3 style="margin:24px 0 8px">Bài tập theo biểu đồ</h3>
+        <p class="sub">Quan sát biểu đồ giá xăng giả định dưới đây rồi hoàn thành các câu mô tả xu hướng.</p>
+
+        <div style="background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;margin:14px 0 18px">
+          <div style="font-weight:900;margin-bottom:4px">Petrol price, 2000–2020</div>
+          <div style="color:var(--muted);font-size:12px;margin-bottom:12px">Đơn vị: USD</div>
+          <svg viewBox="0 0 760 330" width="100%" role="img" aria-label="Line chart showing petrol prices from 2000 to 2020">
+            <rect x="0" y="0" width="760" height="330" fill="#ffffff"/>
+            <line x1="70" y1="25" x2="70" y2="275" stroke="#9ca3af" stroke-width="1"/>
+            <line x1="70" y1="275" x2="720" y2="275" stroke="#9ca3af" stroke-width="1"/>
+
+            <g stroke="#e5e7eb" stroke-width="1">
+              <line x1="70" y1="235" x2="720" y2="235"/>
+              <line x1="70" y1="195" x2="720" y2="195"/>
+              <line x1="70" y1="155" x2="720" y2="155"/>
+              <line x1="70" y1="115" x2="720" y2="115"/>
+              <line x1="70" y1="75" x2="720" y2="75"/>
+              <line x1="70" y1="35" x2="720" y2="35"/>
+            </g>
+
+            <g font-size="12" fill="#6b7280" text-anchor="end">
+              <text x="60" y="239">90</text>
+              <text x="60" y="199">100</text>
+              <text x="60" y="159">110</text>
+              <text x="60" y="119">120</text>
+              <text x="60" y="79">130</text>
+              <text x="60" y="39">140</text>
+            </g>
+
+            <g font-size="12" fill="#6b7280" text-anchor="middle">
+              <text x="100" y="297">2000</text>
+              <text x="245" y="297">2005</text>
+              <text x="390" y="297">2010</text>
+              <text x="535" y="297">2015</text>
+              <text x="680" y="297">2020</text>
+            </g>
+
+            <polyline points="100,195 245,115 390,235 535,75 680,75"
+              fill="none" stroke="#2563eb" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+
+            <g fill="#2563eb">
+              <circle cx="100" cy="195" r="6"/>
+              <circle cx="245" cy="115" r="6"/>
+              <circle cx="390" cy="235" r="6"/>
+              <circle cx="535" cy="75" r="6"/>
+              <circle cx="680" cy="75" r="6"/>
+            </g>
+
+            <g font-size="12" font-weight="800" fill="#111827" text-anchor="middle">
+              <text x="100" y="181">100</text>
+              <text x="245" y="101">120</text>
+              <text x="390" y="221">90</text>
+              <text x="535" y="61">130</text>
+              <text x="680" y="61">130</text>
+            </g>
+          </svg>
+        </div>
+
         <div class="fill-grid" id="fillGrid"></div>
 
         <div class="actions">
-          <button class="btn primary" onclick="checkFill()">Chấm phần điền từ</button>
+          <button class="btn primary" onclick="checkFill()">Chấm phần biểu đồ</button>
           <button class="btn ghost" onclick="resetAll()">Làm lại bài</button>
         </div>
 
@@ -423,14 +479,14 @@ mcqs.forEach((item,idx)=>{
 });
 
 const fills=[
-  {s:"The price ________ from 115 to 120.",a:["rose","increased","climbed","went up"]},
-  {s:"The figure ________ to 110.",a:["fell","decreased","declined","dropped","went down"]},
-  {s:"The price ________ at 115 USD after several changes.",a:["levelled out","leveled out"]},
-  {s:"Throughout the period, the price ________.",a:["fluctuated"]},
-  {s:"The price reached its ________ at 116 USD.",a:["peak","highest point"]},
-  {s:"The UK figure ________ the USA figure.",a:["surpassed","exceeded"]},
-  {s:"There was a ________ increase in the figure.",a:["slight","marginal","moderate","considerable","noticeable","significant","substantial","steep"]},
-  {s:"The figure increased ________.",a:["slightly","marginally","moderately","considerably","noticeably","significantly","substantially","steeply"]}
+  {s:"From 2000 to 2005, the price ________ from 100 USD to 120 USD.",a:["rose","increased","climbed","went up"]},
+  {s:"Between 2005 and 2010, the price ________ by 30 USD.",a:["fell","decreased","declined","dropped","went down"]},
+  {s:"In 2010, the price reached a ________ of 90 USD.",a:["low","lowest point","lowest level"]},
+  {s:"From 2010 to 2015, the price ________ sharply to 130 USD.",a:["rose","increased","climbed","went up","jumped up","shot up"]},
+  {s:"In 2015, the price reached its ________ at 130 USD.",a:["peak","highest point"]},
+  {s:"From 2015 to 2020, the price remained ________ at 130 USD.",a:["stable","steady","constant"]},
+  {s:"Overall, the figure showed an ________ trend despite a sharp fall in the middle of the period.",a:["upward"]},
+  {s:"At the ________ of the period, the price stood at 100 USD.",a:["beginning"]}
 ];
 const fillGrid=document.getElementById("fillGrid");
 fills.forEach((f,i)=>{
@@ -467,7 +523,7 @@ function updateSummary(){
     const box=document.getElementById("summary");box.classList.add("show");
     document.getElementById("summaryTitle").textContent=`Kết quả: ${total}/${max}`;
     let msg= total>=15 ? "Rất tốt. Bạn đã nắm khá chắc nhóm từ vựng mô tả xu hướng." :
-             total>=11 ? "Khá ổn. Hãy xem lại những nhóm từ còn nhầm trước khi sang bài viết câu." :
+             total>=11 ? "Khá ổn. Hãy xem lại những nhóm từ còn nhầm trước khi chuyển sang bài mô tả biểu đồ." :
              "Nên xem lại bảng từ vựng và flashcards, đặc biệt là to / from…to / by.";
     document.getElementById("summaryText").textContent=msg;
   }
