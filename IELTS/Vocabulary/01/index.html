@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vocabulary 01 | Life on a Floating Village</title>
+<style>
+:root{
+  --ink:#111827;--muted:#6b7280;--line:#e5e7eb;--bg:#f4f7fb;--card:#fff;
+  --blue:#2563eb;--blue2:#1d4ed8;--soft:#eff6ff;--green:#15803d;--greenbg:#f0fdf4;
+  --red:#b91c1c;--redbg:#fef2f2;--amber:#92400e;--amberbg:#fffbeb;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif
+}
+button,input,select{font:inherit}
+.topbar{
+  position:sticky;top:0;z-index:30;background:rgba(255,255,255,.96);
+  border-bottom:1px solid var(--line);backdrop-filter:blur(10px)
+}
+.wrap{width:min(1100px,calc(100% - 32px));margin:auto}
+.top-inner{min-height:70px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand strong{display:block;font-size:18px}
+.brand span{font-size:12px;color:var(--muted)}
+.meta{display:flex;align-items:center;gap:10px}
+.chip{background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 11px;font-size:12px;font-weight:800}
+.hero{padding:38px 0 22px}
+.kicker{font-size:12px;font-weight:900;color:var(--blue);text-transform:uppercase;letter-spacing:.08em}
+.hero h1{margin:7px 0 10px;font-size:36px;letter-spacing:-1px;line-height:1.1}
+.hero p{margin:0;color:var(--muted);line-height:1.6;max-width:820px}
+.progress-wrap{display:flex;align-items:center;gap:10px;margin-top:18px}
+.progress{height:9px;flex:1;background:#e5e7eb;border-radius:999px;overflow:hidden}
+.progress i{display:block;height:100%;width:0;background:var(--blue);transition:.2s}
+.progress-text{font-size:12px;font-weight:900;color:var(--muted)}
+.card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:22px;margin-bottom:16px}
+.card h2{margin:0 0 5px;font-size:22px}
+.card .sub{margin:0 0 18px;color:var(--muted);font-size:13px;line-height:1.55}
+.vocab-ref{border:1px solid var(--line);border-radius:14px;overflow:auto}
+.vocab-ref table{width:100%;border-collapse:collapse;min-width:720px}
+.vocab-ref th,.vocab-ref td{padding:11px 12px;border-bottom:1px solid var(--line);text-align:left;font-size:12px;line-height:1.45}
+.vocab-ref th{background:#f8fafc;color:#374151}
+.vocab-ref tr:last-child td{border-bottom:0}
+.w{font-weight:900}.pos{font-style:italic;color:var(--muted)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.q{border:1px solid var(--line);border-radius:14px;padding:14px;background:#fff}
+.q p{margin:0 0 10px;font-size:13px;line-height:1.45;font-weight:750}
+.q select,.q input{width:100%;border:1px solid #d1d5db;border-radius:10px;padding:10px 11px;background:#fff;outline:none}
+.q select.good,.q input.good{border-color:#86efac;background:var(--greenbg)}
+.q select.bad,.q input.bad{border-color:#fecaca;background:var(--redbg)}
+.fb{min-height:16px;margin-top:6px;font-size:11px;color:var(--muted)}
+.options{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.option{border:1px solid var(--line);background:#fff;border-radius:11px;padding:10px 12px;text-align:left;cursor:pointer}
+.option:hover{background:#f8fafc}
+.option.correct{border-color:#86efac;background:var(--greenbg);color:#166534}
+.option.wrong{border-color:#fecaca;background:var(--redbg);color:#991b1b}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.btn{border:0;border-radius:12px;padding:11px 14px;font-weight:900;cursor:pointer}
+.btn.primary{background:var(--blue);color:#fff}
+.btn.ghost{background:#eef2f7;color:#374151}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.result{display:none;margin-top:16px;border-radius:18px;padding:20px;background:#111827;color:#fff}
+.result.show{display:block}
+.result .big{font-size:38px;font-weight:950}
+.result h3{margin:4px 0 8px}
+.result p{margin:5px 0;color:#d1d5db;line-height:1.5}
+.status{font-size:12px;font-weight:800}
+.status.ok{color:#86efac}.status.err{color:#fca5a5}
+.review{display:none;margin-top:14px}
+.review.show{display:block}
+.wrongline{border:1px solid #fecaca;background:#fff7f7;border-radius:12px;padding:11px 12px;margin-top:8px;font-size:12px;line-height:1.5}
+.start-overlay{position:fixed;inset:0;z-index:100;background:rgba(15,23,42,.48);display:grid;place-items:center;padding:18px}
+.start-card{width:min(460px,100%);background:#fff;border-radius:22px;padding:24px;box-shadow:0 25px 70px rgba(15,23,42,.25)}
+.start-card h2{margin:0 0 7px;font-size:25px}
+.start-card p{margin:0 0 16px;color:var(--muted);font-size:13px}
+.field{margin-top:12px}.field label{display:block;font-size:12px;font-weight:900;margin-bottom:6px}
+.field input{width:100%;border:1px solid #d1d5db;border-radius:12px;padding:12px;outline:none}
+.err{display:none;margin-top:9px;color:var(--red);font-size:12px;font-weight:800}
+@media(max-width:720px){.grid,.options{grid-template-columns:1fr}.hero h1{font-size:30px}.meta .student{display:none}}
+</style>
+</head>
+<body>
+
+<div class="start-overlay" id="startOverlay">
+  <div class="start-card">
+    <div class="kicker">Vocabulary 01</div>
+    <h2>Thông tin học sinh</h2>
+    <p>Nhập họ tên và lớp trước khi bắt đầu. Kết quả sẽ được gửi về giáo viên sau khi nộp bài.</p>
+    <div class="field">
+      <label>Họ và tên</label>
+      <input id="studentName" placeholder="Ví dụ: Nguyễn Minh Anh" autocomplete="name">
+    </div>
+    <div class="field">
+      <label>Lớp</label>
+      <input id="studentClass" placeholder="Ví dụ: 11A1">
+    </div>
+    <div class="err" id="startErr">Vui lòng nhập đầy đủ họ tên và lớp.</div>
+    <button class="btn primary" style="width:100%;margin-top:15px" id="startBtn">Bắt đầu</button>
+  </div>
+</div>
+
+<header class="topbar">
+  <div class="wrap top-inner">
+    <div class="brand">
+      <strong>Vocabulary 01</strong>
+      <span>Life on a Floating Village</span>
+    </div>
+    <div class="meta">
+      <div class="chip student" id="studentChip">—</div>
+      <div class="chip" id="timer">00:00</div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <div class="kicker">Homework · Vocabulary</div>
+    <h1>Life on a Floating Village</h1>
+    <p>Học 11 từ vựng, sau đó hoàn thành 3 dạng bài: chọn nghĩa, viết từ tiếng Anh và chọn từ theo ngữ cảnh. Hệ thống tự chấm và gửi kết quả về giáo viên.</p>
+    <div class="progress-wrap">
+      <div class="progress"><i id="progressBar"></i></div>
+      <div class="progress-text" id="progressText">0%</div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>1. Vocabulary List</h2>
+    <p class="sub">Đọc nghĩa, từ loại và phát âm trước khi làm bài.</p>
+    <div class="vocab-ref">
+      <table>
+        <thead><tr><th>No.</th><th>Word</th><th>Type</th><th>Definition (Nghĩa)</th><th>Pronunciation</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td class="w">floating</td><td class="pos">adj</td><td>nổi; nổi trên mặt nước</td><td>/ˈfloʊ.t̬ɪŋ/</td></tr>
+          <tr><td>2</td><td class="w">local</td><td class="pos">adj</td><td>địa phương</td><td>/ˈloʊ.kəl/</td></tr>
+          <tr><td>3</td><td class="w">boat</td><td class="pos">n</td><td>thuyền</td><td>/boʊt/</td></tr>
+          <tr><td>4</td><td class="w">market</td><td class="pos">n</td><td>chợ</td><td>/ˈmɑːr.kɪt/</td></tr>
+          <tr><td>5</td><td class="w">fish</td><td class="pos">v</td><td>đánh bắt cá</td><td>/fɪʃ/</td></tr>
+          <tr><td>6</td><td class="w">repair</td><td class="pos">v</td><td>sửa chữa</td><td>/rɪˈper/</td></tr>
+          <tr><td>7</td><td class="w">sunrise</td><td class="pos">n</td><td>bình minh; lúc mặt trời mọc</td><td>/ˈsʌn.raɪz/</td></tr>
+          <tr><td>8</td><td class="w">community</td><td class="pos">n</td><td>cộng đồng</td><td>/kəˈmjuː.nə.t̬i/</td></tr>
+          <tr><td>9</td><td class="w">traditional</td><td class="pos">adj</td><td>truyền thống</td><td>/trəˈdɪʃ.ən.əl/</td></tr>
+          <tr><td>10</td><td class="w">photographer</td><td class="pos">n</td><td>nhiếp ảnh gia</td><td>/fəˈtɑː.ɡrə.fɚ/</td></tr>
+          <tr><td>11</td><td class="w">travel</td><td class="pos">v</td><td>đi; đi du lịch</td><td>/ˈtræv.əl/</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>2. Chọn nghĩa đúng</h2>
+    <p class="sub">Chọn nghĩa tiếng Việt phù hợp với từ tiếng Anh.</p>
+    <div class="grid" id="meaningGrid"></div>
+  </section>
+
+  <section class="card">
+    <h2>3. Viết từ tiếng Anh</h2>
+    <p class="sub">Nhìn nghĩa tiếng Việt và viết đúng từ tiếng Anh.</p>
+    <div class="grid" id="spellingGrid"></div>
+  </section>
+
+  <section class="card">
+    <h2>4. Word Challenge</h2>
+    <p class="sub">Chọn từ phù hợp nhất với ngữ cảnh của câu.</p>
+    <div id="challengeBox"></div>
+  </section>
+
+  <section class="card">
+    <h2>5. Nộp bài</h2>
+    <p class="sub">Sau khi nộp, đáp án sẽ bị khóa và hệ thống sẽ gửi kết quả về giáo viên.</p>
+    <div class="actions">
+      <button class="btn primary" id="submitBtn">Nộp bài & xem kết quả</button>
+      <button class="btn ghost" id="resetBtn">Làm lại từ đầu</button>
+    </div>
+    <div class="result" id="resultBox">
+      <div class="big" id="scoreBig">0/0</div>
+      <h3 id="scoreTitle">Kết quả</h3>
+      <p id="scoreDetail"></p>
+      <p>Gửi kết quả: <span class="status" id="sendStatus">đang xử lý…</span></p>
+    </div>
+    <div class="review" id="reviewBox">
+      <h3 style="margin:0 0 8px">Các câu cần xem lại</h3>
+      <div id="wrongList"></div>
+    </div>
+  </section>
+</main>
+
+<script>
+const APPS_SCRIPT_URL="https://script.google.com/macros/s/AKfycbwfwWjJ7Q3VTJEF5ldKGnFKYoziQdntAzRjq1Yqy6HSmbZSc69ijSdOvMCC_Zogbpcm/exec";
+const STUDENT_KEY="IELTS_HOMEWORK_STUDENT";
+let student={name:"",className:""},startedAt=0,timerHandle=null,submitted=false;
+
+const meaningQs=[
+  {w:"floating",choices:["địa phương","nổi trên mặt nước","truyền thống","chợ"],a:"nổi trên mặt nước"},
+  {w:"local",choices:["địa phương","cộng đồng","thuyền","sửa chữa"],a:"địa phương"},
+  {w:"boat",choices:["thuyền","chợ","bình minh","nhiếp ảnh gia"],a:"thuyền"},
+  {w:"market",choices:["đi du lịch","chợ","đánh bắt cá","cộng đồng"],a:"chợ"},
+  {w:"repair",choices:["sửa chữa","nổi","truyền thống","địa phương"],a:"sửa chữa"},
+  {w:"sunrise",choices:["cộng đồng","bình minh","thuyền","chợ"],a:"bình minh"},
+  {w:"community",choices:["cộng đồng","nhiếp ảnh gia","đánh bắt cá","địa phương"],a:"cộng đồng"},
+  {w:"traditional",choices:["nổi","truyền thống","đi du lịch","sửa chữa"],a:"truyền thống"}
+];
+
+const spellingQs=[
+  {vi:"đánh bắt cá",a:"fish"},
+  {vi:"nhiếp ảnh gia",a:"photographer"},
+  {vi:"đi; đi du lịch",a:"travel"},
+  {vi:"nổi; nổi trên mặt nước",a:"floating"},
+  {vi:"địa phương",a:"local"},
+  {vi:"cộng đồng",a:"community"},
+  {vi:"truyền thống",a:"traditional"},
+  {vi:"bình minh",a:"sunrise"}
+];
+
+const challengeQs=[
+  {q:"A person who takes professional photographs is a ________.",a:["photographer","community","market","boat"],c:0},
+  {q:"People often buy food and goods at a ________.",a:["sunrise","market","repair","travel"],c:1},
+  {q:"If something is broken, you may need to ________ it.",a:["travel","repair","fish","float"],c:1},
+  {q:"The fishermen leave the village before ________.",a:["community","local","sunrise","traditional"],c:2},
+  {q:"Many families use a small ________ to travel across the lake.",a:["boat","market","photographer","repair"],c:0},
+  {q:"People in this area still wear ________ clothes on special days.",a:["floating","traditional","local","community"],c:1},
+  {q:"They ________ on the lake every morning and sell their catch later.",a:["repair","travel","fish","market"],c:2},
+  {q:"The school is important to the whole ________.",a:["community","sunrise","boat","photographer"],c:0}
+];
+
+function norm(s){return String(s||"").trim().toLowerCase().replace(/\s+/g," ")}
+
+function loadPrefill(){
+  let saved={};try{saved=JSON.parse(localStorage.getItem(STUDENT_KEY)||"{}")}catch(e){}
+  document.getElementById("studentName").value=saved.name||"";
+  document.getElementById("studentClass").value=saved.className||"";
+}
+function start(){
+  const name=document.getElementById("studentName").value.trim();
+  const className=document.getElementById("studentClass").value.trim();
+  if(!name||!className){document.getElementById("startErr").style.display="block";return}
+  student={name,className};localStorage.setItem(STUDENT_KEY,JSON.stringify(student));
+  document.getElementById("studentChip").textContent=name+" · "+className;
+  document.getElementById("startOverlay").style.display="none";
+  startedAt=Date.now();timerHandle=setInterval(updateTimer,1000);updateTimer();
+}
+function updateTimer(){
+  const sec=Math.floor((Date.now()-startedAt)/1000);
+  document.getElementById("timer").textContent=
+    String(Math.floor(sec/60)).padStart(2,"0")+":"+String(sec%60).padStart(2,"0");
+}
+function render(){
+  const mg=document.getElementById("meaningGrid");
+  meaningQs.forEach((x,i)=>{
+    const d=document.createElement("div");d.className="q";
+    d.innerHTML=`<p>${i+1}. <b>${x.w}</b> có nghĩa là gì?</p>
+      <select id="m${i}"><option value="">— Chọn nghĩa —</option>${x.choices.map(c=>`<option value="${c}">${c}</option>`).join("")}</select>
+      <div class="fb" id="mfb${i}"></div>`;
+    mg.appendChild(d);
+  });
+
+  const sg=document.getElementById("spellingGrid");
+  spellingQs.forEach((x,i)=>{
+    const d=document.createElement("div");d.className="q";
+    d.innerHTML=`<p>${i+1}. Viết từ tiếng Anh: <b>${x.vi}</b></p>
+      <input id="s${i}" autocomplete="off">
+      <div class="fb" id="sfb${i}"></div>`;
+    sg.appendChild(d);
+  });
+
+  const cb=document.getElementById("challengeBox");
+  challengeQs.forEach((x,i)=>{
+    const d=document.createElement("div");d.className="q";d.style.marginTop="10px";
+    d.innerHTML=`<p>${i+1}. ${x.q}</p><div class="options" id="copts${i}"></div><div class="fb" id="cfb${i}"></div>`;
+    const box=d.querySelector(".options");
+    x.a.forEach((txt,j)=>{
+      const b=document.createElement("button");b.type="button";b.className="option";b.textContent=txt;
+      b.onclick=()=>{
+        if(submitted)return;
+        [...box.children].forEach(z=>z.classList.remove("selected"));
+        box.dataset.choice=String(j);
+        [...box.children].forEach(z=>{z.style.boxShadow=""});
+        b.style.boxShadow="0 0 0 3px #dbeafe";
+        updateProgress();
+      };
+      box.appendChild(b);
+    });
+    cb.appendChild(d);
+  });
+
+  document.querySelectorAll("select,input").forEach(el=>{
+    if(el.id!=="studentName"&&el.id!=="studentClass") el.addEventListener("input",updateProgress);
+  });
+}
+
+function updateProgress(){
+  let answered=0,total=meaningQs.length+spellingQs.length+challengeQs.length;
+  meaningQs.forEach((_,i)=>{if(document.getElementById("m"+i).value)answered++});
+  spellingQs.forEach((_,i)=>{if(document.getElementById("s"+i).value.trim())answered++});
+  challengeQs.forEach((_,i)=>{if(document.getElementById("copts"+i).dataset.choice!==undefined)answered++});
+  const pct=Math.round(answered/total*100);
+  document.getElementById("progressBar").style.width=pct+"%";
+  document.getElementById("progressText").textContent=pct+"%";
+}
+
+function grade(){
+  if(submitted)return;
+  submitted=true;clearInterval(timerHandle);
+
+  let score=0,total=0,wrong=[],details=[];
+
+  meaningQs.forEach((x,i)=>{
+    total++;const el=document.getElementById("m"+i),ok=el.value===x.a;
+    el.disabled=true;el.classList.add(ok?"good":"bad");
+    document.getElementById("mfb"+i).textContent=ok?"✓ Chính xác":"Đáp án: "+x.a;
+    if(ok)score++; else wrong.push(`Chọn nghĩa ${i+1}: "${el.value||"—"}" → ${x.a}`);
+    details.push({part:"meaning",question:i+1,answer:el.value,correct:x.a,isCorrect:ok});
+  });
+
+  spellingQs.forEach((x,i)=>{
+    total++;const el=document.getElementById("s"+i),ok=norm(el.value)===norm(x.a);
+    el.disabled=true;el.classList.add(ok?"good":"bad");
+    document.getElementById("sfb"+i).textContent=ok?"✓ Chính xác":"Đáp án: "+x.a;
+    if(ok)score++; else wrong.push(`Viết từ ${i+1}: "${el.value||"—"}" → ${x.a}`);
+    details.push({part:"spelling",question:i+1,answer:el.value,correct:x.a,isCorrect:ok});
+  });
+
+  challengeQs.forEach((x,i)=>{
+    total++;const box=document.getElementById("copts"+i);
+    const selected=box.dataset.choice!==undefined?Number(box.dataset.choice):-1;
+    const ok=selected===x.c;
+    [...box.children].forEach((b,j)=>{
+      b.disabled=true;b.style.boxShadow="";
+      if(j===x.c)b.classList.add("correct");
+      else if(j===selected)b.classList.add("wrong");
+    });
+    document.getElementById("cfb"+i).textContent=ok?"✓ Chính xác":"Đáp án: "+x.a[x.c];
+    if(ok)score++; else wrong.push(`Word Challenge ${i+1}: "${selected>=0?x.a[selected]:"—"}" → ${x.a[x.c]}`);
+    details.push({part:"challenge",question:i+1,answer:selected>=0?x.a[selected]:"",correct:x.a[x.c],isCorrect:ok});
+  });
+
+  const percent=Math.round(score/total*100);
+  const duration=Math.floor((Date.now()-startedAt)/1000);
+
+  document.getElementById("scoreBig").textContent=`${score}/${total}`;
+  document.getElementById("scoreTitle").textContent=`${percent}%`;
+  document.getElementById("scoreDetail").textContent=
+    percent>=90?"Rất tốt! Em đã nắm chắc nhóm từ vựng này.":
+    percent>=75?"Khá tốt. Hãy xem lại những từ còn sai.":
+    "Em nên ôn lại bảng từ vựng rồi làm lại các từ còn nhầm.";
+  document.getElementById("resultBox").classList.add("show");
+
+  if(wrong.length){
+    const wl=document.getElementById("wrongList");
+    wrong.forEach(t=>{const d=document.createElement("div");d.className="wrongline";d.textContent=t;wl.appendChild(d)});
+    document.getElementById("reviewBox").classList.add("show");
+  }
+  document.getElementById("submitBtn").disabled=true;
+  sendResult({score,total,percent,duration,details});
+}
+
+async function sendResult(r){
+  const st=document.getElementById("sendStatus");
+  st.textContent="đang gửi…";st.className="status";
+  const payload=new URLSearchParams({
+    name:student.name,
+    className:student.className,
+    score:String(r.score),
+    total:String(r.total),
+    percent:String(r.percent),
+    duration:String(r.duration),
+    details:JSON.stringify({
+      testId:"VOCABULARY_01",
+      title:"Life on a Floating Village",
+      answers:r.details
+    })
+  });
+  try{
+    await fetch(APPS_SCRIPT_URL,{
+      method:"POST",mode:"no-cors",
+      headers:{"Content-Type":"application/x-www-form-urlencoded;charset=UTF-8"},
+      body:payload.toString()
+    });
+    st.textContent="đã gửi";st.className="status ok";
+  }catch(e){
+    st.textContent="chưa gửi được";st.className="status err";
+  }
+}
+
+document.getElementById("startBtn").addEventListener("click",start);
+document.getElementById("studentClass").addEventListener("keydown",e=>{if(e.key==="Enter")start()});
+document.getElementById("submitBtn").addEventListener("click",()=>{if(confirm("Nộp bài? Sau khi nộp em sẽ không sửa được đáp án."))grade()});
+document.getElementById("resetBtn").addEventListener("click",()=>{if(confirm("Làm lại toàn bộ bài từ đầu?"))location.reload()});
+
+loadPrefill();render();updateProgress();
+</script>
+</body>
+</html>
