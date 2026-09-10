@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Listening Part 1 | Oyster Bay Sailing Club Courses</title>
+<style>
+:root{
+  --ink:#111827;--muted:#6b7280;--line:#e5e7eb;--bg:#f4f7fb;--blue:#2563eb;--blue2:#1d4ed8;
+  --green:#15803d;--greenbg:#f0fdf4;--red:#b91c1c;--redbg:#fef2f2
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+button,input,textarea{font:inherit}
+.topbar{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.97);border-bottom:1px solid var(--line);backdrop-filter:blur(10px)}
+.wrap{width:min(1240px,calc(100% - 28px));margin:auto}
+.top-inner{min-height:70px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.left-top{display:flex;align-items:center;gap:10px;min-width:0}
+.home-btn{display:inline-flex;text-decoration:none;color:#374151;background:#fff;border:1px solid var(--line);border-radius:11px;padding:8px 11px;font-size:12px;font-weight:900;white-space:nowrap}
+.brand strong{display:block;font-size:17px}.brand span{font-size:12px;color:var(--muted)}
+.meta{display:flex;gap:8px;align-items:center}.chip{background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 11px;font-size:12px;font-weight:850}
+.hero{padding:28px 0 18px}.kicker{font-size:12px;font-weight:900;color:var(--blue);text-transform:uppercase;letter-spacing:.08em}
+.hero h1{margin:6px 0 8px;font-size:34px;line-height:1.12}.hero p{margin:0;color:var(--muted);font-size:13px;line-height:1.6}
+.progress-wrap{display:flex;gap:10px;align-items:center;margin-top:13px}.progress{height:8px;flex:1;background:#e5e7eb;border-radius:999px;overflow:hidden}.progress i{display:block;height:100%;width:0;background:var(--blue)}.progress-text{font-size:12px;font-weight:900;color:var(--muted)}
+
+.audio-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:16px;position:sticky;top:84px;z-index:20}
+.audio-card h3{margin:0 0 10px;font-size:15px}.audio-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+audio{width:min(720px,100%);height:42px}.speed-btn{border:1px solid var(--line);background:#fff;border-radius:9px;padding:7px 9px;font-size:11px;font-weight:900;cursor:pointer}.speed-btn.active{background:#eff6ff;border-color:#93c5fd;color:#1d4ed8}.audio-error{display:none;color:#b91c1c;font-size:12px;font-weight:800;margin-top:8px}
+
+.card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:20px;margin-bottom:16px}
+.card h2{margin:0 0 5px;font-size:21px}.sub{margin:0 0 14px;color:var(--muted);font-size:12px;line-height:1.55}
+.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:14px}
+table{width:100%;border-collapse:collapse;min-width:920px}
+th,td{padding:12px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);vertical-align:top;text-align:left;font-size:13px;line-height:1.55}
+th{background:#f8fafc;font-weight:900}th:last-child,td:last-child{border-right:0}tr:last-child td{border-bottom:0}
+.blank{width:125px;border:0;border-bottom:2px solid #9ca3af;background:transparent;padding:3px 5px;font-weight:850;color:#1d4ed8;outline:none}
+.blank:focus{border-color:#2563eb}.qrow{border:1px solid var(--line);border-radius:14px;padding:13px;margin-top:9px;line-height:1.65;font-size:13px;background:#fff}
+.notes-box{border:1px solid var(--line);border-radius:14px;padding:14px;background:#fafafa}
+.notes-box ul{margin:0;padding-left:22px}.notes-box li{margin:8px 0;line-height:1.6}
+
+.study-tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:0 0 12px}
+.tool-btn{border:1px solid var(--line);background:#fff;border-radius:10px;padding:8px 10px;font-size:11px;font-weight:900;cursor:pointer}.tool-hint{font-size:11px;color:var(--muted)}
+.reader-highlight{background:#fef08a;border-radius:3px;padding:1px 0;cursor:pointer}.reader-highlight.has-note{background:#fde68a;border-bottom:2px solid #f59e0b}
+.selection-toolbar{position:fixed;z-index:90;display:none;gap:6px;padding:6px;background:#111827;border-radius:10px;box-shadow:0 10px 30px rgba(15,23,42,.25)}
+.selection-toolbar.show{display:flex}.selection-toolbar button{border:0;background:#fff;border-radius:7px;padding:7px 9px;font-size:11px;font-weight:900;cursor:pointer}
+.quick-notes{width:100%;min-height:90px;resize:vertical;border:1px solid #d1d5db;border-radius:11px;padding:10px;font-size:12px}
+
+.inline-review{margin-top:9px;border-top:1px dashed #fecaca;padding-top:9px}
+.review-line{margin:4px 0;font-size:12px;line-height:1.5;color:#4b5563}
+.student-answer{color:#991b1b;font-weight:900}.correct-answer{color:#166534;font-weight:900}
+.explain-text{background:#fff7ed;border:1px solid #fed7aa;border-radius:10px;padding:9px 10px;margin-top:7px;color:#7c2d12}
+.good{background:#f0fdf4!important;border-color:#86efac!important}.bad{background:#fffafa!important;border-color:#fecaca!important}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}.btn{border:0;border-radius:12px;padding:11px 14px;font-weight:900;cursor:pointer}.btn.primary{background:var(--blue);color:#fff}.btn.ghost{background:#eef2f7;color:#374151}.btn:disabled{opacity:.55}
+.result{display:none;background:#111827;color:#fff;border-radius:17px;padding:18px;margin-top:14px}.result.show{display:block}.result .big{font-size:38px;font-weight:950}.result h3{margin:7px 0 6px}.result p{margin:5px 0;color:#d1d5db;font-size:12px}.status{font-weight:900}.status.ok{color:#86efac}.status.err{color:#fca5a5}
+
+.start-overlay{position:fixed;inset:0;z-index:100;background:rgba(15,23,42,.5);display:grid;place-items:center;padding:18px}
+.start-card{width:min(470px,100%);background:#fff;border-radius:22px;padding:24px;box-shadow:0 25px 70px rgba(15,23,42,.25)}
+.start-card h2{margin:0 0 7px;font-size:25px}.start-card p{margin:0 0 16px;color:var(--muted);font-size:13px}
+.field{margin-top:12px}.field label{display:block;font-size:12px;font-weight:900;margin-bottom:6px}.field input{width:100%;border:1px solid #d1d5db;border-radius:12px;padding:12px}.err{display:none;margin-top:9px;color:var(--red);font-size:12px;font-weight:800}
+@media(max-width:700px){.hero h1{font-size:28px}.meta .student{display:none}.audio-card{top:76px}}
+</style>
+</head>
+<body>
+
+<div class="selection-toolbar" id="selectionToolbar">
+  <button id="highlightBtn">Highlight</button>
+  <button id="noteSelectionBtn">Take note</button>
+</div>
+
+<div class="start-overlay" id="startOverlay">
+  <div class="start-card">
+    <div class="kicker">Listening Part 1 · Practice 01</div>
+    <h2>Thông tin học sinh</h2>
+    <p>Nhập họ tên và lớp trước khi bắt đầu. Em có thể nghe lại audio trong quá trình luyện tập.</p>
+    <div class="field"><label>Họ và tên</label><input id="studentName" placeholder="Ví dụ: Nguyễn Minh Anh"></div>
+    <div class="field"><label>Lớp</label><input id="studentClass" placeholder="Ví dụ: 11A1"></div>
+    <div class="err" id="startErr">Vui lòng nhập đầy đủ họ tên và lớp.</div>
+    <button class="btn primary" style="width:100%;margin-top:15px" id="startBtn">Bắt đầu làm bài</button>
+  </div>
+</div>
+
+<header class="topbar">
+<div class="wrap top-inner">
+  <div class="left-top">
+    <a class="home-btn" href="../">← Danh sách Listening Part 1</a>
+    <a class="home-btn" href="../../../">Trang chủ IELTS</a>
+    <div class="brand"><strong>Listening Part 1 · Practice 01</strong><span>Oyster Bay Sailing Club Courses</span></div>
+  </div>
+  <div class="meta"><div class="chip student" id="studentChip">—</div><div class="chip" id="elapsed">00:00</div></div>
+</div>
+</header>
+
+<main class="wrap">
+<section class="hero">
+  <div class="kicker">IELTS Listening · Part 1</div>
+  <h1>Oyster Bay Sailing Club Courses</h1>
+  <p><b>Questions 1–10.</b> Table Completion + Note Completion. Hệ thống tự chấm và gửi kết quả về giáo viên.</p>
+  <div class="progress-wrap"><div class="progress"><i id="progressBar"></i></div><div class="progress-text" id="progressText">0/10</div></div>
+</section>
+
+<section class="audio-card">
+  <h3>🎧 Audio</h3>
+  <div class="audio-row">
+    <audio id="audio" controls controlsList="nodownload" preload="metadata">
+      <source src="cam21-test1-part1.mp3?v=1" type="audio/mpeg">
+    </audio>
+    <button class="speed-btn" data-speed=".75">0.75×</button>
+    <button class="speed-btn active" data-speed="1">1×</button>
+    <button class="speed-btn" data-speed="1.25">1.25×</button>
+    <button class="speed-btn" data-speed="1.5">1.5×</button>
+  </div>
+  <div class="audio-error" id="audioError">Không tải được audio. Hãy kiểm tra file <b>cam21-test1-part1.mp3</b> nằm cùng thư mục với index.html.</div>
+</section>
+
+<section class="card">
+  <div class="study-tools">
+    <button class="tool-btn" id="clearHighlightsBtn">Xóa highlights</button>
+    <span class="tool-hint">Bôi đen nội dung câu hỏi → Highlight / Take note</span>
+  </div>
+
+  <div id="questionArea">
+    <h2>Questions 1–6</h2>
+    <p class="sub">Complete the table below. Write <b>ONE WORD AND/OR A NUMBER</b> for each answer.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Name of course</th><th>What you learn</th><th>Cost</th><th>Other information</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Taster day</td>
+            <td>introduction to sailing</td>
+            <td>£120 if booking one place</td>
+            <td>small groups (max <b>1</b> <input class="blank" id="a1"> people)<div id="r1"></div></td>
+          </tr>
+          <tr>
+            <td>Level 1</td>
+            <td>
+              basic theory e.g. understanding the <b>2</b> <input class="blank" id="a2"> and tides
+              <div id="r2"></div><br>
+              basic sailing skills including <b>3</b> <input class="blank" id="a3"> information
+              <div id="r3"></div>
+            </td>
+            <td>
+              £200<br><br>
+              <b>4</b> <input class="blank" id="a4"> available for club members
+              <div id="r4"></div><br><br>
+              all inclusive (plus a useful <b>5</b> <input class="blank" id="a5">)
+              <div id="r5"></div>
+            </td>
+            <td>
+              a <b>6</b> <input class="blank" id="a6"> at the end of the course for all participants
+              <div id="r6"></div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 style="margin-top:26px">Questions 7–10</h2>
+    <p class="sub">Complete the notes below. Write <b>ONE WORD ONLY</b> for each answer.</p>
+
+    <div class="notes-box">
+      <b>General information</b>
+      <ul>
+        <li>Participants must be able to swim.</li>
+        <li>Bring suitable clothing, a <b>7</b> <input class="blank" id="a7"> and toiletries (e.g. shampoo).<div id="r7"></div></li>
+        <li>There is a <b>8</b> <input class="blank" id="a8"> at the club.<div id="r8"></div></li>
+        <li>Online training <b>9</b> <input class="blank" id="a9"> are recommended.<div id="r9"></div></li>
+        <li><b>10</b> <input class="blank" id="a10"> are available for course participants.<div id="r10"></div></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="card">
+  <h2>Quick Notes</h2>
+  <p class="sub">Ghi nhanh từ khóa, distractor hoặc thông tin nghe được.</p>
+  <textarea class="quick-notes" id="quickNotes" placeholder="Ví dụ: Q1 nghe 'eight' trước nhưng max là 'ten'..."></textarea>
+</section>
+
+<section class="card">
+  <h2>Nộp bài</h2>
+  <p class="sub">Sau khi nộp, đáp án sẽ bị khóa. Câu sai sẽ có giải thích bằng tiếng Việt ngay tại vị trí câu hỏi.</p>
+  <div class="actions">
+    <button class="btn primary" id="submitBtn">Nộp bài & xem kết quả</button>
+    <button class="btn ghost" id="resetBtn">Làm lại</button>
+  </div>
+  <div class="result" id="resultBox">
+    <div class="big" id="scoreBig">0/10</div>
+    <h3 id="scoreTitle">Kết quả</h3>
+    <p id="scoreDetail"></p>
+    <p>Gửi kết quả: <span class="status" id="sendStatus">đang xử lý…</span></p>
+  </div>
+</section>
+</main>
+
+<script>
+const APPS_SCRIPT_URL="https://script.google.com/macros/s/AKfycbwfwWjJ7Q3VTJEF5ldKGnFKYoziQdntAzRjq1Yqy6HSmbZSc69ijSdOvMCC_Zogbpcm/exec";
+const STUDENT_KEY="IELTS_HOMEWORK_STUDENT";
+const STORAGE_KEY="IELTS_HOMEWORK_LISTENING_PART1_01";
+const ANNOTATION_KEY="IELTS_HOMEWORK_LISTENING_PART1_01_ANNOTATIONS";
+const TEST_ID="LISTENING_PART1_01_OYSTER_BAY";
+
+let student={},startedAt=0,timerHandle=null,submitted=false,savedSelectionRange=null;
+
+const Q=[
+ {n:1,answers:["10","ten"],display:"10 / ten",why:"Người nói nhắc nhóm thường khoảng 8 người nhưng giới hạn tối đa là 10. Từ khóa “max” yêu cầu lấy con số tối đa, không phải số lượng thường gặp."},
+ {n:2,answers:["weather"],display:"weather",why:"Phần basic theory bao gồm việc hiểu về thời tiết và thủy triều. Vì “tides” đã có sẵn trong đề, từ còn thiếu là “weather”."},
+ {n:3,answers:["safety"],display:"safety",why:"Kỹ năng chèo thuyền cơ bản bao gồm thông tin về an toàn. Cụm cần hoàn thành là “safety information”."},
+ {n:4,answers:["discount"],display:"discount",why:"Thành viên câu lạc bộ được hưởng mức giảm giá cho khóa học. Vì vậy từ cần điền là “discount”."},
+ {n:5,answers:["dictionary"],display:"dictionary",why:"Chi phí khóa học đã bao gồm mọi thứ và còn kèm một cuốn từ điển hữu ích. Đáp án là “dictionary”."},
+ {n:6,answers:["certificate"],display:"certificate",why:"Tất cả người tham gia nhận một chứng nhận vào cuối khóa. Đáp án là “certificate”."},
+ {n:7,answers:["towel"],display:"towel",why:"Ngoài quần áo phù hợp và đồ vệ sinh cá nhân, người học cần mang theo khăn tắm. Đáp án là “towel”."},
+ {n:8,answers:["cafe","café"],display:"café / cafe",why:"Tại câu lạc bộ có một quán café. Cả “café” và “cafe” đều được chấp nhận."},
+ {n:9,answers:["videos"],display:"videos",why:"Người học được khuyến nghị xem các video đào tạo trực tuyến. Đáp án phải ở số nhiều: “videos”."},
+ {n:10,answers:["lockers"],display:"lockers",why:"Câu lạc bộ có tủ khóa dành cho người tham gia khóa học. Đáp án là “lockers”."}
+];
+
+function esc(s){return String(s||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+function norm(s){return String(s||"").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[.,;:!?]+$/g,"").replace(/\s+/g," ")}
+function getA(n){return document.getElementById("a"+n).value}
+function isCorrect(q,ans){return q.answers.some(x=>norm(x)===norm(ans))}
+function saveAnswers(){
+  if(submitted)return;
+  const a={};Q.forEach(q=>a[q.n]=getA(q.n));
+  localStorage.setItem(STORAGE_KEY,JSON.stringify(a));
+}
+function restoreAnswers(){
+  let a={};try{a=JSON.parse(localStorage.getItem(STORAGE_KEY)||"{}")}catch(e){}
+  Q.forEach(q=>{if(a[q.n]!=null)document.getElementById("a"+q.n).value=a[q.n]});
+  updateProgress();
+}
+function updateProgress(){
+  const done=Q.filter(q=>norm(getA(q.n))).length;
+  document.getElementById("progressBar").style.width=Math.round(done/10*100)+"%";
+  document.getElementById("progressText").textContent=done+"/10";
+}
+function loadStudent(){
+  let s={};try{s=JSON.parse(localStorage.getItem(STUDENT_KEY)||"{}")}catch(e){}
+  document.getElementById("studentName").value=s.name||"";
+  document.getElementById("studentClass").value=s.className||"";
+}
+function start(){
+  const name=document.getElementById("studentName").value.trim(),className=document.getElementById("studentClass").value.trim();
+  if(!name||!className){document.getElementById("startErr").style.display="block";return}
+  student={name,className};
+  localStorage.setItem(STUDENT_KEY,JSON.stringify(student));
+  document.getElementById("studentChip").textContent=name+" · "+className;
+  document.getElementById("startOverlay").style.display="none";
+  startedAt=Date.now();
+  restoreAnswers();
+  timerHandle=setInterval(updateElapsed,1000);updateElapsed();
+}
+function updateElapsed(){
+  const sec=Math.floor((Date.now()-startedAt)/1000);
+  document.getElementById("elapsed").textContent=String(Math.floor(sec/60)).padStart(2,"0")+":"+String(sec%60).padStart(2,"0");
+}
+function addReview(q,ans){
+  const target=document.getElementById("r"+q.n);
+  const d=document.createElement("div");d.className="inline-review";
+  d.innerHTML=`<div class="review-line"><b>Đáp án em điền:</b> <span class="student-answer">${esc(ans||"Chưa trả lời")}</span></div>
+  <div class="review-line"><b>Đáp án đúng:</b> <span class="correct-answer">${esc(q.display)}</span></div>
+  <div class="review-line explain-text"><b>Giải thích:</b> ${q.why}</div>`;
+  target.appendChild(d);
+}
+function submitExam(){
+  if(submitted)return;
+  submitted=true;clearInterval(timerHandle);document.getElementById("audio").pause();
+  document.querySelectorAll(".blank").forEach(e=>e.disabled=true);
+  document.querySelectorAll(".inline-review").forEach(e=>e.remove());
+  let score=0,details=[];
+  Q.forEach(q=>{
+    const ans=getA(q.n),ok=isCorrect(q,ans);
+    if(ok)score++;document.getElementById("a"+q.n).classList.add(ok?"good":"bad");
+    if(!ok)addReview(q,ans);
+    details.push({question:q.n,answer:ans,correct:q.display,isCorrect:ok,explanation:q.why});
+  });
+  const percent=Math.round(score/10*100),duration=Math.max(0,Math.floor((Date.now()-startedAt)/1000));
+  document.getElementById("scoreBig").textContent=score+"/10";
+  document.getElementById("scoreTitle").textContent=percent+"%";
+  document.getElementById("scoreDetail").textContent=percent>=90?"Rất tốt! Em đã bắt thông tin chi tiết khá chính xác.":percent>=70?"Khá tốt. Hãy xem lại các distractor và từ khóa ở câu sai.":"Nên nghe lại audio và chú ý từ khóa, số liệu bị sửa và giới hạn số từ.";
+  document.getElementById("resultBox").classList.add("show");document.getElementById("submitBtn").disabled=true;
+  localStorage.removeItem(STORAGE_KEY);
+  sendResult({score,total:10,percent,duration,details});
+}
+async function sendResult(r){
+  const st=document.getElementById("sendStatus");st.textContent="đang gửi…";
+  const payload=new URLSearchParams({
+    name:student.name,className:student.className,
+    score:String(r.score),total:String(r.total),percent:String(r.percent),duration:String(r.duration),
+    details:JSON.stringify({testId:TEST_ID,title:"Oyster Bay Sailing Club Courses",questionRange:"1-10",answers:r.details})
+  });
+  try{
+    await fetch(APPS_SCRIPT_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"application/x-www-form-urlencoded;charset=UTF-8"},body:payload.toString()});
+    st.textContent="đã gửi";st.className="status ok";
+  }catch(e){st.textContent="chưa gửi được";st.className="status err"}
+}
+
+/* Highlight / Take note on question content */
+function getAnn(){let d={html:"",notes:""};try{d={...d,...JSON.parse(localStorage.getItem(ANNOTATION_KEY)||"{}")}}catch(e){}return d}
+function saveAnn(){const d=getAnn();d.html=document.getElementById("questionArea").innerHTML;d.notes=document.getElementById("quickNotes").value;localStorage.setItem(ANNOTATION_KEY,JSON.stringify(d))}
+function captureSelection(){
+  if(submitted)return;
+  const s=window.getSelection(),tb=document.getElementById("selectionToolbar");
+  if(!s||!s.rangeCount||s.isCollapsed){tb.classList.remove("show");return}
+  const r=s.getRangeAt(0);
+  if(!document.getElementById("questionArea").contains(r.commonAncestorContainer)||!s.toString().trim()){tb.classList.remove("show");return}
+  const node=r.commonAncestorContainer.nodeType===1?r.commonAncestorContainer:r.commonAncestorContainer.parentElement;
+  if(node&&node.closest("input,button")){tb.classList.remove("show");return}
+  savedSelectionRange=r.cloneRange();
+  const rect=r.getBoundingClientRect();
+  tb.style.left=Math.max(8,Math.min(window.innerWidth-210,rect.left))+"px";
+  tb.style.top=Math.max(8,rect.top-46)+"px";
+  tb.classList.add("show");
+}
+function wrapSelection(noteMode){
+  if(!savedSelectionRange)return;
+  const mark=document.createElement("mark");mark.className="reader-highlight";
+  if(noteMode){const n=prompt("Ghi chú cho đoạn đã chọn:");if(n===null)return;mark.classList.add("has-note");mark.title=n.trim()}
+  try{savedSelectionRange.surroundContents(mark)}catch(e){const f=savedSelectionRange.extractContents();mark.appendChild(f);savedSelectionRange.insertNode(mark)}
+  window.getSelection().removeAllRanges();document.getElementById("selectionToolbar").classList.remove("show");saveAnn();
+}
+function restoreAnn(){
+  const d=getAnn();
+  // We deliberately restore only notes, not full question HTML, to protect answer inputs/rendering.
+  document.getElementById("quickNotes").value=d.notes||"";
+}
+function initTools(){
+  document.getElementById("questionArea").addEventListener("mouseup",()=>setTimeout(captureSelection,10));
+  document.getElementById("questionArea").addEventListener("touchend",()=>setTimeout(captureSelection,100));
+  document.getElementById("questionArea").addEventListener("click",e=>{const m=e.target.closest("mark.has-note");if(m&&m.title)alert("Note: "+m.title)});
+  document.getElementById("highlightBtn").onclick=()=>wrapSelection(false);
+  document.getElementById("noteSelectionBtn").onclick=()=>wrapSelection(true);
+  document.getElementById("quickNotes").addEventListener("input",saveAnn);
+  document.getElementById("clearHighlightsBtn").onclick=()=>{
+    document.querySelectorAll("#questionArea mark.reader-highlight").forEach(m=>{const p=m.parentNode;while(m.firstChild)p.insertBefore(m.firstChild,m);p.removeChild(m);p.normalize()});
+  };
+}
+document.querySelectorAll(".blank").forEach(e=>{e.addEventListener("input",()=>{saveAnswers();updateProgress()})});
+document.querySelectorAll(".speed-btn").forEach(b=>b.onclick=()=>{const audio=document.getElementById("audio");audio.playbackRate=Number(b.dataset.speed);document.querySelectorAll(".speed-btn").forEach(x=>x.classList.remove("active"));b.classList.add("active")});
+document.getElementById("audio").addEventListener("error",()=>document.getElementById("audioError").style.display="block");
+document.getElementById("startBtn").onclick=start;
+document.getElementById("studentClass").addEventListener("keydown",e=>{if(e.key==="Enter")start()});
+document.getElementById("submitBtn").onclick=()=>{if(confirm("Nộp bài? Sau khi nộp em sẽ không sửa được đáp án."))submitExam()};
+document.getElementById("resetBtn").onclick=()=>{if(confirm("Làm lại từ đầu?")){localStorage.removeItem(STORAGE_KEY);location.reload()}};
+loadStudent();restoreAnn();initTools();updateProgress();
+</script>
+</body>
+</html>
