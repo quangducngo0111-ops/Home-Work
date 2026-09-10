@@ -3,228 +3,169 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>IELTS Reading Passage 2 Practice</title>
-
+<title>IELTS Reading Passage Practice</title>
 <style>
-:root{
-  --ink:#111827;
-  --muted:#6b7280;
-  --line:#e5e7eb;
-  --bg:#f4f7fb;
-  --blue:#2563eb;
-}
-
-*{
-  box-sizing:border-box;
-}
-
-body{
-  margin:0;
-  background:var(--bg);
-  color:var(--ink);
-  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
-}
-
-.wrap{
-  width:min(1120px,calc(100% - 32px));
-  margin:auto;
-}
-
-header{
-  background:#fff;
-  border-bottom:1px solid var(--line);
-}
-
-.top{
-  min-height:72px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:14px;
-}
-
-.home{
-  text-decoration:none;
-  color:#374151;
-  border:1px solid var(--line);
-  background:#fff;
-  border-radius:11px;
-  padding:9px 12px;
-  font-size:12px;
-  font-weight:900;
-}
-
-.home:hover{
-  background:#f8fafc;
-  border-color:#bfdbfe;
-  color:#1d4ed8;
-}
-
-.hero{
-  padding:44px 0 24px;
-}
-
-.kicker{
-  font-size:12px;
-  color:var(--blue);
-  font-weight:900;
-  text-transform:uppercase;
-  letter-spacing:.08em;
-}
-
-h1{
-  font-size:38px;
-  line-height:1.08;
-  letter-spacing:-1px;
-  margin:7px 0 10px;
-}
-
-.hero p{
-  margin:0;
-  color:var(--muted);
-  line-height:1.6;
-  max-width:760px;
-}
-
-.grid{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:14px;
-  padding-bottom:54px;
-}
-
-.card{
-  text-decoration:none;
-  color:inherit;
-  background:#fff;
-  border:1px solid var(--line);
-  border-radius:18px;
-  padding:18px;
-  display:grid;
-  grid-template-columns:48px 1fr 24px;
-  gap:13px;
-  align-items:center;
-  transition:.15s;
-}
-
-.card:hover{
-  transform:translateY(-1px);
-  border-color:#bfdbfe;
-  box-shadow:0 8px 24px rgba(15,23,42,.06);
-}
-
-.num{
-  width:44px;
-  height:44px;
-  border-radius:12px;
-  background:#eff6ff;
-  color:#2563eb;
-  display:grid;
-  place-items:center;
-  font-size:12px;
-  font-weight:950;
-}
-
-.card strong{
-  display:block;
-  font-size:16px;
-  margin-bottom:5px;
-}
-
-.card p{
-  margin:0;
-  color:var(--muted);
-  font-size:13px;
-  line-height:1.45;
-}
-
-.arrow{
-  color:#9ca3af;
-  font-size:18px;
-}
-
-@media(max-width:700px){
-  .grid{
-    grid-template-columns:1fr;
-  }
-
-  h1{
-    font-size:31px;
-  }
-}
+:root{--ink:#111827;--muted:#6b7280;--line:#e5e7eb;--bg:#f4f7fb;--blue:#2563eb}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+.wrap{width:min(1120px,calc(100% - 32px));margin:auto}
+header{background:#fff;border-bottom:1px solid var(--line)}
+.top{min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.home{text-decoration:none;color:#374151;border:1px solid var(--line);background:#fff;border-radius:11px;padding:9px 12px;font-size:12px;font-weight:900}
+.hero{padding:44px 0 24px}.kicker{font-size:12px;color:var(--blue);font-weight:900;text-transform:uppercase;letter-spacing:.08em}
+h1{font-size:38px;line-height:1.08;letter-spacing:-1px;margin:7px 0 10px}
+.hero p{margin:0;color:var(--muted);line-height:1.6;max-width:800px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;padding-bottom:54px}
+.card{text-decoration:none;color:inherit;background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;display:grid;grid-template-columns:48px 1fr 24px;gap:13px;align-items:center;transition:.15s}
+.card:hover{transform:translateY(-1px);border-color:#bfdbfe;box-shadow:0 8px 24px rgba(15,23,42,.06)}
+.num{width:44px;height:44px;border-radius:12px;background:#eff6ff;color:#2563eb;display:grid;place-items:center;font-size:12px;font-weight:950}
+.card strong{display:block;font-size:16px;margin-bottom:5px}
+.card p{margin:0;color:var(--muted);font-size:13px;line-height:1.45}
+.arrow{color:#9ca3af;font-size:18px}
+.loading,.empty{grid-column:1/-1;color:var(--muted);padding:24px 0;font-size:14px}
+@media(max-width:700px){.grid{grid-template-columns:1fr}h1{font-size:31px}}
 </style>
 </head>
-
 <body>
-
 <header>
   <div class="wrap top">
     <div>
       <strong>IELTS Reading Practice</strong>
-      <div style="color:#6b7280;font-size:12px;margin-top:3px">
-        Passage 2
-      </div>
+      <div id="topPassage" style="color:#6b7280;font-size:12px;margin-top:3px">Passage</div>
     </div>
-
-    <a class="home" href="../../">
-      ← Quay lại trang chủ
-    </a>
+    <a class="home" href="../../">← Quay lại trang chủ</a>
   </div>
 </header>
 
 <main class="wrap">
-
   <section class="hero">
-    <div class="kicker">Reading · Passage 2</div>
-
-    <h1>Passage 2 Practice</h1>
-
+    <div class="kicker" id="kicker">Reading · Passage</div>
+    <h1 id="pageTitle">Passage Practice</h1>
     <p>
-      Tổng hợp các bài luyện IELTS Reading Passage 2.
-      Mỗi bài có thời gian luyện tập tối đa 30 phút,
-      tự chấm và gửi kết quả về giáo viên.
+      Danh sách bài luyện được cập nhật tự động. Sau này chỉ cần tạo thêm folder
+      <b>03</b>, <b>04</b>, <b>05</b>... cùng file <b>index.html</b> bên trong;
+      không cần sửa trang danh sách này nữa.
     </p>
   </section>
 
-  <section class="grid">
-
-    <!-- BÀI 01 -->
-    <a class="card" href="./01/">
-      <span class="num">01</span>
-
-      <div>
-        <strong>European Transport Systems 1990–2010</strong>
-
-        <p>
-          13 câu · Matching Headings ·
-          TRUE/FALSE/NOT GIVEN · tối đa 30 phút
-        </p>
-      </div>
-
-      <span class="arrow">→</span>
-    </a>
-
-
-    <!-- BÀI 02 -->
-    <a class="card" href="./02/">
-      <span class="num">02</span>
-
-      <div>
-        <strong>Healthy buildings, productive people</strong>
-
-        <p>
-          13 câu · Matching Headings ·
-          Matching Features · Summary Completion ·
-          tối đa 30 phút
-        </p>
-      </div>
-
-      <span class="arrow">→</span>
-    </a>
-
+  <section class="grid" id="grid">
+    <div class="loading">Đang tải danh sách bài...</div>
   </section>
-
 </main>
 
+<script>
+const pathParts=location.pathname.split("/").filter(Boolean);
+const passageFolder=[...pathParts].reverse().find(x=>/^Passage[123]$/i.test(x)) || "Passage";
+const passageNo=(passageFolder.match(/\d+/)||[""])[0];
+
+document.title=`IELTS Reading Passage ${passageNo} Practice`;
+document.getElementById("topPassage").textContent=`Passage ${passageNo}`;
+document.getElementById("kicker").textContent=`Reading · Passage ${passageNo}`;
+document.getElementById("pageTitle").textContent=`Passage ${passageNo} Practice`;
+
+function cleanTitle(doc, fallback){
+  const h1=doc.querySelector("main h1, .hero h1, h1");
+  if(h1 && h1.textContent.trim()) return h1.textContent.trim();
+  const title=doc.querySelector("title");
+  if(title){
+    let t=title.textContent.trim();
+    t=t.replace(/^Reading Passage\s*\d+\s*[|·:-]\s*/i,"");
+    if(t) return t;
+  }
+  return fallback;
+}
+
+function getQuestionSummary(doc){
+  const heroText=(doc.querySelector(".hero p")?.textContent || "").replace(/\s+/g," ").trim();
+  const sectionTitles=[...doc.querySelectorAll(".q-section h3")]
+    .map(x=>x.textContent.replace(/Questions?\s*\d+\s*[–-]\s*\d+/i,"").trim())
+    .filter(Boolean);
+
+  const instructions=[...doc.querySelectorAll(".q-section .instructions")]
+    .map(x=>x.textContent.replace(/\s+/g," ").trim())
+    .filter(Boolean);
+
+  const types=[];
+  const all=(sectionTitles.join(" ")+" "+instructions.join(" ")).toLowerCase();
+
+  if(all.includes("heading")) types.push("Matching Headings");
+  if(all.includes("researcher") || all.includes("person or group") || all.includes("match each statement")) types.push("Matching Features");
+  if(all.includes("true") && all.includes("false")) types.push("TRUE/FALSE/NOT GIVEN");
+  if(all.includes("yes") && all.includes("no") && all.includes("not given")) types.push("YES/NO/NOT GIVEN");
+  if(all.includes("one word") && all.includes("summary")) types.push("Summary Completion");
+  else if(all.includes("one word")) types.push("Short Answer / Completion");
+  if(all.includes("a–g") || all.includes("a-g") || all.includes("sentence ending")) types.push("Matching Sentence Endings");
+  if(all.includes("a, b, c") || all.includes("a, b, c or d")) types.push("Multiple Choice");
+
+  const qNums=[...doc.querySelectorAll('[id^="q"]')]
+    .map(x=>Number((x.id.match(/\d+/)||[])[0]))
+    .filter(Number.isFinite);
+  const count=qNums.length ? new Set(qNums).size : "";
+
+  const bits=[];
+  if(count) bits.push(`${count} câu`);
+  if(types.length) bits.push([...new Set(types)].join(" · "));
+  if(/30\s*phút|30\s*minutes?|30:00/i.test(heroText+" "+doc.body.textContent)) bits.push("tối đa 30 phút");
+  return bits.join(" · ") || `Bài luyện Reading Passage ${passageNo}`;
+}
+
+async function fetchLesson(num){
+  const folder=String(num).padStart(2,"0");
+  const url=`./${folder}/index.html`;
+  try{
+    const res=await fetch(url,{cache:"no-store"});
+    if(!res.ok) return null;
+    const text=await res.text();
+    if(!/<html[\s>]/i.test(text)) return null;
+    const doc=new DOMParser().parseFromString(text,"text/html");
+    return {
+      folder,
+      title:cleanTitle(doc,`Passage ${passageNo} Practice ${folder}`),
+      summary:getQuestionSummary(doc),
+      url:`./${folder}/`
+    };
+  }catch(e){ return null; }
+}
+
+async function loadLessons(){
+  const grid=document.getElementById("grid");
+  const MAX=50;
+
+  // Scan 01–50 in parallel. New folders appear automatically.
+  const results=await Promise.all(
+    Array.from({length:MAX},(_,i)=>fetchLesson(i+1))
+  );
+  const lessons=results.filter(Boolean);
+
+  grid.innerHTML="";
+  if(!lessons.length){
+    grid.innerHTML='<div class="empty">Chưa có bài luyện nào trong mục này.</div>';
+    return;
+  }
+
+  lessons.forEach(x=>{
+    const a=document.createElement("a");
+    a.className="card";
+    a.href=x.url;
+    a.innerHTML=`
+      <span class="num">${x.folder}</span>
+      <div>
+        <strong>${escapeHtml(x.title)}</strong>
+        <p>${escapeHtml(x.summary)}</p>
+      </div>
+      <span class="arrow">→</span>
+    `;
+    grid.appendChild(a);
+  });
+}
+
+function escapeHtml(s){
+  return String(s||"").replace(/[&<>"']/g,m=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  }[m]));
+}
+
+loadLessons();
+</script>
 </body>
 </html>
