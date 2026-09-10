@@ -263,7 +263,7 @@ button,input,select{font:inherit}
         <div class="study-tools">
           <button class="tool-btn" type="button" id="clearHighlightsBtn">Xóa highlights</button>
           <button class="tool-btn" type="button" id="clearNotesBtn">Xóa notes</button>
-          <span class="tool-hint">Bôi đen đoạn văn → Highlight hoặc Take note</span>
+          <span class="tool-hint">Bôi đen nội dung trong bài đọc hoặc câu hỏi → Highlight / Take note</span>
         </div>
 
         <div class="passage" id="passageText">
@@ -307,6 +307,11 @@ button,input,select{font:inherit}
         <p>Complete all 14 questions, then submit to see your score.</p>
       </div>
       <div class="questions-wrap" id="questionsWrap">
+
+        <div class="study-tools" style="top:-18px;margin:-18px -18px 14px">
+          <button class="tool-btn" type="button" id="clearQuestionHighlightsBtn">Xóa highlight câu hỏi</button>
+          <span class="tool-hint">Bôi đen câu hỏi / đáp án để highlight hoặc ghi chú</span>
+        </div>
 
         <section class="q-section">
           <h3>Questions 27–30</h3>
@@ -453,7 +458,7 @@ const yng=[
 
 
 function getAnnotationData(){
-  let data={html:"",quickNotes:"",selectionNotes:[]};
+  let data={html:"",quickNotes:"",selectionNotes:[],questionAnnotations:[]};
   try{
     const raw=JSON.parse(localStorage.getItem(ANNOTATION_KEY)||"{}");
     if(raw && typeof raw==="object") data={...data,...raw};
@@ -473,6 +478,7 @@ function restoreAnnotations(){
   const passage=document.getElementById("passageText");
   if(data.html) passage.innerHTML=data.html;
   document.getElementById("quickNotes").value=data.quickNotes||"";
+  restoreQuestionAnnotations();
   renderSelectionNotes();
 }
 function renderSelectionNotes(){
@@ -490,6 +496,10 @@ function renderSelectionNotes(){
       if(e.target.classList.contains("del"))return;
       const el=document.querySelector(`[data-note-id="${CSS.escape(n.id)}"]`);
       if(el)el.scrollIntoView({behavior:"smooth",block:"center"});
+      else if(n.qid){
+        const q=document.getElementById(n.qid);
+        if(q)q.scrollIntoView({behavior:"smooth",block:"center"});
+      }
     };
     d.querySelector(".del").onclick=(e)=>{
       e.stopPropagation();
@@ -504,6 +514,7 @@ function escapeHtml(s){
 function removeSelectionNote(index,id){
   const data=getAnnotationData();
   data.selectionNotes=(data.selectionNotes||[]).filter((_,i)=>i!==index);
+  data.questionAnnotations=(data.questionAnnotations||[]).filter(x=>x.id!==id);
   const mark=document.querySelector(`[data-note-id="${CSS.escape(id)}"]`);
   if(mark){
     mark.removeAttribute("data-note-id");
@@ -514,9 +525,12 @@ function removeSelectionNote(index,id){
   localStorage.setItem(ANNOTATION_KEY,JSON.stringify(data));
   renderSelectionNotes();
 }
-function selectionInsidePassage(range){
+function getSelectionArea(range){
   const passage=document.getElementById("passageText");
-  return passage.contains(range.commonAncestorContainer);
+  const questions=document.getElementById("questionsWrap");
+  if(passage.contains(range.commonAncestorContainer)) return "passage";
+  if(questions.contains(range.commonAncestorContainer)) return "question";
+  return "";
 }
 function captureSelection(){
   if(submitted)return;
@@ -526,10 +540,22 @@ function captureSelection(){
     toolbar.classList.remove("show");savedSelectionRange=null;return;
   }
   const range=sel.getRangeAt(0);
-  if(!selectionInsidePassage(range) || !sel.toString().trim()){
+  const area=getSelectionArea(range);
+  if(!area || !sel.toString().trim()){
     toolbar.classList.remove("show");savedSelectionRange=null;return;
   }
+
+  // Do not allow wrapping inside input/select/button controls.
+  const node = range.commonAncestorContainer.nodeType===1
+    ? range.commonAncestorContainer
+    : range.commonAncestorContainer.parentElement;
+  if(node && node.closest("input,select,button")){
+    toolbar.classList.remove("show");savedSelectionRange=null;return;
+  }
+
   savedSelectionRange=range.cloneRange();
+  savedSelectionRange._studyArea=area;
+
   const rect=range.getBoundingClientRect();
   toolbar.style.left=Math.max(8,Math.min(window.innerWidth-210,rect.left))+"px";
   toolbar.style.top=Math.max(8,rect.top-46)+"px";
@@ -537,22 +563,34 @@ function captureSelection(){
 }
 function wrapSavedSelection(withNote=false){
   if(!savedSelectionRange)return;
+
   const selected=savedSelectionRange.toString().trim();
   if(!selected)return;
+
+  const area=savedSelectionRange._studyArea || getSelectionArea(savedSelectionRange);
   const mark=document.createElement("mark");
   mark.className="reader-highlight";
+  mark.dataset.studyArea=area;
+
+  let note="";
+  let id="hl_"+Date.now()+"_"+Math.random().toString(36).slice(2,7);
+
   if(withNote){
-    const note=prompt("Ghi chú cho đoạn đã chọn:");
+    note=prompt("Ghi chú cho đoạn đã chọn:");
     if(note===null)return;
-    const id="note_"+Date.now()+"_"+Math.random().toString(36).slice(2,7);
     mark.classList.add("has-note");
     mark.dataset.noteId=id;
     mark.title=note.trim();
-    const data=getAnnotationData();
-    data.selectionNotes=data.selectionNotes||[];
-    data.selectionNotes.push({id,text:selected,note:note.trim()});
-    localStorage.setItem(ANNOTATION_KEY,JSON.stringify(data));
   }
+
+  if(area==="question"){
+    const startEl=savedSelectionRange.startContainer.nodeType===1
+      ? savedSelectionRange.startContainer
+      : savedSelectionRange.startContainer.parentElement;
+    const q=startEl ? startEl.closest(".q") : null;
+    if(q) mark.dataset.qid=q.id;
+  }
+
   try{
     savedSelectionRange.surroundContents(mark);
   }catch(e){
@@ -560,16 +598,102 @@ function wrapSavedSelection(withNote=false){
     mark.appendChild(frag);
     savedSelectionRange.insertNode(mark);
   }
+
+  const data=getAnnotationData();
+
+  if(area==="passage"){
+    if(withNote){
+      data.selectionNotes=data.selectionNotes||[];
+      data.selectionNotes.push({id,text:selected,note:note.trim(),area:"passage"});
+    }
+    data.html=document.getElementById("passageText").innerHTML;
+  }else if(area==="question"){
+    data.questionAnnotations=data.questionAnnotations||[];
+    data.questionAnnotations.push({
+      id,
+      qid:mark.dataset.qid||"",
+      text:selected,
+      note:withNote?note.trim():"",
+      hasNote:withNote
+    });
+    if(withNote){
+      data.selectionNotes=data.selectionNotes||[];
+      data.selectionNotes.push({id,text:selected,note:note.trim(),area:"question",qid:mark.dataset.qid||""});
+    }
+  }
+
+  localStorage.setItem(ANNOTATION_KEY,JSON.stringify(data));
+
   window.getSelection().removeAllRanges();
   savedSelectionRange=null;
   document.getElementById("selectionToolbar").classList.remove("show");
-  saveAnnotations();
   renderSelectionNotes();
 }
+
+function findTextNodeAndWrap(container, targetText, attrs={}){
+  if(!container || !targetText)return null;
+
+  const walker=document.createTreeWalker(
+    container,
+    NodeFilter.SHOW_TEXT,
+    {
+      acceptNode(node){
+        if(!node.nodeValue.trim())return NodeFilter.FILTER_REJECT;
+        if(node.parentElement && node.parentElement.closest("mark.reader-highlight"))return NodeFilter.FILTER_REJECT;
+        if(node.parentElement && node.parentElement.closest("input,select,button"))return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    }
+  );
+
+  let node;
+  while(node=walker.nextNode()){
+    const idx=node.nodeValue.indexOf(targetText);
+    if(idx!==-1){
+      const range=document.createRange();
+      range.setStart(node,idx);
+      range.setEnd(node,idx+targetText.length);
+
+      const mark=document.createElement("mark");
+      mark.className="reader-highlight";
+      mark.dataset.studyArea="question";
+      if(attrs.id)mark.dataset.noteId=attrs.id;
+      if(attrs.qid)mark.dataset.qid=attrs.qid;
+      if(attrs.hasNote){
+        mark.classList.add("has-note");
+        mark.title=attrs.note||"";
+      }
+
+      try{
+        range.surroundContents(mark);
+      }catch(e){
+        const frag=range.extractContents();
+        mark.appendChild(frag);
+        range.insertNode(mark);
+      }
+      return mark;
+    }
+  }
+  return null;
+}
+
+function restoreQuestionAnnotations(){
+  const data=getAnnotationData();
+  (data.questionAnnotations||[]).forEach(a=>{
+    const scope=a.qid ? document.getElementById(a.qid) : document.getElementById("questionsWrap");
+    findTextNodeAndWrap(scope,a.text,a);
+  });
+}
+
 function initStudyTools(){
   const passage=document.getElementById("passageText");
+  const questions=document.getElementById("questionsWrap");
+
   passage.addEventListener("mouseup",()=>setTimeout(captureSelection,10));
   passage.addEventListener("touchend",()=>setTimeout(captureSelection,120));
+
+  questions.addEventListener("mouseup",()=>setTimeout(captureSelection,10));
+  questions.addEventListener("touchend",()=>setTimeout(captureSelection,120));
 
   document.getElementById("highlightBtn").onclick=()=>wrapSavedSelection(false);
   document.getElementById("noteSelectionBtn").onclick=()=>wrapSavedSelection(true);
@@ -605,6 +729,25 @@ function initStudyTools(){
     renderSelectionNotes();
   };
 
+
+  document.getElementById("clearQuestionHighlightsBtn").onclick=()=>{
+    if(!confirm("Xóa toàn bộ highlight và note đã gắn trực tiếp trên câu hỏi?"))return;
+
+    document.querySelectorAll('#questionsWrap mark.reader-highlight').forEach(mark=>{
+      const parent=mark.parentNode;
+      while(mark.firstChild)parent.insertBefore(mark.firstChild,mark);
+      parent.removeChild(mark);
+      parent.normalize();
+    });
+
+    const data=getAnnotationData();
+    const questionNoteIds=new Set((data.questionAnnotations||[]).map(x=>x.id));
+    data.questionAnnotations=[];
+    data.selectionNotes=(data.selectionNotes||[]).filter(n=>!questionNoteIds.has(n.id));
+    localStorage.setItem(ANNOTATION_KEY,JSON.stringify(data));
+    renderSelectionNotes();
+  };
+
   document.addEventListener("mousedown",e=>{
     if(!e.target.closest("#selectionToolbar") && !e.target.closest("#passageText")){
       document.getElementById("selectionToolbar").classList.remove("show");
@@ -612,6 +755,11 @@ function initStudyTools(){
   });
 
   document.getElementById("passageText").addEventListener("click",e=>{
+    const mark=e.target.closest("mark.has-note");
+    if(mark && mark.title) alert("Note: "+mark.title);
+  });
+
+  document.getElementById("questionsWrap").addEventListener("click",e=>{
     const mark=e.target.closest("mark.has-note");
     if(mark && mark.title) alert("Note: "+mark.title);
   });
