@@ -197,6 +197,38 @@ button,input,select{font:inherit}
   font-size:11px;font-weight:900;cursor:pointer
 }
 
+
+.inline-review{
+  margin-top:10px;
+  border-top:1px dashed #fecaca;
+  padding-top:10px;
+}
+.inline-review .review-line{
+  margin:5px 0;
+  font-size:12px;
+  line-height:1.5;
+  color:#4b5563;
+}
+.inline-review .student-answer{
+  color:#991b1b;
+  font-weight:900;
+}
+.inline-review .correct-answer{
+  color:#166534;
+  font-weight:900;
+}
+.inline-review .explain-text{
+  background:#fff7ed;
+  border:1px solid #fed7aa;
+  border-radius:10px;
+  padding:9px 10px;
+  margin-top:8px;
+  color:#7c2d12;
+}
+.inline-review .evidence-btn{
+  margin-top:8px;
+}
+
 </style>
 </head>
 <body>
@@ -304,7 +336,7 @@ button,input,select{font:inherit}
     <aside class="panel">
       <div class="panel-head">
         <h2>Questions 27–40</h2>
-        <p>Complete all 14 questions, then submit to see your score.</p>
+        <p>Complete all 14 questions, then submit. Nếu sai, phần giải thích sẽ hiện ngay dưới câu hỏi để dễ đối chiếu.</p>
       </div>
       <div class="questions-wrap" id="questionsWrap">
 
@@ -352,10 +384,7 @@ button,input,select{font:inherit}
           <p>Gửi kết quả: <span class="status" id="sendStatus">đang xử lý…</span></p>
         </div>
 
-        <div class="review" id="reviewBox">
-          <h3 style="margin:0 0 7px;font-size:16px">Các câu cần xem lại</h3>
-          <div id="wrongList"></div>
-        </div>
+        <div class="review" id="reviewBox"></div>
       </div>
     </aside>
   </section>
@@ -895,14 +924,18 @@ function submitExam(auto=false){
   const all=[...mcqs,...endings,...yng];
   let score=0;
   const details=[];
-  const wrong=[];
+
+  // Remove any old inline review blocks.
+  document.querySelectorAll(".inline-review").forEach(x=>x.remove());
 
   all.forEach(x=>{
     const ans=getAnswer(x.n);
     const ok=ans===x.a;
     if(ok)score++;
+
     const q=document.getElementById("q"+x.n);
     q.classList.add(ok?"done-correct":"done-wrong");
+
     details.push({
       question:x.n,
       answer:ans,
@@ -911,7 +944,42 @@ function submitExam(auto=false){
       paragraph:x.p.replace("p",""),
       explanation:x.why
     });
-    if(!ok)wrong.push({n:x.n,answer:ans||"—",correct:x.a,p:x.p,why:x.why});
+
+    // Chỉ hiện giải thích chi tiết cho câu sai, ngay dưới câu hỏi.
+    if(!ok){
+      const review=document.createElement("div");
+      review.className="inline-review";
+
+      let studentDisplay=ans || "Chưa trả lời";
+      let correctDisplay=x.a;
+
+      // Expand answer text for MCQ questions so students can compare more easily.
+      if(x.opts){
+        if(ans && x.opts[ans]) studentDisplay=`${ans}. ${x.opts[ans]}`;
+        if(x.opts[x.a]) correctDisplay=`${x.a}. ${x.opts[x.a]}`;
+      } else if(x.n>=31 && x.n<=35){
+        const endingMap={
+          A:"take chances.",
+          B:"share their ideas.",
+          C:"become competitive.",
+          D:"get promotion.",
+          E:"avoid risk.",
+          F:"ignore their duties.",
+          G:"remain in their jobs."
+        };
+        if(ans && endingMap[ans]) studentDisplay=`${ans}. ${endingMap[ans]}`;
+        if(endingMap[x.a]) correctDisplay=`${x.a}. ${endingMap[x.a]}`;
+      }
+
+      review.innerHTML=`
+        <div class="review-line"><b>Đáp án em chọn:</b> <span class="student-answer">${studentDisplay}</span></div>
+        <div class="review-line"><b>Đáp án đúng:</b> <span class="correct-answer">${correctDisplay}</span></div>
+        <div class="review-line explain-text"><b>Giải thích:</b> ${x.why}</div>
+        <button class="evidence-btn" type="button">↗ Đối chiếu trong bài đọc</button>
+      `;
+      review.querySelector(".evidence-btn").onclick=()=>revealParagraph(x.p);
+      q.appendChild(review);
+    }
   });
 
   const total=all.length;
@@ -923,26 +991,13 @@ function submitExam(auto=false){
   document.getElementById("scoreDetail").textContent=
     auto ? "Hết 30 phút — bài đã được tự động nộp." :
     percent>=85 ? "Rất tốt! Em xử lý Passage 3 khá chắc." :
-    percent>=70 ? "Khá tốt. Hãy xem lại các câu sai và đối chiếu bằng chứng trong bài." :
-    "Nên xem kỹ lại bằng chứng trong passage, đặc biệt ở các câu suy luận và NOT GIVEN.";
+    percent>=70 ? "Khá tốt. Các câu sai đã được giải thích ngay dưới từng câu hỏi." :
+    "Hãy xem lại từng câu sai và dùng nút Đối chiếu trong bài đọc để kiểm tra bằng chứng.";
   document.getElementById("resultBox").classList.add("show");
 
-  if(wrong.length){
-    const list=document.getElementById("wrongList");
-    list.innerHTML="";
-    wrong.forEach(w=>{
-      const d=document.createElement("div");
-      d.className="wrong-card";
-      d.innerHTML=`<h4>Câu ${w.n}</h4>
-        <p><b>Em chọn:</b> ${w.answer}</p>
-        <p><b>Đáp án đúng:</b> ${w.correct}</p>
-        <p><b>Giải thích:</b> ${w.why}</p>
-        <button class="evidence-btn" type="button">↗ Đối chiếu trong bài đọc</button>`;
-      d.querySelector("button").onclick=()=>revealParagraph(w.p);
-      list.appendChild(d);
-    });
-    document.getElementById("reviewBox").classList.add("show");
-  }
+  // Hide the old separate review area because review is now inline.
+  const oldReview=document.getElementById("reviewBox");
+  if(oldReview) oldReview.classList.remove("show");
 
   document.getElementById("submitBtn").disabled=true;
   localStorage.removeItem(STORAGE_KEY);
