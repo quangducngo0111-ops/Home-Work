@@ -1,0 +1,616 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Reading Passage 3 | The Psychology of Innovation</title>
+<style>
+:root{
+  --ink:#111827;--muted:#6b7280;--line:#e5e7eb;--bg:#f4f7fb;--card:#fff;
+  --blue:#2563eb;--blue2:#1d4ed8;--soft:#eff6ff;
+  --green:#15803d;--greenbg:#f0fdf4;--red:#b91c1c;--redbg:#fef2f2;
+  --amber:#92400e;--amberbg:#fffbeb;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+}
+button,input,select{font:inherit}
+.topbar{
+  position:sticky;top:0;z-index:50;background:rgba(255,255,255,.97);
+  border-bottom:1px solid var(--line);backdrop-filter:blur(10px)
+}
+.wrap{width:min(1500px,calc(100% - 28px));margin:auto}
+.top-inner{min-height:70px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.left-top{display:flex;align-items:center;gap:12px;min-width:0}
+.home-btn{
+  display:inline-flex;align-items:center;gap:7px;text-decoration:none;color:#374151;background:#fff;
+  border:1px solid var(--line);border-radius:11px;padding:8px 11px;font-size:12px;font-weight:900;white-space:nowrap
+}
+.home-btn:hover{background:#f8fafc;border-color:#bfdbfe;color:#1d4ed8}
+.brand{min-width:0}
+.brand strong{display:block;font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brand span{font-size:12px;color:var(--muted)}
+.meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.chip{background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 11px;font-size:12px;font-weight:850}
+.timer{color:var(--blue2);min-width:72px;text-align:center}
+.timer.danger{color:var(--red);border-color:#fecaca;background:#fff7f7}
+.hero{padding:28px 0 18px}
+.kicker{font-size:12px;font-weight:900;color:var(--blue);text-transform:uppercase;letter-spacing:.08em}
+.hero h1{margin:6px 0 8px;font-size:34px;line-height:1.12;letter-spacing:-.8px}
+.hero p{margin:0;color:var(--muted);font-size:13px;line-height:1.6}
+.progress-wrap{display:flex;align-items:center;gap:10px;margin-top:14px}
+.progress{height:8px;flex:1;background:#e5e7eb;border-radius:999px;overflow:hidden}
+.progress i{display:block;height:100%;width:0;background:var(--blue);transition:.2s}
+.progress-text{font-size:12px;font-weight:900;color:var(--muted)}
+.exam{
+  display:grid;grid-template-columns:minmax(0,1.08fr) minmax(420px,.92fr);gap:16px;
+  align-items:start;padding-bottom:50px
+}
+.panel{
+  background:#fff;border:1px solid var(--line);border-radius:20px;overflow:hidden
+}
+.panel-head{padding:17px 19px;border-bottom:1px solid var(--line);background:#fbfcfe}
+.panel-head h2{margin:0;font-size:18px}
+.panel-head p{margin:5px 0 0;color:var(--muted);font-size:12px;line-height:1.5}
+.passage-wrap{
+  padding:22px;max-height:calc(100vh - 150px);overflow:auto;scroll-behavior:smooth
+}
+.passage{
+  font-family:Georgia,"Times New Roman",serif;font-size:16px;line-height:1.82;color:#1f2937
+}
+.passage h3{
+  font-family:Inter,system-ui,sans-serif;font-size:20px;line-height:1.3;margin:0 0 6px;color:#111827
+}
+.passage .intro{
+  font-family:Inter,system-ui,sans-serif;font-weight:800;font-style:italic;margin:0 0 18px;color:#374151
+}
+.para{
+  position:relative;padding:6px 8px 6px 42px;margin:0 0 10px;border-radius:12px
+}
+.para::before{
+  content:attr(data-p);position:absolute;left:8px;top:10px;width:24px;height:24px;
+  display:grid;place-items:center;border-radius:8px;background:#eff6ff;color:#2563eb;
+  font-family:Inter,system-ui,sans-serif;font-size:10px;font-weight:900
+}
+.para:target,.para.flash{background:#fffbea;box-shadow:inset 0 0 0 1px #fde68a}
+.questions-wrap{
+  padding:18px;max-height:calc(100vh - 150px);overflow:auto
+}
+.q-section{margin-bottom:18px}
+.q-section h3{font-size:17px;margin:0 0 5px}
+.instructions{font-size:12px;color:var(--muted);line-height:1.55;margin:0 0 12px}
+.q{
+  border:1px solid var(--line);border-radius:15px;padding:14px;margin-top:10px;background:#fff
+}
+.q.done-correct{border-color:#86efac;background:#fbfffc}
+.q.done-wrong{border-color:#fecaca;background:#fffafa}
+.q-title{font-size:13px;font-weight:800;line-height:1.5;margin-bottom:10px}
+.options{display:grid;gap:7px}
+.opt{
+  display:flex;align-items:flex-start;gap:9px;padding:9px 10px;border:1px solid var(--line);
+  border-radius:10px;cursor:pointer;background:#fff;font-size:12px;line-height:1.45
+}
+.opt:hover{background:#f8fafc}
+.opt input{margin-top:2px}
+.endings{
+  border:1px solid var(--line);border-radius:14px;background:#f8fafc;padding:11px 12px;margin:10px 0
+}
+.ending{font-size:12px;line-height:1.5;margin:5px 0}
+.select-answer{
+  width:100%;border:1px solid #d1d5db;border-radius:10px;padding:9px 10px;background:#fff;outline:none
+}
+.actions{
+  position:sticky;bottom:0;background:linear-gradient(to top,#fff 72%,rgba(255,255,255,.86));
+  padding:14px 0 2px;margin-top:14px;display:flex;gap:9px;flex-wrap:wrap
+}
+.btn{border:0;border-radius:12px;padding:11px 14px;font-weight:900;cursor:pointer}
+.btn.primary{background:var(--blue);color:#fff}
+.btn.ghost{background:#eef2f7;color:#374151}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.result{
+  display:none;background:#111827;color:#fff;border-radius:17px;padding:18px;margin-top:14px
+}
+.result.show{display:block}
+.result .big{font-size:38px;font-weight:950;line-height:1}
+.result h3{margin:7px 0 6px}
+.result p{margin:5px 0;color:#d1d5db;font-size:12px;line-height:1.5}
+.status{font-weight:900}.status.ok{color:#86efac}.status.err{color:#fca5a5}
+.review{display:none;margin-top:14px}
+.review.show{display:block}
+.wrong-card{
+  border:1px solid #fecaca;background:#fff7f7;border-radius:14px;padding:12px;margin-top:9px
+}
+.wrong-card h4{margin:0 0 7px;font-size:13px}
+.wrong-card p{margin:4px 0;font-size:12px;line-height:1.5;color:#4b5563}
+.evidence-btn{
+  border:0;background:#fee2e2;color:#991b1b;border-radius:9px;padding:7px 9px;
+  font-size:11px;font-weight:900;cursor:pointer;margin-top:7px
+}
+.start-overlay{
+  position:fixed;inset:0;z-index:100;background:rgba(15,23,42,.5);
+  display:grid;place-items:center;padding:18px
+}
+.start-card{
+  width:min(470px,100%);background:#fff;border-radius:22px;padding:24px;
+  box-shadow:0 25px 70px rgba(15,23,42,.25)
+}
+.start-card h2{margin:0 0 7px;font-size:25px}
+.start-card p{margin:0 0 16px;color:var(--muted);font-size:13px;line-height:1.55}
+.field{margin-top:12px}
+.field label{display:block;font-size:12px;font-weight:900;margin-bottom:6px}
+.field input{width:100%;border:1px solid #d1d5db;border-radius:12px;padding:12px;outline:none}
+.err{display:none;margin-top:9px;color:var(--red);font-size:12px;font-weight:800}
+@media(max-width:980px){
+  .exam{grid-template-columns:1fr}
+  .passage-wrap,.questions-wrap{max-height:none}
+}
+@media(max-width:650px){
+  .hero h1{font-size:28px}.meta .student{display:none}.brand span{display:none}
+  .home-btn{padding:8px 9px}.wrap{width:min(100% - 18px,1500px)}
+}
+</style>
+</head>
+<body>
+
+<div class="start-overlay" id="startOverlay">
+  <div class="start-card">
+    <div class="kicker">Reading Passage 3</div>
+    <h2>Thông tin học sinh</h2>
+    <p>Nhập họ tên và lớp trước khi bắt đầu. Bài có 14 câu và thời gian luyện tập tối đa là 30 phút. Khi hết giờ, hệ thống sẽ tự nộp bài.</p>
+    <div class="field">
+      <label>Họ và tên</label>
+      <input id="studentName" placeholder="Ví dụ: Nguyễn Minh Anh" autocomplete="name">
+    </div>
+    <div class="field">
+      <label>Lớp</label>
+      <input id="studentClass" placeholder="Ví dụ: 11A1">
+    </div>
+    <div class="err" id="startErr">Vui lòng nhập đầy đủ họ tên và lớp.</div>
+    <button class="btn primary" style="width:100%;margin-top:15px" id="startBtn">Bắt đầu làm bài</button>
+  </div>
+</div>
+
+<header class="topbar">
+  <div class="wrap top-inner">
+    <div class="left-top">
+      <a class="home-btn" href="../">← Danh sách Passage 3</a>
+      <a class="home-btn" href="../../../">Trang chủ IELTS</a>
+      <div class="brand">
+        <strong>Reading Passage 3</strong>
+        <span>The Psychology of Innovation</span>
+      </div>
+    </div>
+    <div class="meta">
+      <div class="chip student" id="studentChip">—</div>
+      <div class="chip timer" id="timer">30:00</div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <div class="kicker">IELTS Reading · Passage 3</div>
+    <h1>The psychology of innovation</h1>
+    <p><b>Questions 27–40.</b> Thời gian luyện tập tối đa: <b>30 phút</b>.</p>
+    <div class="progress-wrap">
+      <div class="progress"><i id="progressBar"></i></div>
+      <div class="progress-text" id="progressText">0/14</div>
+    </div>
+  </section>
+
+  <section class="exam">
+    <article class="panel">
+      <div class="panel-head">
+        <h2>Reading Passage</h2>
+        <p>Why are so few companies truly innovative?</p>
+      </div>
+      <div class="passage-wrap" id="passageWrap">
+        <div class="passage">
+          <h3>The psychology of innovation</h3>
+          <p class="intro">Why are so few companies truly innovative?</p>
+
+          <p class="para" id="p1" data-p="1">Innovation is key to business survival, and companies put substantial resources into inspiring employees to develop new ideas. There are, nevertheless, people working in luxurious, state-of-the-art centres designed to stimulate innovation who find that their environment doesn’t make them feel at all creative. And there are those who don’t have a budget, or much space, but who innovate successfully.</p>
+
+          <p class="para" id="p2" data-p="2">For Robert B. Cialdini, Professor of Psychology at Arizona State University, one reason that companies don’t succeed as often as they should is that innovation starts with recruitment. Research shows that the fit between an employee’s values and a company’s values makes a difference to what contribution they make and whether, two years after they join, they’re still at the company. Studies at Harvard Business School show that, although some individuals may be more creative than others, almost every individual can be creative in the right circumstances.</p>
+
+          <p class="para" id="p3" data-p="3">One of the most famous photographs in the story of rock’n’roll emphasises Cialdini’s views. The 1956 picture of singers Elvis Presley, Carl Perkins, Johnny Cash and Jerry Lee Lewis jamming at a piano in Sun Studios in Memphis tells a hidden story. Sun’s ‘million-dollar quartet’ could have been a quintet. Missing from the picture is Roy Orbison, a greater natural singer than Lewis, Perkins or Cash. Sam Phillips, who owned Sun, wanted to revolutionise popular music with songs that fused black and white music, and country and blues. Presley, Cash, Perkins and Lewis instinctively understood Phillips’s ambition and believed in it. Orbison wasn’t inspired by the goal, and only ever achieved one hit with the Sun label.</p>
+
+          <p class="para" id="p4" data-p="4">The value fit matters, says Cialdini, because innovation is, in part, a process of change, and under that pressure we, as a species, behave differently. ‘When things change, we are hard-wired to play it safe.’ Managers should therefore adopt an approach that appears counterintuitive — they should explain what stands to be lost if the company fails to seize a particular opportunity. Studies show that we invariably take more gambles when threatened with a loss than when offered a reward.</p>
+
+          <p class="para" id="p5" data-p="5">Managing innovation is a delicate art. It’s easy for a company to be pulled in conflicting directions as the marketing, product development, and finance departments each get different feedback from different sets of people. And without a system which ensures collaborative exchanges within the company, it’s also easy for small ‘pockets of innovation’ to disappear. Innovation is a contact sport. You can’t brief people just by saying, ‘We’re going in this direction and I’m going to take you with me.’</p>
+
+          <p class="para" id="p6" data-p="6">Cialdini believes that this ‘follow-the-leader syndrome’ is dangerous, not least because it encourages bosses to go it alone. ‘It’s been scientifically proven that three people will be better than one at solving problems, even if that one person is the smartest person in the field.’ To prove his point, Cialdini cites an interview with molecular biologist James Watson. Watson, together with Francis Crick, discovered the structure of DNA, the genetic information carrier of all living organisms. ‘When asked how they had cracked the code ahead of an array of highly accomplished rival investigators, he said something that stunned me. He said he and Crick had succeeded because they were aware that they weren’t the most intelligent of the scientists pursuing the answer. The smartest scientist was called Rosalind Franklin who, Watson said, “was so intelligent she rarely sought advice”.’</p>
+
+          <p class="para" id="p7" data-p="7">Teamwork taps into one of the basic drivers of human behaviour. ‘The principle of social proof is so pervasive that we don’t even recognise it,’ says Cialdini. ‘If your project is being resisted, for example, by a group of veteran employees, ask another old-timer to speak up for it.’ Cialdini is not alone in advocating this strategy. Research shows that peer power, used horizontally not vertically, is much more powerful than any boss’s speech.</p>
+
+          <p class="para" id="p8" data-p="8">Writing, visualising and prototyping can stimulate the flow of new ideas. Cialdini cites scores of research papers and historical events that prove that even something as simple as writing deepens every individual’s engagement in the project. It is, he says, the reason why all those competitions on breakfast cereal packets encouraged us to write in saying, in no more than 10 words: ‘I like Kellogg’s Corn Flakes because…’. The very act of writing makes us more likely to believe it.</p>
+
+          <p class="para" id="p9" data-p="9">Authority doesn’t have to inhibit innovation but it often does. The wrong kind of leadership will lead to what Cialdini calls ‘captainitis’, the regrettable tendency of team members to opt out of team responsibilities that are properly theirs. He calls it captainitis because, he says, ‘crew members of multipilot aircraft exhibit a sometimes deadly passivity when the flight captain makes a clearly wrong-headed decision’. This behaviour is not, he says, unique to air travel, but can happen in any workplace where the leader is overbearing.</p>
+
+          <p class="para" id="p10" data-p="10">At the other end of the scale is the 1980s Memphis design collective, a group of young designers for whom ‘the only rule was that there were no rules’. This environment encouraged a free interchange of ideas, which led to more creativity with form, function, colour and materials that revolutionised attitudes to furniture design.</p>
+
+          <p class="para" id="p11" data-p="11">Many theorists believe the ideal boss should lead from behind, taking pride in collective accomplishment and giving credit where it is due. Cialdini says: ‘Leaders should encourage everyone to contribute and simultaneously assure all concerned that every recommendation is important to making the right decision and will be given full attention.’ The frustrating thing about innovation is that there are many approaches, but no magic formula. However, a manager who wants to create a truly innovative culture can make their job a lot easier by recognising these psychological realities.</p>
+        </div>
+      </div>
+    </article>
+
+    <aside class="panel">
+      <div class="panel-head">
+        <h2>Questions 27–40</h2>
+        <p>Complete all 14 questions, then submit to see your score.</p>
+      </div>
+      <div class="questions-wrap" id="questionsWrap">
+
+        <section class="q-section">
+          <h3>Questions 27–30</h3>
+          <p class="instructions">Choose the correct letter, A, B, C or D.</p>
+          <div id="mcqBox"></div>
+        </section>
+
+        <section class="q-section">
+          <h3>Questions 31–35</h3>
+          <p class="instructions">Complete each sentence with the correct ending, A–G.</p>
+          <div class="endings">
+            <div class="ending"><b>A</b> take chances.</div>
+            <div class="ending"><b>B</b> share their ideas.</div>
+            <div class="ending"><b>C</b> become competitive.</div>
+            <div class="ending"><b>D</b> get promotion.</div>
+            <div class="ending"><b>E</b> avoid risk.</div>
+            <div class="ending"><b>F</b> ignore their duties.</div>
+            <div class="ending"><b>G</b> remain in their jobs.</div>
+          </div>
+          <div id="endingBox"></div>
+        </section>
+
+        <section class="q-section">
+          <h3>Questions 36–40</h3>
+          <p class="instructions">Choose <b>YES</b>, <b>NO</b> or <b>NOT GIVEN</b>.</p>
+          <div id="yngBox"></div>
+        </section>
+
+        <div class="actions">
+          <button class="btn primary" id="submitBtn">Nộp bài & xem kết quả</button>
+          <button class="btn ghost" id="resetBtn">Làm lại</button>
+        </div>
+
+        <div class="result" id="resultBox">
+          <div class="big" id="scoreBig">0/14</div>
+          <h3 id="scoreTitle">Kết quả</h3>
+          <p id="scoreDetail"></p>
+          <p>Gửi kết quả: <span class="status" id="sendStatus">đang xử lý…</span></p>
+        </div>
+
+        <div class="review" id="reviewBox">
+          <h3 style="margin:0 0 7px;font-size:16px">Các câu cần xem lại</h3>
+          <div id="wrongList"></div>
+        </div>
+      </div>
+    </aside>
+  </section>
+</main>
+
+<script>
+const APPS_SCRIPT_URL="https://script.google.com/macros/s/AKfycbwfwWjJ7Q3VTJEF5ldKGnFKYoziQdntAzRjq1Yqy6HSmbZSc69ijSdOvMCC_Zogbpcm/exec";
+const STORAGE_KEY="IELTS_HOMEWORK_READING_PASSAGE3";
+const STUDENT_KEY="IELTS_HOMEWORK_STUDENT";
+const TEST_ID="READING_PASSAGE_3_INNOVATION";
+
+let student={name:"",className:""};
+let secondsLeft=1800;
+let startedAt=0;
+let timerHandle=null;
+let submitted=false;
+
+const mcqs=[
+  {
+    n:27,
+    q:"The example of the ‘million-dollar quartet’ underlines the writer’s point about",
+    opts:{
+      A:"recognising talent.",
+      B:"working as a team.",
+      C:"having a shared objective.",
+      D:"being an effective leader."
+    },
+    a:"C",
+    p:"p3",
+    why:"The four successful musicians understood Sam Phillips’s ambition and believed in the same goal; Orbison did not."
+  },
+  {
+    n:28,
+    q:"James Watson suggests that he and Francis Crick won the race to discover the DNA code because they",
+    opts:{
+      A:"were conscious of their own limitations.",
+      B:"brought complementary skills to their partnership.",
+      C:"were determined to outperform their brighter rivals.",
+      D:"encouraged each other to realise their joint ambition."
+    },
+    a:"A",
+    p:"p6",
+    why:"Watson says he and Crick knew they were not the most intelligent scientists, so they sought help and collaboration."
+  },
+  {
+    n:29,
+    q:"The writer mentions competitions on breakfast cereal packets as an example of how to",
+    opts:{
+      A:"inspire creative thinking.",
+      B:"generate concise writing.",
+      C:"promote loyalty to a group.",
+      D:"strengthen commitment to an idea."
+    },
+    a:"D",
+    p:"p8",
+    why:"The passage says the act of writing deepens engagement and makes people more likely to believe the idea."
+  },
+  {
+    n:30,
+    q:"In the last paragraph, the writer suggests that it is important for employees to",
+    opts:{
+      A:"be aware of their company's goals.",
+      B:"feel that their contributions are valued.",
+      C:"have respect for their co-workers’ achievements.",
+      D:"understand why certain management decisions are made."
+    },
+    a:"B",
+    p:"p11",
+    why:"Leaders should assure employees that every recommendation is important and will receive full attention."
+  }
+];
+
+const endings=[
+  {n:31,q:"Employees whose values match those of their employers are more likely to",a:"G",p:"p2",
+   why:"Value fit affects whether employees are still at the company two years after joining."},
+  {n:32,q:"At times of change, people tend to",a:"E",p:"p4",
+   why:"Cialdini says people are hard-wired to play it safe when things change."},
+  {n:33,q:"If people are aware of what they might lose, they will often",a:"A",p:"p4",
+   why:"Studies show people take more gambles when threatened with a loss."},
+  {n:34,q:"People working under a dominant boss are liable to",a:"F",p:"p9",
+   why:"Captainitis describes team members opting out of responsibilities under overbearing leadership."},
+  {n:35,q:"Employees working in organisations with few rules are more likely to",a:"B",p:"p10",
+   why:"The no-rules environment encouraged a free interchange of ideas."}
+];
+
+const yng=[
+  {n:36,q:"The physical surroundings in which a person works play a key role in determining their creativity.",a:"NO",p:"p1",
+   why:"The opening contrasts people in luxurious innovation centres who feel uncreative with people who innovate successfully without much space or budget."},
+  {n:37,q:"Most people have the potential to be creative.",a:"YES",p:"p2",
+   why:"Harvard Business School studies are cited saying almost every individual can be creative in the right circumstances."},
+  {n:38,q:"Teams work best when their members are of equally matched intelligence.",a:"NOT GIVEN",p:"p6",
+   why:"The passage says three people can outperform one very smart person, but it does not say team members should have equal intelligence."},
+  {n:39,q:"It is easier for smaller companies to be innovative.",a:"NOT GIVEN",p:"p5",
+   why:"The passage discusses collaboration and pockets of innovation, but does not compare innovation difficulty by company size."},
+  {n:40,q:"A manager’s approval of an idea is more persuasive than that of a colleague.",a:"NO",p:"p7",
+   why:"The passage says peer power is much more powerful than any boss’s speech."}
+];
+
+function render(){
+  const mb=document.getElementById("mcqBox");
+  mcqs.forEach(x=>{
+    const d=document.createElement("div");
+    d.className="q";d.id="q"+x.n;
+    d.innerHTML=`<div class="q-title"><b>${x.n}</b> ${x.q}</div><div class="options">${
+      Object.entries(x.opts).map(([k,v])=>`
+        <label class="opt"><input type="radio" name="q${x.n}" value="${k}"><span><b>${k}</b> ${v}</span></label>
+      `).join("")
+    }</div>`;
+    mb.appendChild(d);
+  });
+
+  const eb=document.getElementById("endingBox");
+  endings.forEach(x=>{
+    const d=document.createElement("div");
+    d.className="q";d.id="q"+x.n;
+    d.innerHTML=`<div class="q-title"><b>${x.n}</b> ${x.q}</div>
+      <select class="select-answer" id="a${x.n}">
+        <option value="">— Chọn A–G —</option>
+        <option>A</option><option>B</option><option>C</option><option>D</option>
+        <option>E</option><option>F</option><option>G</option>
+      </select>`;
+    eb.appendChild(d);
+  });
+
+  const yb=document.getElementById("yngBox");
+  yng.forEach(x=>{
+    const d=document.createElement("div");
+    d.className="q";d.id="q"+x.n;
+    d.innerHTML=`<div class="q-title"><b>${x.n}</b> ${x.q}</div>
+      <div class="options">
+        ${["YES","NO","NOT GIVEN"].map(v=>`
+          <label class="opt"><input type="radio" name="q${x.n}" value="${v}"><span>${v}</span></label>
+        `).join("")}
+      </div>`;
+    yb.appendChild(d);
+  });
+
+  document.querySelectorAll('input[type="radio"],select').forEach(el=>{
+    el.addEventListener("change",()=>{saveAnswers();updateProgress()});
+  });
+}
+
+function loadStudent(){
+  let saved={};
+  try{saved=JSON.parse(localStorage.getItem(STUDENT_KEY)||"{}")}catch(e){}
+  document.getElementById("studentName").value=saved.name||"";
+  document.getElementById("studentClass").value=saved.className||"";
+}
+function startExam(){
+  const name=document.getElementById("studentName").value.trim();
+  const className=document.getElementById("studentClass").value.trim();
+  if(!name||!className){
+    document.getElementById("startErr").style.display="block";return;
+  }
+  student={name,className};
+  localStorage.setItem(STUDENT_KEY,JSON.stringify(student));
+  document.getElementById("studentChip").textContent=name+" · "+className;
+  document.getElementById("startOverlay").style.display="none";
+  startedAt=Date.now();
+  restoreAnswers();
+  timerHandle=setInterval(tick,1000);
+  tick();
+}
+function tick(){
+  const t=document.getElementById("timer");
+  const m=String(Math.floor(secondsLeft/60)).padStart(2,"0");
+  const s=String(secondsLeft%60).padStart(2,"0");
+  t.textContent=m+":"+s;
+  if(secondsLeft<=180)t.classList.add("danger");
+  if(secondsLeft<=0){
+    clearInterval(timerHandle);
+    submitExam(true);
+    return;
+  }
+  secondsLeft--;
+}
+function getAnswer(n){
+  const radio=document.querySelector(`input[name="q${n}"]:checked`);
+  if(radio)return radio.value;
+  const sel=document.getElementById("a"+n);
+  return sel?sel.value:"";
+}
+function saveAnswers(){
+  if(submitted)return;
+  const answers={};
+  [...mcqs,...endings,...yng].forEach(x=>answers[x.n]=getAnswer(x.n));
+  localStorage.setItem(STORAGE_KEY,JSON.stringify({answers}));
+}
+function restoreAnswers(){
+  let data={};
+  try{data=JSON.parse(localStorage.getItem(STORAGE_KEY)||"{}")}catch(e){}
+  const answers=data.answers||{};
+  Object.entries(answers).forEach(([n,val])=>{
+    if(!val)return;
+    const radio=document.querySelector(`input[name="q${n}"][value="${CSS.escape(val)}"]`);
+    if(radio)radio.checked=true;
+    const sel=document.getElementById("a"+n);
+    if(sel)sel.value=val;
+  });
+  updateProgress();
+}
+function updateProgress(){
+  const all=[...mcqs,...endings,...yng];
+  const done=all.filter(x=>getAnswer(x.n)).length;
+  document.getElementById("progressBar").style.width=Math.round(done/all.length*100)+"%";
+  document.getElementById("progressText").textContent=done+"/"+all.length;
+}
+function lockAnswers(){
+  document.querySelectorAll('input[type="radio"],select').forEach(el=>el.disabled=true);
+}
+function revealParagraph(id){
+  const p=document.getElementById(id);
+  if(!p)return;
+  document.querySelectorAll(".para.flash").forEach(x=>x.classList.remove("flash"));
+  p.classList.add("flash");
+  p.scrollIntoView({behavior:"smooth",block:"center"});
+  setTimeout(()=>p.classList.remove("flash"),3500);
+}
+function submitExam(auto=false){
+  if(submitted)return;
+  submitted=true;
+  clearInterval(timerHandle);
+  lockAnswers();
+
+  const all=[...mcqs,...endings,...yng];
+  let score=0;
+  const details=[];
+  const wrong=[];
+
+  all.forEach(x=>{
+    const ans=getAnswer(x.n);
+    const ok=ans===x.a;
+    if(ok)score++;
+    const q=document.getElementById("q"+x.n);
+    q.classList.add(ok?"done-correct":"done-wrong");
+    details.push({
+      question:x.n,
+      answer:ans,
+      correct:x.a,
+      isCorrect:ok,
+      paragraph:x.p.replace("p",""),
+      explanation:x.why
+    });
+    if(!ok)wrong.push({n:x.n,answer:ans||"—",correct:x.a,p:x.p,why:x.why});
+  });
+
+  const total=all.length;
+  const percent=Math.round(score/total*100);
+  const duration=Math.min(1800,Math.max(0,Math.floor((Date.now()-startedAt)/1000)));
+
+  document.getElementById("scoreBig").textContent=`${score}/${total}`;
+  document.getElementById("scoreTitle").textContent=`${percent}%`;
+  document.getElementById("scoreDetail").textContent=
+    auto ? "Hết 30 phút — bài đã được tự động nộp." :
+    percent>=85 ? "Rất tốt! Em xử lý Passage 3 khá chắc." :
+    percent>=70 ? "Khá tốt. Hãy xem lại các câu sai và đối chiếu bằng chứng trong bài." :
+    "Nên xem kỹ lại bằng chứng trong passage, đặc biệt ở các câu suy luận và NOT GIVEN.";
+  document.getElementById("resultBox").classList.add("show");
+
+  if(wrong.length){
+    const list=document.getElementById("wrongList");
+    list.innerHTML="";
+    wrong.forEach(w=>{
+      const d=document.createElement("div");
+      d.className="wrong-card";
+      d.innerHTML=`<h4>Câu ${w.n}</h4>
+        <p><b>Em chọn:</b> ${w.answer}</p>
+        <p><b>Đáp án đúng:</b> ${w.correct}</p>
+        <p><b>Giải thích:</b> ${w.why}</p>
+        <button class="evidence-btn" type="button">↗ Đối chiếu trong bài đọc</button>`;
+      d.querySelector("button").onclick=()=>revealParagraph(w.p);
+      list.appendChild(d);
+    });
+    document.getElementById("reviewBox").classList.add("show");
+  }
+
+  document.getElementById("submitBtn").disabled=true;
+  localStorage.removeItem(STORAGE_KEY);
+  sendResult({score,total,percent,duration,details,auto});
+}
+async function sendResult(r){
+  const st=document.getElementById("sendStatus");
+  st.textContent="đang gửi…";st.className="status";
+  const payload=new URLSearchParams({
+    name:student.name,
+    className:student.className,
+    score:String(r.score),
+    total:String(r.total),
+    percent:String(r.percent),
+    duration:String(r.duration),
+    details:JSON.stringify({
+      testId:TEST_ID,
+      title:"The Psychology of Innovation",
+      questionRange:"27-40",
+      autoSubmitted:r.auto,
+      answers:r.details
+    })
+  });
+  try{
+    await fetch(APPS_SCRIPT_URL,{
+      method:"POST",mode:"no-cors",
+      headers:{"Content-Type":"application/x-www-form-urlencoded;charset=UTF-8"},
+      body:payload.toString()
+    });
+    st.textContent="đã gửi";st.className="status ok";
+  }catch(e){
+    st.textContent="chưa gửi được";st.className="status err";
+  }
+}
+
+document.getElementById("startBtn").addEventListener("click",startExam);
+document.getElementById("studentClass").addEventListener("keydown",e=>{if(e.key==="Enter")startExam()});
+document.getElementById("submitBtn").addEventListener("click",()=>{
+  if(confirm("Nộp bài? Sau khi nộp em sẽ không sửa được đáp án."))submitExam(false);
+});
+document.getElementById("resetBtn").addEventListener("click",()=>{
+  if(confirm("Xóa toàn bộ đáp án đã làm và bắt đầu lại?")){
+    localStorage.removeItem(STORAGE_KEY);location.reload();
+  }
+});
+
+render();
+loadStudent();
+updateProgress();
+</script>
+</body>
+</html>
